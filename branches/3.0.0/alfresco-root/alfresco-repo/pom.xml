@@ -40,6 +40,13 @@
 				Spring contexts to have customization properties available at |
 				classpath:alfresco/extension/application.properties
 			-->
+			<!-- By default also no content is restored -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>**/feature-*-context.xml</exclude>
+				</excludes>
+			</resource>
 			<resource>
 				<directory>src/main/properties/${env}</directory>
 				<includes>
@@ -56,17 +63,10 @@
 				</includes>
 				<filtering>true</filtering>
 			</resource>
-			<resource>
-				<directory>tools/mysql</directory>
-				<includes>
-					<include>*.sql</include>
-				</includes>
-				<filtering>true</filtering>
-				<targetPath>tools/mysql</targetPath>
-			</resource>
 		</resources>
 
 		<plugins>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -103,6 +103,37 @@
 		</plugins>
 	</build>
 	<profiles>
+		<!--
+			|
+			| Feature oriented profiles
+			|
+			 -->
+
+		<profile>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<id>mysql</id>
+			<build>
+				<resources>
+					<resource>
+						<directory>features/mysql</directory>
+						<includes>
+							<include>*.sql</include>
+						</includes>
+						<filtering>true</filtering>
+						<targetPath>features/mysql</targetPath>
+					</resource>
+				</resources>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<version>5.0.3</version>
+				</dependency>
+			</dependencies>
+		</profile>
 		<profile>
 			<id>ldap</id>
 			<build>
@@ -114,12 +145,43 @@
 					<resource>
 						<directory>src/main/resources</directory>
 						<includes>
-							<include>**/ldap-*-context.xml</include>
+							<include>**/feature-ldap-*-context.xml</include>
 						</includes>
 					</resource>
 				</resources>
 			</build>
 		</profile>
+		<profile>
+			<id>liferay</id>
+			<build>
+				<!--
+					No defaultGoal here as this is *not* an "execution flow" type of
+					profile
+				-->
+				<plugins>
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<configuration>
+							<archiveClasses>false</archiveClasses>
+							<filters>
+								<filter>src/main/properties/${env}/application.properties</filter>
+							</filters>
+							<webResources>
+								<resource>
+									<directory>features/liferay</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>*</include>
+									</includes>
+									<targetPath>WEB-INF</targetPath>
+								</resource>
+							</webResources>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
 		<profile>
 			<id>cas</id>
 			<build>
@@ -164,18 +226,56 @@
 					<artifactId>casclient</artifactId>
 					<version>2.1.1</version>
 				</dependency>
-				<dependency>
-					<groupId>com.cignex.alfresco</groupId>
-					<artifactId>cignex-sso</artifactId>
-					<version>1.0</version>
-				</dependency>
-				<dependency>
-					<groupId>com.cignex.alfresco</groupId>
-					<artifactId>cignex-liferay-sso</artifactId>
-					<version>1.0</version>
-				</dependency>
+				<!--
+					dependency> <groupId>com.cignex.alfresco</groupId>
+					<artifactId>cignex-sso</artifactId> <version>1.0</version>
+					</dependency> <dependency> <groupId>com.cignex.alfresco</groupId>
+					<artifactId>cignex-liferay-sso</artifactId> <version>1.0</version>
+					</dependency
+				-->
 			</dependencies>
 		</profile>
+		<profile>
+			<id>integration-test</id>
+			<build>
+				<defaultGoal>integration-test</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-war-plugin</artifactId>
+						<goals>
+							<goal>exploded</goal>
+						</goals>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>integration-test</id>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<phase>integration-test</phase>
+								<configuration>
+									<additionalClasspathElements>
+										<additionalClasspathElement>${project.build.directory}/${project.build.finalName}/WEB-INF/lib/*</additionalClasspathElement>
+										<additionalClasspathElement>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</additionalClasspathElement>
+									</additionalClasspathElements>
+									<skip>false</skip>
+								</configuration>
+							</execution>
+						</executions>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+
+
 		<profile>
 			<id>run</id>
 			<build>

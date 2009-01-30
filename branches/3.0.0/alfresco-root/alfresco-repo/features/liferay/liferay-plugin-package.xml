@@ -3,7 +3,7 @@
 
 <plugin-package>
 	<name>Alfresco Portlet</name>
-	<module-id>alfresco/alfresco/2.1/war</module-id>
+	<module-id>alfresco/alfresco/3.0/war</module-id>
 	<types>
 		<type>portlet</type>
 	</types>
@@ -18,6 +18,6 @@
 		<license osi-approved="true">GPL</license>
 	</licenses>
 	<liferay-versions>
-		<liferay-version>4.3.*</liferay-version>
+		<liferay-version>5.1.*</liferay-version>
 	</liferay-versions>
 </plugin-package>

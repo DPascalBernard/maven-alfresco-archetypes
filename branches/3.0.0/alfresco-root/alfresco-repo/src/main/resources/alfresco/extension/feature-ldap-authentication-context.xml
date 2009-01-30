@@ -168,7 +168,7 @@
 			<ref bean="ldapInitialDirContextFactory" />
 		</property>
 		<property name="userNameFormat">
-			<value>${ldap.username.format}</value>
+			<value>${ldap.authentication.username.format}</value>
 		</property>
 		<property name="nodeService">
 			<ref bean="nodeService" />
