@@ -13,8 +13,9 @@
 		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 
-	<!-- Here we syntetically define core libraries versions. 
-		 Centralized dependency control can baseline happen here 
+	<!--
+		Here we syntetically define core libraries versions. Centralized
+		dependency control can baseline happen here
 	-->
 	<properties>
 		<!-- Alfresco dependencies versions -->
@@ -27,6 +28,7 @@
 		<commons.httpclient.version>3.1</commons.httpclient.version>
 		<ehcache.version>1.4.1</ehcache.version>
 		<servlet.version>2.5</servlet.version>
+		<spring.version>2.0.6</spring.version>
 		<!--
 			Actually alfresco uses a patched 0.8.2 version but for compilation
 			purpose this is fine.
@@ -59,6 +61,13 @@
 		<dependency>
 			<groupId>org.alfresco</groupId>
 			<artifactId>alfresco-web-client</artifactId>
+			<version>${alfresco.version}</version>
+			<classifier>${alfresco.classifier}</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.alfresco</groupId>
+			<artifactId>alfresco-webscript-framework</artifactId>
 			<version>${alfresco.version}</version>
 			<classifier>${alfresco.classifier}</classifier>
 			<scope>provided</scope>
@@ -143,6 +152,31 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-mock</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<!--
@@ -177,26 +211,4 @@
 		<defaultGoal>package</defaultGoal>
 	</build>
 
-	<profiles>
-		<!--
-			|
-			| Feature oriented profiles
-			|
-			 -->
-
-		<!-- Mysql profile -->
-		<profile>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<id>mysql</id>
-			<dependencies>
-				<dependency>
-					<groupId>mysql</groupId>
-					<artifactId>mysql-connector-java</artifactId>
-					<version>5.0.3</version>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
 </project>
