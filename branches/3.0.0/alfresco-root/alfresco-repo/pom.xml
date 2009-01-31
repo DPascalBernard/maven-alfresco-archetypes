@@ -250,6 +250,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
+						<version>2.5-SNAPSHOT</version>
 						<executions>
 							<execution>
 								<id>integration-test</id>
@@ -259,10 +260,15 @@
 								<phase>integration-test</phase>
 								<configuration>
 									<additionalClasspathElements>
-										<additionalClasspathElement>${project.build.directory}/${project.build.finalName}/WEB-INF/lib/*</additionalClasspathElement>
 										<additionalClasspathElement>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</additionalClasspathElement>
 									</additionalClasspathElements>
+									<resources>
+										<resource>
+											<directory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</directory>
+										</resource>
+									</resources>
 									<skip>false</skip>
+									<workingDirectory>${project.build.directory}</workingDirectory>
 								</configuration>
 							</execution>
 						</executions>
@@ -270,9 +276,14 @@
 							<skip>true</skip>
 						</configuration>
 					</plugin>
-
 				</plugins>
 			</build>
+			<dependencies>
+				<dependency>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</dependency>
+			</dependencies>
 		</profile>
 
 

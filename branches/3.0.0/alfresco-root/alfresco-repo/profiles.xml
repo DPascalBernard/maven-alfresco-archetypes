@@ -6,6 +6,7 @@
 		</activation>
 		<properties>
 			<env>local</env>
+			<debug.level>INFO</debug.level>
 		</properties>
 	</profile>
 </profiles>

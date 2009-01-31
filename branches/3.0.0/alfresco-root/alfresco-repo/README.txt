@@ -52,3 +52,8 @@ Available profiles:
 FLOWS:
 ------
 - Run
+- Integration-test (with patched version of surefire)
+  - The surefire dependency is to 2.5-SNAPSHOT build which allows loading Resources in classpath to enable WEB-INF/lib seamless loading
+  - This version of the plugin is hosted in  http://box.session.it:8080/nexus/content/repositories/snapshots/org/apache/maven/surefire/
+  - TODO: Submit patch SurefireResourceLoading.diff to Surefire
+  - A WebscriptTest is also added

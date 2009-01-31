@@ -1,0 +1,123 @@
+Index: maven-surefire-plugin/src/main/java/org/apache/maven/plugin/surefire/SurefirePlugin.java
+===================================================================
+--- maven-surefire-plugin/src/main/java/org/apache/maven/plugin/surefire/SurefirePlugin.java	(revision 739559)
++++ maven-surefire-plugin/src/main/java/org/apache/maven/plugin/surefire/SurefirePlugin.java	(working copy)
+@@ -32,6 +32,7 @@
+ import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+ import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
+ import org.apache.maven.artifact.versioning.VersionRange;
++import org.apache.maven.model.Resource;
+ import org.apache.maven.plugin.AbstractMojo;
+ import org.apache.maven.plugin.MojoExecutionException;
+ import org.apache.maven.plugin.MojoFailureException;
+@@ -47,9 +48,12 @@
+ import org.apache.maven.surefire.report.FileReporter;
+ import org.apache.maven.surefire.report.ForkingConsoleReporter;
+ import org.apache.maven.surefire.report.XMLReporter;
++import org.codehaus.plexus.util.DirectoryScanner;
+ import org.codehaus.plexus.util.StringUtils;
+ 
+ import java.io.File;
++import java.net.MalformedURLException;
++import java.net.URL;
+ import java.util.ArrayList;
+ import java.util.Arrays;
+ import java.util.Collections;
+@@ -75,7 +79,10 @@
+ public class SurefirePlugin
+     extends AbstractMojo
+ {
++    private static final String[] EMPTY_STRING_ARRAY = {};
+ 
++    private static final String[] DEFAULT_INCLUDES = {"**/**"};
++
+     /**
+      * Set this to 'true' to skip running tests, but still compile them. Its use is NOT RECOMMENDED, but quite
+      * convenient on occasion.
+@@ -163,6 +170,15 @@
+      */
+     private List additionalClasspathElements;
+     
++    
++   /**
++    * Contains the full list of resources to add to classpath
++    *
++    * @parameter
++    * @since 2.5
++    */
++   protected Resource[] resources;
++    
+     /**
+      * Base directory where all reports are written to.
+      * 
+@@ -873,6 +889,23 @@
+             }
+         }
+         
++        if ( resources != null )
++        {
++        	for (int i = 0; i < resources.length; i++) {
++    			Resource resource = resources[i];
++    			List includedFiles = getIncludedFiles(resource);
++               //add all the jars we just downloaded to the surefire booter
++               Iterator itor = includedFiles.iterator();
++               
++               while (itor.hasNext())
++               {
++            	   String fileName = resource.getDirectory() + File.separator +(String) itor.next();
++                   getLog().debug("Adding to classpath dependency: " + fileName);
++            	   surefireBooter.addClassPathUrl( fileName );
++               }
++			}
++        }
++        
+         // ----------------------------------------------------------------------
+         // Forking
+         // ----------------------------------------------------------------------
+@@ -960,7 +993,46 @@
+ 
+         return surefireBooter;
+     }
++    /**
++     * Gets the included relative paths file list given the resource.
++     * @param resource
++     * @return
++     */
++	private List getIncludedFiles(Resource resource) {
++		/*
++		 * If a relative path is provided, it is considered to be relative to project basedir
++		 */
++		if ( !( new File( resource.getDirectory() ) ).isAbsolute() )
++		{
++			resource.setDirectory( this.project.getBasedir() + File.separator + resource.getDirectory() );
++		}
++		DirectoryScanner scanner = new DirectoryScanner();
+ 
++		scanner.setBasedir( resource.getDirectory() );
++		String[] includes = null;
++		if ( resource.getIncludes() != null && !resource.getIncludes().isEmpty() )
++		{
++		    includes = (String[]) resource.getIncludes().toArray() ;
++		}
++		else
++		{
++		    includes = DEFAULT_INCLUDES;
++		}
++		scanner.setIncludes( includes );
++		
++		String[] excludes = null;
++		if ( resource.getExcludes() != null && !resource.getExcludes().isEmpty() )
++		{
++		    excludes = (String[]) resource.getExcludes().toArray( EMPTY_STRING_ARRAY );
++		    scanner.setExcludes( excludes );
++		}
++		scanner.addDefaultExcludes();
++		scanner.scan();
++            
++            List includedFiles =   Arrays.asList( scanner.getIncludedFiles() );
++		return includedFiles;
++	}
++
+     private void showMap( Map map, String setting )
+     {
+         for ( Iterator i = map.keySet().iterator(); i.hasNext(); )

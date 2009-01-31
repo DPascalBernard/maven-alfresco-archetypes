@@ -1,62 +1,41 @@
 package org.alfresco.repo.web.scripts;
 
-
-import org.alfresco.model.ContentModel;
-import org.alfresco.repo.web.scripts.BaseWebScriptTest;
-import org.alfresco.service.cmr.security.AuthenticationService;
-import org.alfresco.service.cmr.security.PersonService;
-import org.alfresco.util.PropertyMap;
-import org.alfresco.web.scripts.TestWebScriptServer.Response;
+import org.alfresco.repo.security.authentication.AuthenticationComponent;
 import org.alfresco.web.scripts.TestWebScriptServer.GetRequest;
+import org.alfresco.web.scripts.TestWebScriptServer.Response;
 
+
+
+/**
+ * Sample webscript integration test working with Maven
+ * (a simplified version of http://wiki.alfresco.com/wiki/3.0_Web_Scripts_Testing)
+ * @author g.columbro
+ *
+ */
 public class WebscriptTest extends BaseWebScriptTest {
 
-	  private AuthenticationService authenticationService;
-	  private PersonService personService;
+	private AuthenticationComponent authenticationComponent;
+	
+	private static final String ADMIN_USER = "admin";
 
-	  private static final String USER_ONE = "RunAsOne";
+	private static final String URL_GET_CONTENT = "/index/all";
 
-	  private static final String URL_GET_CONTENT = "/someco/test";
-	  
-	  
-	  protected void setUp() throws Exception
-	  {
-	      super.setUp();
-
-	      this.authenticationService = (AuthenticationService) getServer().getApplicationContext().getBean(
-	              "AuthenticationService");
-	      this.personService = (PersonService) getServer().getApplicationContext().getBean("PersonService");
-
-	      // Create users
-	      createUser(USER_ONE);
-	  }
-
-	  private void createUser(String userName)
-	  {
-	      if (this.authenticationService.authenticationExists(userName) == false)
-	      {
-	          this.authenticationService.createAuthentication(userName, "PWD".toCharArray());
-
-	          PropertyMap ppOne = new PropertyMap(4);
-	          ppOne.put(ContentModel.PROP_USERNAME, userName);
-	          ppOne.put(ContentModel.PROP_FIRSTNAME, "firstName");
-	          ppOne.put(ContentModel.PROP_LASTNAME, "lastName");
-	          ppOne.put(ContentModel.PROP_EMAIL, "email@email.com");
-	          ppOne.put(ContentModel.PROP_JOBTITLE, "jobTitle");
-
-	          this.personService.createPerson(ppOne);
-	      }
-	  }
-
-	  protected void tearDown() throws Exception
-	  {
-	      super.tearDown();
-	  }
-
-	  public void testRunAs() throws Exception
-	  {
-	      Response response = sendRequest(new GetRequest(URL_GET_CONTENT), 200, "admin");
-	      assertEquals(USER_ONE, response.getContentAsString());
-	  }
-
+	protected void setUp() throws Exception {
+		super.setUp();
+		this.authenticationComponent = (AuthenticationComponent) getServer().getApplicationContext().getBean("authenticationComponent");
+		// Authenticate as user
+        this.authenticationComponent.setCurrentUser(ADMIN_USER);
 	}
+
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
+
+	public void testWebscript() throws Exception {
+		GetRequest request = new GetRequest(URL_GET_CONTENT);
+		Response response = sendRequest(request, 200);
+		assertEquals(200,response.getStatus());
+		assertTrue(new String(response.getContentAsByteArray()).contains("Index of All Web Scripts"));
+	}
+
+}
