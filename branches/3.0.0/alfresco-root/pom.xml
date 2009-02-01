@@ -11,8 +11,13 @@
 		<groupId>org.alfresco.maven</groupId>
 		<artifactId>alm-parent</artifactId>
 		<version>3.0.0-SNAPSHOT</version>
+		<relativePath>../alm-parent</relativePath>
 	</parent>
 
+	<modules>
+		<module>alfresco-repo</module>
+		<module>alfresco-share</module>
+	</modules>
 	<!--
 		Here we syntetically define core libraries versions. Centralized
 		dependency control can baseline happen here
@@ -36,6 +41,7 @@
 		<acegi.version>0.8.2</acegi.version>
 		<jta.version>1.1</jta.version>
 		<commons.el.version>1.0</commons.el.version>
+		<amp.plugin.version>2.0.1</amp.plugin.version>
 	</properties>
 
 	<!--
@@ -168,7 +174,7 @@
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -196,6 +202,13 @@
 				<type>war</type>
 			</dependency>
 			<dependency>
+				<groupId>org.alfresco</groupId>
+				<artifactId>share</artifactId>
+				<version>${alfresco.version}</version>
+				<type>war</type>
+				<classifier>${alfresco.classifier}</classifier>
+			</dependency>
+			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>
 				<version>${servlet.version}</version>
@@ -208,11 +221,59 @@
 				<version>${commons.httpclient.version}</version>
 				<scope>test</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.alfresco.maven.plugin</groupId>
+				<artifactId>maven-amp-plugin</artifactId>
+				<version>${amp.plugin.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
+
+
 	<build>
-		<defaultGoal>package</defaultGoal>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<archiveClasses>false</archiveClasses>
+					<warSourceExcludes>tools/**</warSourceExcludes>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<application.properties.location>src/main/properties/${env}</application.properties.location>
+				<application.properties.filename>application.properties</application.properties.filename>
+				<!-- Dev Environment settings -->
+				<eclipse.downloadSources>true</eclipse.downloadSources>
+				<java.compiler.version>1.5</java.compiler.version>
+				<!-- Maven Release Plugin settings -->
+				<maven.release.dryRun>false</maven.release.dryRun>
+				<maven.release.goals>install deploy</maven.release.goals>
+				<maven.release.svn.url>
+					https://box.session.it/svn/whiteboard/root-pom
+			</maven.release.svn.url>
+				<maven.release.svn.scm>scm:svn:${maven.release.svn.url}/trunk</maven.release.svn.scm>
+				<maven.release.svn.tags>scm:svn:${maven.release.svn.url}/tags</maven.release.svn.tags>
+
+				<!-- Maven Deploy Plugin settings -->
+				<maven.deploy.repository.id>releases</maven.deploy.repository.id>
+				<maven.deploy.repository.url>
+					http://box.session.it:8080/nexus/content/repositories/releases
+			</maven.deploy.repository.url>
+				<!-- Selenium settings -->
+				<selenium.browser>firefox</selenium.browser>
+			</properties>
+		</profile>
+
+	</profiles>
 </project>

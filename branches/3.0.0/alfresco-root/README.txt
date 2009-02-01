@@ -36,9 +36,21 @@ Ldap
 
 USE
 ---
+Run either from : alfresco-root, alfresco-repo, alfresco-share
+with:
 
- mvn clean && mvn -P local,mysql,ldap,cas,run
+ mvn clean && mvn -P[local,]mysql[,ldap,cas,]integration-test
 
+
+LAYOUT:
+-------
+Submodules:
+
+- alfresco-repo
+- alfresco-share
+
+-- Behaviors can be defined at any level but should be inherited by alm-parent were possible
+-- Dependencies can be defined at alfresco root level
 
 
 FEATURES:
@@ -57,3 +69,15 @@ FLOWS:
   - This version of the plugin is hosted in  http://box.session.it:8080/nexus/content/repositories/snapshots/org/apache/maven/surefire/
   - TODO: Submit patch SurefireResourceLoading.diff to Surefire
   - A WebscriptTest is also added
+  - Test on Multiapp (First repo then SHARE)
+- Distribute
+  - Deploys to a specific appserver by configuring appropriate properties
+  - Tested on Multiapplication (Repo+SHARE)
+  
+  
+  
+TODO:
+-------
+-- Selenium
+-- HSQLDb
+		

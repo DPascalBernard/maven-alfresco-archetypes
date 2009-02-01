@@ -1,9 +1,9 @@
 <profiles>
-	<!-- Inherited profiles -->
 	<profile>
 		<id>local</id>
 		<properties>
-			<debug.level>INFO</debug.level>
+			<share.log.level>info</share.log.level>
 		</properties>
-	</profile>	
+	</profile>
+
 </profiles>
