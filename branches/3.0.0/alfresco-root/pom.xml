@@ -226,12 +226,20 @@
 				<artifactId>maven-amp-plugin</artifactId>
 				<version>${amp.plugin.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>5.0.3</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 
 
 	<build>
+		<filters>
+			<filter>src/main/properties/${env}/application.properties</filter>
+		</filters>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -252,6 +260,8 @@
 			</activation>
 			<properties>
 				<!-- Dev Environment settings -->
+				<application.properties.location>src/main/properties/${env}</application.properties.location>
+				<application.properties.filename>application.properties</application.properties.filename>
 				<eclipse.downloadSources>true</eclipse.downloadSources>
 				<java.compiler.version>1.5</java.compiler.version>
 				<!-- Maven Release Plugin settings -->

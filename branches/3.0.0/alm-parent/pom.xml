@@ -78,7 +78,10 @@
 					<tagBase>${maven.release.svn.tags}</tagBase>
 				</configuration>
 			</plugin>
-			<!-- Tests are skipped by default and executed with the specfic flow profile -->
+			<!--
+				Tests are skipped by default and executed with the specfic flow
+				profile
+			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -124,7 +127,16 @@
 			</build>
 		</profile>
 
-
+		<!--
+			this only defines the default phase. Specific implementations may
+			override it per project
+		-->
+		<profile>
+			<id>run</id>
+			<build>
+				<defaultGoal>integration-test</defaultGoal>
+			</build>
+		</profile>
 
 		<profile>
 			<id>integration-test</id>
