@@ -3,7 +3,18 @@
 	<profile>
 		<id>local</id>
 		<properties>
+			<application.properties.location>src/main/properties/${env}</application.properties.location>
+			<application.properties.filename>application.properties</application.properties.filename>
+			<webapp.name>alfresco</webapp.name>
+			<cargo.webapp.context>${webapp.name}</cargo.webapp.context>
 			<debug.level>INFO</debug.level>
+			<dir.root>${project.basedir}/alf_data</dir.root>
+			<db.name>alfresco</db.name>
+			<db.username>sa</db.username>
+			<db.password></db.password>
+			<db.driver>org.hsqldb.jdbcDriver</db.driver>
+			<db.url>jdbc:hsqldb:file:${dir.root}/hsql_data/;ifexists=true;shutdown=true;</db.url>
+			<hibernate.dialect>org.hibernate.dialect.HSQLDialect</hibernate.dialect>
 		</properties>
 	</profile>	
 </profiles>

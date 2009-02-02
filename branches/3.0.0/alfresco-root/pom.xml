@@ -251,8 +251,6 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<application.properties.location>src/main/properties/${env}</application.properties.location>
-				<application.properties.filename>application.properties</application.properties.filename>
 				<!-- Dev Environment settings -->
 				<eclipse.downloadSources>true</eclipse.downloadSources>
 				<java.compiler.version>1.5</java.compiler.version>
@@ -261,15 +259,14 @@
 				<maven.release.goals>install deploy</maven.release.goals>
 				<maven.release.svn.url>
 					https://box.session.it/svn/whiteboard/root-pom
-			</maven.release.svn.url>
+				</maven.release.svn.url>
 				<maven.release.svn.scm>scm:svn:${maven.release.svn.url}/trunk</maven.release.svn.scm>
 				<maven.release.svn.tags>scm:svn:${maven.release.svn.url}/tags</maven.release.svn.tags>
-
 				<!-- Maven Deploy Plugin settings -->
 				<maven.deploy.repository.id>releases</maven.deploy.repository.id>
 				<maven.deploy.repository.url>
 					http://box.session.it:8080/nexus/content/repositories/releases
-			</maven.deploy.repository.url>
+				</maven.deploy.repository.url>
 				<!-- Selenium settings -->
 				<selenium.browser>firefox</selenium.browser>
 			</properties>

@@ -29,7 +29,22 @@
 			<id>ss-public</id>
 			<url>http://repository.sourcesense.com/maven2</url>
 		</repository>
+		<repository>
+			<id>ss-nexus</id>
+			<url>http://repository.sourcesense.com/nexus/content/groups/public</url>
+		</repository>
+		<repository>
+			<id>box-nexus</id>
+			<url>http://box.session.it:8080/nexus/content/groups/public</url>
+		</repository>
 	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>box-nexus</id>
+			<url>http://box.session.it:8080/nexus/content/groups/public</url>
+		</pluginRepository>
+
+	</pluginRepositories>
 
 	<build>
 		<defaultGoal>package</defaultGoal>
@@ -59,169 +74,28 @@
 					<tagBase>${maven.release.svn.tags}</tagBase>
 				</configuration>
 			</plugin>
+			<!-- Tests are skipped by default and executed with the specfic flow profile -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.5-SNAPSHOT</version>
 				<configuration>
-					<!--
-						Skip the normal tests, we'll run them in the integration-test
-						phase
-					-->
-					<excludes>
-						<exclude>**/incontainer/*.java</exclude>
-					</excludes>
-					<systemProperties>
-						<property>
-							<name>browser</name>
-							<value>${browser}</value>
-						</property>
-						<property>
-							<name>servlet.port</name>
-							<value>${servlet.port}</value>
-						</property>
-						<property>
-							<name>selenium.port</name>
-							<value>${selenium.port}</value>
-						</property>
-					</systemProperties>
+					<skip>true</skip>
 				</configuration>
-				<executions>
-					<execution>
-						<phase>integration-test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-						<configuration>
-							<includes>
-								<include>**/incontainer/*.java</include>
-							</includes>
-							<testFailureIgnore>true</testFailureIgnore>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
 
+	<!--
+		Profile for appserver deployment. To deploy locally on an appserver
+		(other then the embedded NB: you have to call this profile explicitly
+	-->
+
 	<profiles>
-		<!-- profile>
-			<id>run</id>
-			<build>
-				<defaultGoal>integration-test</defaultGoal>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.cargo</groupId>
-						<artifactId>cargo-maven2-plugin</artifactId>
-						<inherited>true</inherited>
-						<executions>
-							<execution>
-								<id>install</id>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>install</goal>
-								</goals>
-								<inherited>false</inherited>
-							</execution>
-						</executions>
-						<configuration>
-							<container>
-								<containerId>${cargo.container.name}</containerId>
-								<zipUrlInstaller>
-									<url>${cargo.container.url}</url>
-									<installDir>${cargo.container.install.directory}/${cargo.container.name}</installDir>
-								</zipUrlInstaller>
-								<log>${project.build.directory}/logs/${cargo.container.name}.log</log>
-								<output>${project.build.directory}/logs/${cargo.container.name}.out</output>
-								<timeout>600000</timeout>
-							</container>
-							<configuration>
-								<properties>
-									<cargo.servlet.port>${cargo.container.servlet.port}</cargo.servlet.port>
-								</properties>
-							</configuration>
-							<wait>true</wait>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>incontainer-test</id>
-			<build>
-				<defaultGoal>integration-test</defaultGoal>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.cargo</groupId>
-						<artifactId>cargo-maven2-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>install</id>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>install</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>start-container</id>
-								<phase>pre-integration-test</phase>
-								<inherited>false</inherited>
-								<goals>
-									<goal>start</goal>
-								</goals>
-								<configuration>
-									<wait>false</wait>
-								</configuration>
-							</execution>
-							<execution>
-								<id>stop-container</id>
-								<phase>post-integration-test</phase>
-								<goals>
-									<goal>stop</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<configuration>
-							<skip>true</skip>
-							<systemProperties>
-								<property>
-									<name>browser</name>
-									<value>${selenium.browser}</value>
-								</property>
-								<property>
-									<name>servlet.port</name>
-									<value>${cargo.container.servlet.port}</value>
-								</property>
-								<property>
-									<name>selenium.port</name>
-									<value>${cargo.container.servlet.port}</value>
-								</property>
-							</systemProperties>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>integration-test</phase>
-								<goals>
-									<goal>test</goal>
-								</goals>
-								<configuration>
-									<skip>false</skip>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile-->
-
 		<profile>
 			<id>distribute</id>
 			<build>
-				<defaultGoal>cargo:deployer-redeploy</defaultGoal>
+				<defaultGoal>integration-test</defaultGoal>
 				<plugins>
 					<plugin>
 						<groupId>org.codehaus.cargo</groupId>
@@ -233,21 +107,155 @@
 							</container>
 							<configuration>
 								<type>runtime</type>
+								<properties>
+									<cargo.hostname>${cargo.remote.hostname}</cargo.hostname>
+									<cargo.servlet.port>${cargo.remote.servlet.port}</cargo.servlet.port>
+									<cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
+									<cargo.remote.username>${cargo.remote.username}</cargo.remote.username>
+								</properties>
 							</configuration>
-							<deployer>
-								<type>remote</type>
-								<deployables>
-									<deployable>
-										<properties>
-											<context>${pom.cargo.context}</context>
-										</properties>
-									</deployable>
-								</deployables>
-							</deployer>
 						</configuration>
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+
+
+
+		<profile>
+			<id>integration-test</id>
+			<activation>
+				<property>
+					<name>flow</name>
+					<value>integration-test</value>
+				</property>
+			</activation>
+			<build>
+				<defaultGoal>integration-test</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>2.5-SNAPSHOT</version>
+						<executions>
+							<execution>
+								<id>integration-test</id>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<phase>integration-test</phase>
+								<configuration>
+									<additionalClasspathElements>
+										<additionalClasspathElement>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</additionalClasspathElement>
+									</additionalClasspathElements>
+									<resources>
+										<resource>
+											<directory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</directory>
+										</resource>
+									</resources>
+									<skip>false</skip>
+									<workingDirectory>${project.build.directory}</workingDirectory>
+								</configuration>
+								<inherited>true</inherited>
+							</execution>
+						</executions>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+
+		<profile>
+			<id>selenium-test</id>
+			<build>
+				<plugins>
+					<plugin>
+
+						<configuration>
+							<!--
+								Skip the normal tests, we'll run them in the integration-test
+								phase
+							-->
+							<systemProperties>
+								<property>
+									<name>browser</name>
+									<value>${browser}</value>
+								</property>
+								<property>
+									<name>servlet.port</name>
+									<value>${servlet.port}</value>
+								</property>
+								<property>
+									<name>selenium.port</name>
+									<value>${selenium.port}</value>
+								</property>
+							</systemProperties>
+						</configuration>
+						<executions>
+							<execution>
+								<id>run-selenium-tests</id>
+								<configuration>
+									<includes>
+										<include>**/selenium/*.java</include>
+									</includes>
+								</configuration>
+								<inherited>true</inherited>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<site_pom_description>${project.description}</site_pom_description>
+				<site_pom_url>${project.organization.url}</site_pom_url>
+				<site_pom_groupId>${project.groupId}</site_pom_groupId>
+				<site_pom_artifactId>${project.artifactId}</site_pom_artifactId>
+				<site_pom_version>${project.version}</site_pom_version>
+				<site_tags_url>${svn.tags.url}</site_tags_url>
+				<site_site_url>${site.url}</site_site_url>
+			</properties>
+		</profile>
+
+		<!-- Environmental profiles -->
+		<profile>
+			<id>local</id>
+			<properties>
+				<env>local</env>
+				<!-- Cargo Plugin settings -->
+				<cargo.container.name>jetty6x</cargo.container.name>
+				<cargo.container.servlet.port>8999</cargo.container.servlet.port>
+				<cargo.container.install.directory>containers</cargo.container.install.directory>
+				<cargo.container.distro.name>jetty-6.1.15.pre0</cargo.container.distro.name>
+				<cargo.container.url>
+					http://dist.codehaus.org/jetty/jetty-6.1.15/${cargo.container.distro.name}.zip
+				</cargo.container.url>
+				<cargo.container.keepalive>true</cargo.container.keepalive>
+				<cargo.container.pingTimeout>120</cargo.container.pingTimeout>
+				<cargo.remote.name>jboss4x</cargo.remote.name>
+				<cargo.remote.name>jboss4x</cargo.remote.name>
+				<cargo.remote.hostname>localhost</cargo.remote.hostname>
+				<cargo.remote.servlet.port>8080</cargo.remote.servlet.port>
+				<cargo.remote.username></cargo.remote.username>
+				<cargo.remote.password></cargo.remote.password>
+				<!--
+					<cargo.tomcat.manager.url>http://localhost:8080/manager</cargo.tomcat.manager.url>
+				-->
+			</properties>
 		</profile>
 
 	</profiles>
