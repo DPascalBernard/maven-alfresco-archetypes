@@ -27,9 +27,6 @@
 	</dependencies>
 
 	<build>
-		<filters>
-			<filter>src/main/properties/${env}/application.properties</filter>
-		</filters>
 		<!--
 			Default profile to build as an Alfresco extension - resources are
 			copied into classpath
@@ -48,9 +45,9 @@
 				</excludes>
 			</resource>
 			<resource>
-				<directory>${application.properties.location}</directory>
+				<directory>src/main/properties/${env}</directory>
 				<includes>
-					<include>${application.properties.filename}</include>
+					<include>application.properties</include>
 				</includes>
 				<filtering>true</filtering>
 				<targetPath>alfresco/extension</targetPath>
@@ -125,12 +122,24 @@
 			| Feature oriented profiles
 			|
 			 -->
+		<profile>
+			<id>hsqldb</id>
+			<properties>
+				<alfresco.db.username>sa</alfresco.db.username>
+				<alfresco.db.password></alfresco.db.password>
+				<alfresco.db.driver>org.hsqldb.jdbcDriver</alfresco.db.driver>
+				<alfresco.db.url>jdbc:hsqldb:file:${dir.root}/hsql_data/;ifexists=false;shutdown=true;</alfresco.db.url>
+				<alfresco.hibernate.dialect>org.hibernate.dialect.HSQLDialect</alfresco.hibernate.dialect>
+			</properties>
+		</profile>
 
 		<profile>
 			<id>mysql</id>
 			<properties>
-				<db.url>jdbc:mysql://localhost/${db.name}</db.url>
-				<db.driver>org.gjt.mm.mysql.Driver</db.driver>
+				<alfresco.db.username>alfresco</alfresco.db.username>
+				<alfresco.db.password>alfresco</alfresco.db.password>
+				<alfresco.db.url>jdbc:mysql://localhost/${alfresco.db.name}</alfresco.db.url>
+				<alfresco.db.driver>org.gjt.mm.mysql.Driver</alfresco.db.driver>
 				<hibernate.dialect>org.hibernate.dialect.MySQLInnoDBDialect</hibernate.dialect>
 			</properties>
 			<build>
@@ -149,7 +158,6 @@
 				<dependency>
 					<groupId>mysql</groupId>
 					<artifactId>mysql-connector-java</artifactId>
-					<version>5.0.3</version>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -245,13 +253,11 @@
 					<artifactId>casclient</artifactId>
 					<version>2.1.1</version>
 				</dependency>
-				<!--
-					dependency> <groupId>com.cignex.alfresco</groupId>
-					<artifactId>cignex-sso</artifactId> <version>1.0</version>
-					</dependency> <dependency> <groupId>com.cignex.alfresco</groupId>
-					<artifactId>cignex-liferay-sso</artifactId> <version>1.0</version>
-					</dependency
-				-->
+				<dependency>
+					<groupId>com.cignex.alfresco</groupId>
+					<artifactId>cignex-sso-ldap</artifactId>
+					<version>1.0</version>
+				</dependency>
 			</dependencies>
 		</profile>
 		<!-- Flow inherited profiles -->
@@ -290,11 +296,20 @@
 		<profile>
 			<id>run</id>
 			<build>
-				<defaultGoal>jetty:run-exploded</defaultGoal>
+				<defaultGoal>integration-test</defaultGoal>
 				<plugins>
 					<plugin>
 						<groupId>org.mortbay.jetty</groupId>
 						<artifactId>maven-jetty-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>run-exploded</goal>
+								</goals>
+								<id>run-${artifactId}</id>
+								<phase>integration-test</phase>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>

@@ -33,13 +33,7 @@
 	</dependencies>
 
 	<build>
-		<!--
-			In certain cases we do build time filtering with the single sourcing
-			application.properties
-		-->
-		<filters>
-			<filter>${application.properties.location}/${application.properties.filename}</filter>
-		</filters>
+
 		<!--
 			Default profile to build as an Alfresco extension - resources are
 			copied into classpath
@@ -55,15 +49,16 @@
 				classpath:alfresco/extension/application.properties
 			-->
 			<resource>
-				<directory>${application.properties.location}</directory>
+				<directory>src/main/properties</directory>
 				<includes>
-					<include>${application.properties.filename}</include>
+					<include>application.properties</include>
 				</includes>
 				<!--
 					This gets loaded to be the filter for spring runtime placeholding,
 					so no need for build time filtering
 				-->
 				<targetPath>alfresco/web-extension</targetPath>
+				<filtering>true</filtering>
 			</resource>
 		</resources>
 		<plugins>
@@ -73,7 +68,7 @@
 				<configuration>
 					<archiveClasses>false</archiveClasses>
 					<filters>
-						<filter>${application.properties.location}/${application.properties.filename}</filter>
+						<filter>src/main/properties/${env}/application.properties</filter>
 					</filters>
 					<webResources>
 					</webResources>
