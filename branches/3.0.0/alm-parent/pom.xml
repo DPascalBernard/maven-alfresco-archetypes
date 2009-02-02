@@ -30,6 +30,10 @@
 			<url>http://repository.sourcesense.com/maven2</url>
 		</repository>
 		<repository>
+			<id>ss-snapshots</id>
+			<url>http://repository.sourcesense.com/maven2-snapshots</url>
+		</repository>
+		<repository>
 			<id>ss-nexus</id>
 			<url>http://repository.sourcesense.com/nexus/content/groups/public</url>
 		</repository>
