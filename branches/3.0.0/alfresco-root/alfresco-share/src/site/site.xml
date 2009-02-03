@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <?xml version="1.0"?>
 <!--
     Licensed to the Apache Software Foundation (ASF) under one or more
@@ -29,8 +26,8 @@
 	    <version>1.0</version>
 	</skin>
   <bannerLeft>
-    <name>Maven Alfresco Generated Sample - v. ${symbol_dollar}{site_pom_version}</name>
-    <href>${symbol_dollar}{site_site_url}</href>
+    <name>Maven Alfresco Generated Sample - v. ${site_pom_version}</name>
+    <href>${site_site_url}</href>
   </bannerLeft>
   <bannerRight>
    
@@ -44,10 +41,10 @@
 
     <menu name="Maven Alfresco Extension Archetype Generated Project Instance - Howto ">
 	  <item name="Introduction" href="index.html"/>
-	  <item name="README" href="${symbol_dollar}{svn.tags.url}/${symbol_dollar}{project.artifactId}-${symbol_dollar}{project.version}/README.txt"/>
-      <item name="M2 Usage Guide" href="${symbol_dollar}{svn.tags.url}/${symbol_dollar}{project.artifactId}-${symbol_dollar}{project.version}/src/main/resources/archetype-resources/README-m2.txt"/>
-      <item name="Ant Usage Guide" href="${symbol_dollar}{svn.tags.url}/${symbol_dollar}{project.artifactId}-${symbol_dollar}{project.version}/src/main/resources/archetype-resources/README-ANT.txt"/>
-      <item name="Roadmap" href="${symbol_dollar}{svn.tags.url}/${symbol_dollar}{project.artifactId}-${symbol_dollar}{project.version}/ROADMAP.txt"/>
+	  <item name="README" href="${svn.tags.url}/${project.artifactId}-${project.version}/README.txt"/>
+      <item name="M2 Usage Guide" href="${svn.tags.url}/${project.artifactId}-${project.version}/src/main/resources/archetype-resources/README-m2.txt"/>
+      <item name="Ant Usage Guide" href="${svn.tags.url}/${project.artifactId}-${project.version}/src/main/resources/archetype-resources/README-ANT.txt"/>
+      <item name="Roadmap" href="${svn.tags.url}/${project.artifactId}-${project.version}/ROADMAP.txt"/>
 	  <item name="FAQ" href="faq.html"/>
     </menu>
     <menu ref="reports"/>

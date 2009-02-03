@@ -10,4 +10,14 @@
 			<debug.level>INFO</debug.level>
 		</properties>
 	</profile>	
+		<profile>
+		<id>test</id>
+		<properties>
+			<alfresco.db.name>alfresco</alfresco.db.name>
+			<webapp.name>alfresco</webapp.name>
+			<cargo.webapp.context>${webapp.name}</cargo.webapp.context>
+			<debug.level>INFO</debug.level>
+			<alfresco.dir.root>./alf_data</alfresco.dir.root>
+		</properties>
+	</profile>
 </profiles>

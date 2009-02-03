@@ -140,7 +140,7 @@
 				<alfresco.db.password>alfresco</alfresco.db.password>
 				<alfresco.db.url>jdbc:mysql://localhost/${alfresco.db.name}</alfresco.db.url>
 				<alfresco.db.driver>org.gjt.mm.mysql.Driver</alfresco.db.driver>
-				<hibernate.dialect>org.hibernate.dialect.MySQLInnoDBDialect</hibernate.dialect>
+				<alfresco.hibernate.dialect>org.hibernate.dialect.MySQLInnoDBDialect</alfresco.hibernate.dialect>
 			</properties>
 			<build>
 				<resources>

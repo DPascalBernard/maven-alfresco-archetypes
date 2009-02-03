@@ -9,7 +9,7 @@
       <remote>
          <!-- Adjust the following settings to reference the default
               remote Alfresco repository server web application -->
-         <endpoint>${symbol_dollar}{alfresco.server.scheme}://${symbol_dollar}{alfresco.server.host}:${symbol_dollar}{alfresco.server.port}/${symbol_dollar}{alfresco.webapp.name}</endpoint>
+         <endpoint>${alfresco.server.scheme}://${alfresco.server.host}:${alfresco.server.port}/${alfresco.webapp.name}</endpoint>
       </remote>
    </config>
    

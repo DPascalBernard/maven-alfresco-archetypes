@@ -7,4 +7,5 @@
 			<share.log.level>info</share.log.level>
 		</properties>
 	</profile>
+	
 </profiles>

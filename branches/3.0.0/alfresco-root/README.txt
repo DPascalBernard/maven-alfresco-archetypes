@@ -3,7 +3,7 @@ Install Software
 sudo apt-get install swftools
 sudo apt-get install imagemagick
 
-Preparing the DB
+Preparing the DB (not needed when -P hsqldb) 
 ----------------
 dev@mint-dev ~/workspace/alm-parent-test/alm-parent $ mysql -u root -p
 mysql> create database alfresco;
@@ -21,8 +21,6 @@ vi profiles.xml
 Edit runtime properties
 -----------------------------------
 vi alfresco-repo/src/main/properties/local/application.properties
-
-
 
 
 Ldap
@@ -73,11 +71,22 @@ FLOWS:
 - Distribute
   - Deploys to a specific appserver by configuring appropriate properties
   - Tested on Multiapplication (Repo+SHARE)
+  - Tested with Remote JBOSS deploy (-Pci,mysql,test) from alfresco-root using cargo patched 1.0-SNAPSHOT available on 
+  box-snapshots http://box.session.it:8080/nexus/content/repositories/snapshots/org/codehaus/cargo/)
   
+ 
+ENVIRONMENTS:
+-------------
+- local
+- ci (continuous integration)
   
   
 TODO:
 -------
 -- Selenium
--- HSQLDb
+-- Integrate properly liferay/cas
+-- site and maven-changes-plugin
+-- refactor properties
+-- document a lot
+-- release!!!!
 		

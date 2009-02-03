@@ -1,8 +1,5 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
  -----
- Maven Alfresco Extension Manual
+ Maven Alfresco SHARE archetype
  -----
  Sourcesense
  -----
@@ -11,13 +8,13 @@
 
 Welcome to the Maven Alfresco Extension Archetype manual
 
- You've reached the Sourcesense Maven Alfresco Extension archetype home page (version: ${symbol_dollar}{site_pom_version}) . 
+ You've reached the Sourcesense Maven Alfresco Extension archetype home page (version: ${site_pom_version}) . 
 
 
 
 Description
 
-	${symbol_dollar}{site_pom_description}
+	${site_pom_description}
 
 
 Full documentation

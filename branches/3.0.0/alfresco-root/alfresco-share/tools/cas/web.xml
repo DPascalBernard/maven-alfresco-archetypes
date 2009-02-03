@@ -31,15 +31,15 @@
 		</init-param>
 		<init-param>
 			<param-name>edu.yale.its.tp.cas.client.filter.loginUrl</param-name>
-			<param-value>${symbol_dollar}{cas.loginUrl}</param-value>
+			<param-value>${cas.loginUrl}</param-value>
 		</init-param>
 		<init-param>
 			<param-name>edu.yale.its.tp.cas.client.filter.validateUrl</param-name>
-			<param-value>${symbol_dollar}{cas.validateUrl}</param-value>
+			<param-value>${cas.validateUrl}</param-value>
 		</init-param>
 		<init-param>
 			<param-name>edu.yale.its.tp.cas.client.filter.serverName</param-name>
-			<param-value>${symbol_dollar}{cargo.hostname}</param-value>
+			<param-value>${cargo.hostname}</param-value>
 		</init-param>
 		<init-param>
 			<param-name>allowGuest</param-name>
@@ -60,15 +60,15 @@
 		</init-param>
 		<init-param>
 			<param-name>casLogoutUrl</param-name>
-			<param-value>${symbol_dollar}{cas.logoutUrl}</param-value>
+			<param-value>${cas.logoutUrl}</param-value>
 		</init-param>
 		<init-param>
 			<param-name>validateUrl</param-name>
-			<param-value>${symbol_dollar}{cas.validateUrl}</param-value>
+			<param-value>${cas.validateUrl}</param-value>
 		</init-param>
 		<init-param>
 			<param-name>service</param-name>
-			<param-value>http://${symbol_dollar}{cargo.hostname}:${symbol_dollar}{cargo.servlet.port}</param-value>
+			<param-value>http://${cargo.hostname}:${cargo.servlet.port}</param-value>
 		</init-param>
 		<init-param>
 			<param-name>accessTimeout</param-name>
