@@ -72,10 +72,17 @@
 			<url>http://box.session.it:8080/nexus/content/groups/public</url>
 		</pluginRepository>
 	</pluginRepositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.sourcesense.tomcat</groupId>
-			<artifactId>tc-server-instance-wrapper</artifactId>
+			<artifactId>tc-server</artifactId>
+			<version>1.0</version>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>com.sourcesense.tomcat</groupId>
+			<artifactId>tc-server-instance</artifactId>
 			<version>1.0</version>
 			<type>zip</type>
 		</dependency>
@@ -126,21 +133,6 @@
 				<groupId>org.codehaus.cargo</groupId>
 				<artifactId>cargo-maven2-plugin</artifactId>
 				<version>1.0-SNAPSHOT</version>
-				<configuration>
-					<container>
-						<containerId>${cargo.remote.id}</containerId>
-						<type>remote</type>
-					</container>
-					<configuration>
-						<type>runtime</type>
-						<properties>
-							<cargo.hostname>${cargo.remote.hostname}</cargo.hostname>
-							<cargo.servlet.port>${cargo.remote.servlet.port}</cargo.servlet.port>
-							<cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
-							<cargo.remote.username>${cargo.remote.username}</cargo.remote.username>
-						</properties>
-					</configuration>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -265,6 +257,18 @@
 						<groupId>org.codehaus.cargo</groupId>
 						<artifactId>cargo-maven2-plugin</artifactId>
 						<version>1.0-SNAPSHOT</version>
+
+						<configuration>
+							<container>
+								<containerId>tomcat5x</containerId>
+								<type>installed</type>
+								<zipUrlInstaller>
+									<url>${tc.server.url}</url>
+									<installDir>${project.basedir}/tc-server</installDir>
+								</zipUrlInstaller>
+								<timeout>600000</timeout>
+							</container>
+						</configuration>
 						<executions>
 							<execution>
 								<id>unpack-tomcat-instances</id>
@@ -272,20 +276,6 @@
 								<goals>
 									<goal>install</goal>
 								</goals>
-								<configuration>
-									<container>
-										<containerId>tomcat5x</containerId>
-										<zipUrlInstaller>
-											<url>${tc.server.url}</url>
-											<installDir>${project.basedir}/tc-server</installDir>
-										</zipUrlInstaller>
-										<!--
-											<log>${project.basedir}/${tc.server.folderName}/shared/logs/nohup.log</log>
-											<output>${project.basedir}/${tc.server.folderName}/shared/logs/nohup.out</output>
-										-->
-										<timeout>600000</timeout>
-									</container>
-								</configuration>
 								<inherited>false</inherited>
 							</execution>
 						</executions>
@@ -295,34 +285,60 @@
 						<artifactId>maven-dependency-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>unpack-amps</id>
-								<phase>process-resources</phase>
+								<id>overlay-tc-server</id>
+								<phase>generate-resources</phase>
 								<goals>
 									<goal>unpack-dependencies</goal>
 								</goals>
 								<configuration>
-									<includeTypes>zip</includeTypes>
-									<outputDirectory>${project.build.directory}/tc-server</outputDirectory>
+									<includeArtifactIds>tc-server</includeArtifactIds>
+									<outputDirectory>${tc.server.home}/${tc.server.name}</outputDirectory>
 								</configuration>
 								<inherited>false</inherited>
+							</execution>
+							<execution>
+								<id>install-tc-server-instance</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>unpack-dependencies</goal>
+								</goals>
+								<configuration>
+									<includeArtifactIds>tc-server-instance</includeArtifactIds>
+									<outputDirectory>${project.build.directory}/tc-server-instance</outputDirectory>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
 					<plugin>
-						<groupId>com.sourcesense.maven</groupId>
-						<artifactId>maven-tc-server-plugin</artifactId>
-						<version>1.1</version>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>2.3</version>
 						<executions>
 							<execution>
-								<id>init-tc-server</id>
-								<phase>process-resources</phase>
+								<id>overlay-tc-server-instance</id>
+								<phase>generate-resources</phase>
 								<goals>
-									<goal>create-tc-server-instances</goal>
+									<goal>copy-resources</goal>
 								</goals>
 								<configuration>
-									<tcServerBase>${project.basedir}/tc-server</tcServerBase>
+									<outputDirectory>${project.build.directory}/tc-server-instance</outputDirectory>
+									<resources>
+										<resource>
+											<directory>features/tc-server/conf</directory>
+											<includes>
+												<include>*</include>
+											</includes>
+											<targetPath>conf</targetPath>
+										</resource>
+										<resource>
+											<directory>features/tc-server/bin</directory>
+											<includes>
+												<include>*</include>
+											</includes>
+											<targetPath>bin</targetPath>
+										</resource>
+									</resources>
 								</configuration>
-								<inherited>false</inherited>
 							</execution>
 						</executions>
 					</plugin>
@@ -331,8 +347,8 @@
 						<artifactId>exec-maven-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>chmod-tc-server</id>
-								<phase>process-resources</phase>
+								<id>chmod-tc-server-instance</id>
+								<phase>generate-resources</phase>
 								<goals>
 									<goal>exec</goal>
 								</goals>
@@ -340,25 +356,32 @@
 									<executable>chmod</executable>
 									<arguments>
 										<argument>+x</argument>
-										<argument>${project.basedir}/tc-server/run.sh</argument>
+										<argument>${project.build.directory}/tc-server-instance/run-instance.sh</argument>
 									</arguments>
+									<successCodes>
+										<successCode>0</successCode>
+									</successCodes>
 								</configuration>
-								<inherited>false</inherited>
 							</execution>
 							<execution>
 								<id>run-tc-server</id>
-								<phase>process-resources</phase>
+								<phase>generate-resources</phase>
 								<goals>
 									<goal>exec</goal>
 								</goals>
 								<configuration>
-									<executable>${project.basedir}/tc-server/run.sh</executable>
-									<workingDirectory>${project.basedir}/tc-server</workingDirectory>
+									<executable>${project.build.directory}/tc-server-instance/run-instance.sh</executable>
+									<workingDirectory>${project.build.directory}/tc-server-instance</workingDirectory>
 									<arguments>
 										<argument>start</argument>
+										<argument>${tc.server.home}/${tc.server.name}</argument>
+										<argument>${tc.server.sequenceNumber}</argument>
 									</arguments>
+									<successCodes>
+										<successCode>0</successCode>
+										<successCode>1</successCode>
+									</successCodes>
 								</configuration>
-								<inherited>false</inherited>
 							</execution>
 						</executions>
 					</plugin>
@@ -378,6 +401,21 @@
 					<plugin>
 						<groupId>org.codehaus.cargo</groupId>
 						<artifactId>cargo-maven2-plugin</artifactId>
+						<configuration>
+							<container>
+								<containerId>${cargo.remote.id}</containerId>
+								<type>remote</type>
+							</container>
+							<configuration>
+								<type>runtime</type>
+								<properties>
+									<cargo.hostname>${cargo.remote.hostname}</cargo.hostname>
+									<cargo.servlet.port>${cargo.remote.servlet.port}</cargo.servlet.port>
+									<cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
+									<cargo.remote.username>${cargo.remote.username}</cargo.remote.username>
+								</properties>
+							</configuration>
+						</configuration>
 						<executions>
 							<execution>
 								<id>remote-deploy</id>
