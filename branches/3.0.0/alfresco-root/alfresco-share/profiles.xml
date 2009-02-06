@@ -2,8 +2,8 @@
 	<profile>
 		<id>local</id>
 		<properties>
-			<webapp.name>share</webapp.name>
-			<cargo.webapp.context>${webapp.name}</cargo.webapp.context>
+			<cargo.remote.servlet.port>8084</cargo.remote.servlet.port>
+			<cargo.webapp.context>${pom.artifactId}</cargo.webapp.context>
 			<share.log.level>info</share.log.level>
 		</properties>
 	</profile>
