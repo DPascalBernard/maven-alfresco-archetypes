@@ -8,13 +8,15 @@
 	<name>Alfresco Applications Common Lifecycle Configuration</name>
 
 	<parent>
-		<groupId>org.alfresco.maven</groupId>
+		<groupId>com.sourcesense.maven</groupId>
 		<artifactId>alm-parent</artifactId>
 		<version>3.0.0-SNAPSHOT</version>
 		<relativePath>../alm-parent</relativePath>
 	</parent>
 
 	<modules>
+		<module>apache-ds</module>
+		<module>cas</module>
 		<module>alfresco-repo</module>
 		<module>alfresco-share</module>
 	</modules>
@@ -23,6 +25,23 @@
 		dependency control can baseline happen here
 	-->
 	<properties>
+
+		<!-- Maven Tc Server Plugin settings -->
+		<tc.server.name>apache-tomcat-6.0.18</tc.server.name>
+		<tc.server.url>
+			http://mirror.hostfuss.com/apache/tomcat/tomcat-6/v6.0.18/bin/${tc.server.name}.zip
+		</tc.server.url>
+
+		<!-- Maven Deploy Plugin settings -->
+		<maven.release.svn.url>
+			https://box.session.it/svn/whiteboard/root-pom
+		</maven.release.svn.url>
+
+		<maven.deploy.repository.id>releases</maven.deploy.repository.id>
+		<maven.deploy.repository.url>
+			http://box.session.it:8080/nexus/content/repositories/releases
+		</maven.deploy.repository.url>
+
 		<!-- Alfresco dependencies versions -->
 		<alfresco.version>3.0Stable</alfresco.version>
 		<alfresco.classifier>labs</alfresco.classifier>
@@ -237,9 +256,6 @@
 
 
 	<build>
-		<filters>
-			<filter>src/main/properties/${env}/application.properties</filter>
-		</filters>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -253,63 +269,9 @@
 	</build>
 
 	<profiles>
-		<profile>
-			<id>default</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<!-- Dev Environment settings -->
-				<application.properties.location>src/main/properties/${env}</application.properties.location>
-				<application.properties.filename>application.properties</application.properties.filename>
-				<eclipse.downloadSources>true</eclipse.downloadSources>
-				<java.compiler.version>1.5</java.compiler.version>
-				<!-- Maven Release Plugin settings -->
-				<maven.release.dryRun>false</maven.release.dryRun>
-				<maven.release.goals>install deploy</maven.release.goals>
-				<maven.release.svn.url>
-					https://box.session.it/svn/whiteboard/root-pom
-				</maven.release.svn.url>
-				<maven.release.svn.scm>scm:svn:${maven.release.svn.url}/trunk</maven.release.svn.scm>
-				<maven.release.svn.tags>scm:svn:${maven.release.svn.url}/tags</maven.release.svn.tags>
-				<!-- Maven Deploy Plugin settings -->
-				<maven.deploy.repository.id>releases</maven.deploy.repository.id>
-				<maven.deploy.repository.url>
-					http://box.session.it:8080/nexus/content/repositories/releases
-				</maven.deploy.repository.url>
-				<!-- Selenium settings -->
-				<selenium.browser>firefox</selenium.browser>
-			</properties>
-		</profile>
-
-		<!-- Environmental profiles defaults -->
-		<profile>
-			<id>local</id>
-			<properties>
-				<env>local</env>
-				<!-- Cargo Plugin settings -->
-				<cargo.container.name>jetty6x</cargo.container.name>
-				<cargo.container.servlet.port>8999</cargo.container.servlet.port>
-				<cargo.container.install.directory>containers</cargo.container.install.directory>
-				<cargo.container.distro.name>jetty-6.1.15.pre0</cargo.container.distro.name>
-				<cargo.container.url>
-					http://dist.codehaus.org/jetty/jetty-6.1.15/${cargo.container.distro.name}.zip
-				</cargo.container.url>
-				<cargo.container.keepalive>true</cargo.container.keepalive>
-				<cargo.container.pingTimeout>120</cargo.container.pingTimeout>
-				<cargo.remote.name>jboss4x</cargo.remote.name>
-				<cargo.remote.hostname>localhost</cargo.remote.hostname>
-				<cargo.remote.servlet.port>8080</cargo.remote.servlet.port>
-				<cargo.remote.username></cargo.remote.username>
-				<cargo.remote.password></cargo.remote.password>
-				<!--
-					<cargo.tomcat.manager.url>http://localhost:8080/manager</cargo.tomcat.manager.url>
-				-->
-			</properties>
-		</profile>
-		
-		<!-- Testing JBOSS remote deploy with Cargo 1.0-SNAPSHOT using patch 
-			 http://jira.codehaus.org/browse/CARGO-416 
+		<!--
+			Testing JBOSS remote deploy with Cargo 1.0-SNAPSHOT using patch
+			http://jira.codehaus.org/browse/CARGO-416
 		-->
 		<profile>
 			<id>ci</id>
