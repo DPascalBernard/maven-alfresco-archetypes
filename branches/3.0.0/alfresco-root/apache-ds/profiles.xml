@@ -4,6 +4,7 @@
 		<id>local</id>
 		<properties>
 			<cargo.remote.servlet.port>8081</cargo.remote.servlet.port>
+			<tc.server.sequenceNumber>1</tc.server.sequenceNumber>
 			<cargo.webapp.context>${pom.artifactId}</cargo.webapp.context>
 		</properties>
 	</profile>	
