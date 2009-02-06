@@ -88,5 +88,14 @@ TODO:
 -- site and maven-changes-plugin
 -- refactor properties
 -- document a lot
--- release!!!!
-		
+-- certificate on localhost with CAS (depends on hostmane??)
+-- test maven-release-plugin (write prerequisites ie SVN 1.4)
+-- create archetypes
+-- release on nexus sourcesense http://repository.sourcesense.com/nexus
+  - maven surefire 2.5 snapshot
+  - cignex-sso-ldap.jar (private - check pateinting)
+  - maven archetypes
+  - tc-server (private - check pateinting)
+  - all snapshot deps with specific classifier
+
+-- maven-override-properties-plugin - accepts a Java resource bundle file, a targetPath and a list of property names; copies the resource bundle into the target overriding the values of the properties provided by configuration with the value of the related maven property.
