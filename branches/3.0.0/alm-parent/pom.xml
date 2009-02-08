@@ -25,8 +25,6 @@
 		<!-- Maven Release Plugin settings -->
 		<maven.release.dryRun>false</maven.release.dryRun>
 		<maven.release.goals>install deploy</maven.release.goals>
-		<!-- Selenium settings -->
-		<selenium.browser>firefox</selenium.browser>
 		<!-- Derived Maven Deploy Plugin settings -->
 		<maven.release.svn.scm>scm:svn:${maven.release.svn.url}/trunk</maven.release.svn.scm>
 		<maven.release.svn.tags>scm:svn:${maven.release.svn.url}/tags</maven.release.svn.tags>
@@ -38,6 +36,19 @@
 		<site_pom_version>${project.version}</site_pom_version>
 		<site_tags_url>${svn.tags.url}</site_tags_url>
 		<site_site_url>${site.url}</site_site_url>
+		<env>local</env>
+		<!-- Selenium settings -->
+		<selenium.browser>*firefox</selenium.browser>
+		<selenium.server.port>14444</selenium.server.port>
+		<selenium.selenese.port>14445</selenium.selenese.port>
+		<selenium.logOutput>true</selenium.logOutput>
+		<selenium.background>true</selenium.background>
+		<webapp.baseUrl>http://${cargo.remote.hostname}:${cargo.remote.servlet.port}/${cargo.webapp.context}</webapp.baseUrl>
+		<cargo.remote.hostname>localhost</cargo.remote.hostname>
+		<cargo.remote.servlet.port>8080</cargo.remote.servlet.port>
+
+		<!-- Framework dependencies plugin versions -->
+		<cargo.version>1.0-SNAPSHOT</cargo.version>
 	</properties>
 
 	<distributionManagement>
@@ -52,24 +63,74 @@
 		<repository>
 			<id>ss-public</id>
 			<url>http://repository.sourcesense.com/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>codehaus</id>
+			<url>http://repository.codehaus.org</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>ss-snapshots</id>
 			<url>http://repository.sourcesense.com/maven2-snapshots</url>
+			<snapshots>
+				<updatePolicy>daily</updatePolicy>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>ss-nexus</id>
 			<url>http://repository.sourcesense.com/nexus/content/groups/public</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>box-nexus</id>
 			<url>http://box.session.it:8080/nexus/content/groups/public</url>
+			<snapshots>
+				<updatePolicy>daily</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>openqa.org</id>
+			<name>OpenQA Repository</name>
+			<url>http://archiva.openqa.org/repository/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<!-- for selenium 1.0-SNAPSHOT -->
+		<repository>
+			<id>snapshots.openqa.org</id>
+			<name>OpenQA Sanpshots Repository</name>
+			<url>http://archiva.openqa.org/repository/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
 		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>box-nexus</id>
 			<url>http://box.session.it:8080/nexus/content/groups/public</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>codehaus-snapshots</id>
+			<url>http://snapshots.repository.codehaus.org</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>daily</updatePolicy>
+			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -86,11 +147,40 @@
 			<version>1.0</version>
 			<type>zip</type>
 		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium.client-drivers</groupId>
+			<artifactId>selenium-java-client-driver</artifactId>
+			<version>1.0-beta-2</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
-
 
 	<build>
 		<defaultGoal>package</defaultGoal>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>selenium-maven-plugin</artifactId>
+					<version>1.0-rc-2-SNAPSHOT</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.cargo</groupId>
+					<artifactId>cargo-maven2-plugin</artifactId>
+					<version>1.0-SNAPSHOT</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.5-SNAPSHOT</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.3</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -124,7 +214,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.5-SNAPSHOT</version>
 				<configuration>
 					<skip>true</skip>
 				</configuration>
@@ -132,7 +221,21 @@
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
 				<artifactId>cargo-maven2-plugin</artifactId>
-				<version>1.0-SNAPSHOT</version>
+				<configuration>
+					<container>
+						<containerId>${cargo.remote.id}</containerId>
+						<type>remote</type>
+					</container>
+					<configuration>
+						<type>runtime</type>
+						<properties>
+							<cargo.hostname>${cargo.remote.hostname}</cargo.hostname>
+							<cargo.servlet.port>${cargo.remote.servlet.port}</cargo.servlet.port>
+							<cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
+							<cargo.remote.username>${cargo.remote.username}</cargo.remote.username>
+						</properties>
+					</configuration>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -144,16 +247,7 @@
 
 	<profiles>
 
-		<profile>
-			<id>local</id>
-			<properties>
-				<env>local</env>
-				<cargo.remote.id>tomcat5x</cargo.remote.id>
-				<cargo.remote.hostname>localhost</cargo.remote.hostname>
-				<cargo.remote.password>manager</cargo.remote.password>
-				<cargo.remote.username>manager</cargo.remote.username>
-			</properties>
-		</profile>
+		<!-- Flow profiles: define execution flows of this and child project -->
 
 		<profile>
 			<id>integration-test</id>
@@ -169,7 +263,6 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
-						<version>2.5-SNAPSHOT</version>
 						<executions>
 							<execution>
 								<id>integration-test</id>
@@ -179,11 +272,15 @@
 								<phase>integration-test</phase>
 								<configuration>
 									<additionalClasspathElements>
-										<additionalClasspathElement>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</additionalClasspathElement>
+										<additionalClasspathElement>
+											${project.build.directory}/${project.build.finalName}/WEB-INF/classes
+                                        </additionalClasspathElement>
 									</additionalClasspathElements>
 									<resources>
 										<resource>
-											<directory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</directory>
+											<directory>
+												${project.build.directory}/${project.build.finalName}/WEB-INF/lib
+                                            </directory>
 										</resource>
 									</resources>
 									<skip>false</skip>
@@ -207,56 +304,13 @@
 		</profile>
 
 		<profile>
-			<id>selenium-test</id>
-			<build>
-				<plugins>
-					<plugin>
-
-						<configuration>
-							<!--
-								Skip the normal tests, we'll run them in the integration-test
-								phase
-							-->
-							<systemProperties>
-								<property>
-									<name>browser</name>
-									<value>${browser}</value>
-								</property>
-								<property>
-									<name>servlet.port</name>
-									<value>${servlet.port}</value>
-								</property>
-								<property>
-									<name>selenium.port</name>
-									<value>${selenium.port}</value>
-								</property>
-							</systemProperties>
-						</configuration>
-						<executions>
-							<execution>
-								<id>run-selenium-tests</id>
-								<configuration>
-									<includes>
-										<include>**/selenium/*.java</include>
-									</includes>
-								</configuration>
-								<inherited>true</inherited>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
 			<id>distro</id>
 			<build>
-				<defaultGoal>integration-test</defaultGoal>
+				<defaultGoal>install</defaultGoal>
 				<plugins>
 					<plugin>
 						<groupId>org.codehaus.cargo</groupId>
 						<artifactId>cargo-maven2-plugin</artifactId>
-						<version>1.0-SNAPSHOT</version>
 						<configuration>
 							<container>
 								<containerId>tomcat5x</containerId>
@@ -310,7 +364,6 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-resources-plugin</artifactId>
-						<version>2.3</version>
 						<executions>
 							<execution>
 								<id>overlay-tc-server-instance</id>
@@ -349,7 +402,7 @@
 			override it per project TODO: we might remove it
 		-->
 		<profile>
-			<id>remote-deploy</id>
+			<id>distribute</id>
 			<build>
 				<defaultGoal>integration-test</defaultGoal>
 				<plugins>
@@ -380,6 +433,109 @@
 								<phase>pre-integration-test</phase>
 							</execution>
 						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>selenium-test</id>
+			<activation>
+				<property>
+					<name>flow</name>
+					<value>selenium-test</value>
+				</property>
+			</activation>
+			<build>
+				<defaultGoal>post-integration-test</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<!--
+								Skip the normal tests, we'll run them in the integration-test
+								phase
+							-->
+							<skip>true</skip>
+							<systemProperties>
+								<property>
+									<name>browser</name>
+									<value>${selenium.browser}</value>
+								</property>
+								<property>
+									<name>webapp.hostname</name>
+									<value>${cargo.remote.hostname}</value>
+								</property>
+								<property>
+									<name>webapp.port</name>
+									<value>${cargo.remote.servlet.port}</value>
+								</property>
+								<property>
+									<name>webapp.context</name>
+									<value>${cargo.webapp.context}</value>
+								</property>
+								<property>
+									<name>selenium.port</name>
+									<value>${selenium.server.port}</value>
+								</property>
+							</systemProperties>
+						</configuration>
+						<executions>
+							<execution>
+								<id>selenium-test</id>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<skip>false</skip>
+									<includes>
+										<include>**/selenium/**.java</include>
+									</includes>
+								</configuration>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>org.seleniumhq.selenium.client-drivers</groupId>
+								<artifactId>selenium-java-client-driver</artifactId>
+								<version>1.0-beta-2</version>
+								<scope>provided</scope>
+							</dependency>
+						</dependencies>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>selenium-maven-plugin</artifactId>
+						<!--
+							to run headless in a Unix server with a virtual framebuffer X
+							server Xvfb you need to call first the goal selenium:xvfb ie.
+							"mvn clean selenium:xvfb install" see
+							http://mojo.codehaus.org/selenium-maven-plugin/examples/headless-with-xvfb.html
+						-->
+						<executions>
+							<execution>
+								<id>start-selenium</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>start-server</goal>
+								</goals>
+								<inherited>true</inherited>
+							</execution>
+							<execution>
+								<id>stop-selenium</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop-server</goal>
+								</goals>
+								<inherited>true</inherited>
+							</execution>
+						</executions>
+						<configuration>
+							<background>${selenium.background}</background>
+							<port>${selenium.server.port}</port>
+							<logOutput>${selenium.logOutput}</logOutput>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
