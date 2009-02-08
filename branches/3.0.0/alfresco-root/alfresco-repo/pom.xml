@@ -27,7 +27,7 @@
 	</dependencies>
 
 	<build>
-	
+
 		<filters>
 			<filter>src/main/properties/${env}/application.properties</filter>
 		</filters>
@@ -280,6 +280,42 @@
 					<version>1.0</version>
 				</dependency>
 			</dependencies>
+		</profile>
+		<profile>
+			<id>selenium-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>selenium-maven-plugin</artifactId>
+						<inherited>true</inherited>
+						<!--
+							to run headless in a Unix server with a virtual framebuffer X
+							server Xvfb you need to call first the goal selenium:xvfb ie.
+							"mvn clean selenium:xvfb install" see
+							http://mojo.codehaus.org/selenium-maven-plugin/examples/headless-with-xvfb.html
+						-->
+						<executions>
+							<execution>
+								<id>run-selenese</id>
+								<!-- 
+								<phase>integration-test</phase>
+								 -->
+								<goals>
+									<goal>selenese</goal>
+								</goals>
+								<configuration>
+									<suite>src/test/resources/selenium/suite.html</suite>
+									<startURL>${webapp.baseUrl}</startURL>
+									<browser>${selenium.browser}</browser>
+									<port>${selenium.selenese.port}</port>
+								</configuration>
+								<inherited>true</inherited>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 </project>

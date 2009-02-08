@@ -2,11 +2,29 @@
 	<profile>
 		<id>local</id>
 		<properties>
-			<cargo.remote.servlet.port>8084</cargo.remote.servlet.port>
-			<tc.server.sequenceNumber>4</tc.server.sequenceNumber>
 			<cargo.webapp.context>${pom.artifactId}</cargo.webapp.context>
 			<share.log.level>info</share.log.level>
 		</properties>
 	</profile>
+    <profile>
+        <id>distro</id>
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <properties>
+           	<tc.server.sequenceNumber>4</tc.server.sequenceNumber>
+        </properties>
+                    
+    </profile>
+    
+     <profile>
+        <id>run</id>
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <properties>
+        	<cargo.remote.servlet.port>8084</cargo.remote.servlet.port>
+        </properties>
+    </profile>
 	
 </profiles>

@@ -45,7 +45,7 @@
 		}
 	}
 	response
-			.sendRedirect("${cas.logoutUrl}?service=http://${cargo.hostname}:${cargo.servlet.port}");
+			.sendRedirect("${cas.logoutUrl}?service=http://${cargo.remote.hostname}:${cargo.remote.servlet.port}");
 %>
 
 

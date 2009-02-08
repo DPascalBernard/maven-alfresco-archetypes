@@ -61,7 +61,7 @@
 		<jta.version>1.1</jta.version>
 		<commons.el.version>1.0</commons.el.version>
 		<amp.plugin.version>2.0.1</amp.plugin.version>
-		
+
 		<!-- TODO : put it relative, but not on submodules -->
 		<tc.server.sequenceNumber>norun</tc.server.sequenceNumber>
 		<tc.server.home>/home/dev/workspace/alfresco-root/tc-server</tc.server.home>
@@ -284,6 +284,14 @@
 				<cargo.remote.id>jboss4x</cargo.remote.id>
 				<cargo.remote.hostname>192.168.178.24</cargo.remote.hostname>
 				<cargo.remote.servlet.port>8080</cargo.remote.servlet.port>
+				<cargo.remote.username></cargo.remote.username>
+				<cargo.remote.password></cargo.remote.password>
+			</properties>
+		</profile>
+        <profile>
+			<id>jboss</id>
+			<properties>
+				<cargo.remote.id>jboss4x</cargo.remote.id>
 				<cargo.remote.username></cargo.remote.username>
 				<cargo.remote.password></cargo.remote.password>
 			</properties>

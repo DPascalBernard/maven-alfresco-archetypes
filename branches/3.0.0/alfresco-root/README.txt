@@ -61,19 +61,23 @@ Available profiles:
 
 FLOWS:
 ------
-- Run
-- Integration-test (with patched version of surefire)
+- Run (WIP)
+- integration-test (with patched version of surefire)
   - The surefire dependency is to 2.5-SNAPSHOT build which allows loading Resources in classpath to enable WEB-INF/lib seamless loading
   - This version of the plugin is hosted in  http://box.session.it:8080/nexus/content/repositories/snapshots/org/apache/maven/surefire/
   - TODO: Submit patch SurefireResourceLoading.diff to Surefire
   - A WebscriptTest is also added
   - Test on Multiapp (First repo then SHARE)
-- Distribute
+- distribute
   - Deploys to a specific appserver by configuring appropriate properties
   - Tested on Multiapplication (Repo+SHARE)
   - Tested with Remote JBOSS deploy (-Pci,mysql,test) from alfresco-root using cargo patched 1.0-SNAPSHOT available on 
   box-snapshots http://box.session.it:8080/nexus/content/repositories/snapshots/org/codehaus/cargo/)
-  
+- selenium-test
+  - Runs selenium tests for every webapp under alfresco root matching the following package pattern under src/test/java:
+    **/selenium/**.java
+  - STILL TO TEST: selenese at single webapp level
+    
  
 ENVIRONMENTS:
 -------------

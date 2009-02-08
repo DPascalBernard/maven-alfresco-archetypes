@@ -68,7 +68,7 @@
 		</init-param>
 		<init-param>
 			<param-name>service</param-name>
-			<param-value>http://${cargo.hostname}:${cargo.servlet.port}</param-value>
+			<param-value>http://${cargo.remote.hostname}:${cargo.remote.servlet.port}</param-value>
 		</init-param>
 		<init-param>
 			<param-name>accessTimeout</param-name>
