@@ -13,18 +13,6 @@
         </activation>
         <properties>
            	<tc.server.sequenceNumber>4</tc.server.sequenceNumber>
-        </properties>
-                    
+        </properties>                    
     </profile>
-    
-     <profile>
-        <id>run</id>
-        <activation>
-            <activeByDefault>false</activeByDefault>
-        </activation>
-        <properties>
-        	<cargo.remote.servlet.port>8084</cargo.remote.servlet.port>
-        </properties>
-    </profile>
-	
 </profiles>

@@ -9,7 +9,6 @@
 			<debug.level>INFO</debug.level>
 		</properties>
 	</profile>
-
 	<profile>
 		<id>distro</id>
 		<activation>
@@ -18,17 +17,5 @@
 		<properties>
 			<tc.server.sequenceNumber>3</tc.server.sequenceNumber>
 		</properties>
-
 	</profile>
-
-	<profile>
-		<id>run</id>
-		<activation>
-			<activeByDefault>false</activeByDefault>
-		</activation>
-		<properties>
-			<cargo.remote.servlet.port>8083</cargo.remote.servlet.port>
-		</properties>
-	</profile>
-
 </profiles>
