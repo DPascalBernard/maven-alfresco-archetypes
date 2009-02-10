@@ -402,7 +402,7 @@
 			override it per project TODO: we might remove it
 		-->
 		<profile>
-			<id>distribute</id>
+			<id>remote-deploy</id>
 			<build>
 				<defaultGoal>integration-test</defaultGoal>
 				<plugins>
