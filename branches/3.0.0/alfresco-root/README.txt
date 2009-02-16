@@ -21,13 +21,14 @@ Run either from alfresco-root(recommended) or from the root path of the submodul
 			[local,] \
 			[hsqldb|mysql] \
 			[ldap,cas,liferay,] \
-			[j2ee-deploy,integration-test,selenium-test,run,]
+			[tomcat5x,tc-server,jboss4x] \
+			[start-container,j2ee-deploy,integration-test,selenium-test,run,]
 
 
 FEATURES:
 ---------
 
-MySQL Support (-P mysql) 
+MySQL Support (-P mysql)
 ------------------------
 dev@mybox ~/ $ mysql -u root -p
 mysql> create database alfresco;
@@ -93,6 +94,7 @@ Release checklist:
 -- document a lot
 -- certificate on localhost with CAS (depends on hostmane??)
 -- test maven-release-plugin (write prerequisites ie SVN 1.4)
+-- move tc-server into alm-parent, like tomcat5x and jboss4x
 -- split CALM and maven-alfresco-archetypes / remove relativePath from alfresco-root to alm-parent
 -- create archetypes
 -- release on nexus sourcesense http://repository.sourcesense.com/nexus
