@@ -44,11 +44,19 @@
 		<selenium.logOutput>true</selenium.logOutput>
 		<selenium.background>true</selenium.background>
 		<webapp.baseUrl>http://${cargo.remote.hostname}:${cargo.remote.servlet.port}/${cargo.webapp.context}</webapp.baseUrl>
+
+		<!-- Cargo defaults -->
 		<cargo.remote.hostname>localhost</cargo.remote.hostname>
 		<cargo.remote.servlet.port>8080</cargo.remote.servlet.port>
 
 		<!-- Framework dependencies plugin versions -->
-		<cargo.version>1.0-SNAPSHOT</cargo.version>
+		<plugin.cargo.version>1.0-SNAPSHOT</plugin.cargo.version>
+		<plugin.selenium.version>1.0-rc-2-SNAPSHOT</plugin.selenium.version>
+		<plugin.surefire.version>2.5-SNAPSHOT</plugin.surefire.version>
+		<plugin.resources.version>2.3</plugin.resources.version>
+
+		<!-- Env defaults -->
+		<env>local</env>
 	</properties>
 
 	<distributionManagement>
@@ -162,22 +170,22 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>selenium-maven-plugin</artifactId>
-					<version>1.0-rc-2-SNAPSHOT</version>
+					<version>${plugin.selenium.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.cargo</groupId>
 					<artifactId>cargo-maven2-plugin</artifactId>
-					<version>1.0-SNAPSHOT</version>
+					<version>${plugin.cargo.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.5-SNAPSHOT</version>
+					<version>${plugin.surefire.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.3</version>
+					<version>${plugin.resources.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -216,25 +224,6 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<skip>true</skip>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.cargo</groupId>
-				<artifactId>cargo-maven2-plugin</artifactId>
-				<configuration>
-					<container>
-						<containerId>${cargo.remote.id}</containerId>
-						<type>remote</type>
-					</container>
-					<configuration>
-						<type>runtime</type>
-						<properties>
-							<cargo.hostname>${cargo.remote.hostname}</cargo.hostname>
-							<cargo.servlet.port>${cargo.remote.servlet.port}</cargo.servlet.port>
-							<cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
-							<cargo.remote.username>${cargo.remote.username}</cargo.remote.username>
-						</properties>
-					</configuration>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -402,28 +391,13 @@
 			override it per project TODO: we might remove it
 		-->
 		<profile>
-			<id>remote-deploy</id>
+			<id>j2ee-deploy</id>
 			<build>
 				<defaultGoal>integration-test</defaultGoal>
 				<plugins>
 					<plugin>
 						<groupId>org.codehaus.cargo</groupId>
 						<artifactId>cargo-maven2-plugin</artifactId>
-						<configuration>
-							<container>
-								<containerId>${cargo.remote.id}</containerId>
-								<type>remote</type>
-							</container>
-							<configuration>
-								<type>runtime</type>
-								<properties>
-									<cargo.hostname>${cargo.remote.hostname}</cargo.hostname>
-									<cargo.servlet.port>${cargo.remote.servlet.port}</cargo.servlet.port>
-									<cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
-									<cargo.remote.username>${cargo.remote.username}</cargo.remote.username>
-								</properties>
-							</configuration>
-						</configuration>
 						<executions>
 							<execution>
 								<id>remote-deploy</id>
@@ -431,12 +405,158 @@
 									<goal>deployer-redeploy</goal>
 								</goals>
 								<phase>pre-integration-test</phase>
+								<configuration>
+									<container>
+										<containerId>${cargo.remote.id}</containerId>
+										<type>remote</type>
+									</container>
+									<configuration>
+										<type>runtime</type>
+										<properties>
+											<cargo.hostname>${cargo.remote.hostname}</cargo.hostname>
+											<cargo.servlet.port>${cargo.remote.servlet.port}</cargo.servlet.port>
+											<cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
+											<cargo.remote.username>${cargo.remote.username}</cargo.remote.username>
+										</properties>
+									</configuration>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
+
+		<!-- Installs and start a container -->
+		<profile>
+			<id>start-container</id>
+			<build>
+				<defaultGoal>pre-integration-test</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.cargo</groupId>
+						<artifactId>cargo-maven2-plugin</artifactId>
+						<executions>
+							<execution>
+								<configuration>
+									<container>
+										<containerId>${cargo.remote.id}</containerId>
+										<type>installed</type>
+										<zipUrlInstaller>
+											<url>${cargo.container.url}</url>
+											<installDir>${cargo.install.directory}/${cargo.remote.id}</installDir>
+										</zipUrlInstaller>
+										<log>${project.build.directory}/logs/${cargo.container.name}.log</log>
+										<output>${project.build.directory}/logs/${cargo.container.name}.out</output>
+										<timeout>60000</timeout>
+									</container>
+									<configuration>
+										<type>standalone</type> 
+										<home>${project.build.directory}/${cargo.remote.id}</home>
+									</configuration>
+									<wait>false</wait>
+								</configuration>
+								<id>install-start-container</id>
+								<goals>
+									<goal>install</goal>
+									<goal>start</goal>
+								</goals>
+								<phase>generate-resources</phase>
+								<inherited>false</inherited>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<!--
+			Targets profiles. Tomcat5x and Jboss4x (to be tested) are supported
+			for now
+		-->
+		<profile>
+			<id>tomcat5x</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<cargo.remote.id>tomcat5x</cargo.remote.id>
+				<cargo.remote.username>tomcat</cargo.remote.username>
+				<cargo.remote.password>tomcat</cargo.remote.password>
+				<cargo.install.directory>${project.basedir}/containers</cargo.install.directory>
+				<cargo.container.url>http://apache.mirrors.webazilla.nl/tomcat/tomcat-5/v5.5.27/bin/${cargo.container.name}.zip</cargo.container.url>
+				<cargo.container.name>apache-tomcat-5.5.27</cargo.container.name>
+			</properties>
+			<build>
+				<plugins>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-set-env</id>
+								<inherited>false</inherited>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${cargo.install.directory}/${cargo.remote.id}/${cargo.container.name}/${cargo.container.name}</outputDirectory>
+									<resources>
+										<resource>
+											<directory>${project.basedir}/targets/tomcat5x</directory>
+											<includes>
+												<include>setenv.sh</include>
+											</includes>
+											<targetPath>bin</targetPath>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.cargo</groupId>
+						<artifactId>cargo-maven2-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install-start-container</id>
+								<phase>generate-resources</phase>
+								<configuration>
+									<configuration>
+										<files>
+											<copy>
+												<file>${project.basedir}/targets/tomcat5x/tomcat-users.xml</file>
+												<tofile>conf/tomcat-users.xml</tofile>
+												<configfile>true</configfile>
+												<overwrite>true</overwrite>
+											</copy>
+										</files>
+									</configuration>
+								</configuration>
+								<inherited>false</inherited>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>jboss4x</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<cargo.remote.id>jboss4x</cargo.remote.id>
+				<cargo.remote.username></cargo.remote.username>
+				<cargo.remote.password></cargo.remote.password>
+				<cargo.install.directory>${project.basedir}/containers</cargo.install.directory>
+				<cargo.container.name>jboss-4.2.3.GA</cargo.container.name>
+				<cargo.container.url>http://downloads.sourceforge.net/jboss/${cargo.container.name}.zip</cargo.container.url>
+			</properties>
+		</profile>
+
 		<profile>
 			<id>selenium-test</id>
 			<activation>
