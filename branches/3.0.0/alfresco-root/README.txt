@@ -85,15 +85,19 @@ ENVIRONMENTS:
 - ci (continuous integration)
   
   
-TODO:
+Release checklist:
 -------
--- Selenium
+-- Complete Selenium
+-- local run/remote deploy working
 -- Integrate properly liferay/cas
 -- site and maven-changes-plugin
--- refactor properties
+-- finalize refactor properties
+-- add maven-amp-archetype
+-- fix maven-amp-plugin 3.0
 -- document a lot
 -- certificate on localhost with CAS (depends on hostmane??)
 -- test maven-release-plugin (write prerequisites ie SVN 1.4)
+-- split CALM and maven-alfresco-archetypes
 -- create archetypes
 -- release on nexus sourcesense http://repository.sourcesense.com/nexus
   - maven surefire 2.5 snapshot
@@ -102,4 +106,7 @@ TODO:
   - tc-server (private - check pateinting)
   - all snapshot deps with specific classifier
 
+
+Nice to have:
+--------------
 -- maven-override-properties-plugin - accepts a Java resource bundle file, a targetPath and a list of property names; copies the resource bundle into the target overriding the values of the properties provided by configuration with the value of the related maven property.
