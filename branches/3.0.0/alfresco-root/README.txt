@@ -1,30 +1,40 @@
-Install Software
-----------------
-sudo apt-get install swftools
-sudo apt-get install imagemagick
-
-Preparing the DB (not needed when -P hsqldb) 
-----------------
-dev@mint-dev ~/workspace/alm-parent-test/alm-parent $ mysql -u root -p
-mysql> create database alfresco;
-mysql> grant all privileges on alfresco.* to 'alfresco'@'localhost' identified by 'alfresco';
-
-Creating the project
+CREATING THE PROJECT
 --------------------
-mvn archetype:create -DarchetypeGroupId=it.session.maven -DarchetypeArtifactId=alm-parent-archetype -DarchetypeVersion=0.5 -DgroupId=it.session.maven -DartifactId=alm-parent -Dversion=0.6
-cd alm-parent
+mvn archetype:create -DarchetypeGroupId=org.alfresco.maven -DarchetypeArtifactId=alfresco-root-archetype -DarchetypeVersion=0.5 -DgroupId=it.session.maven -DartifactId=alfresco-root -Dversion=3.0.0
+cd alfresco-root
+
 
 Edit build-time properties
 -----------------------------------
 vi profiles.xml
 
-Edit runtime properties
+Edit runtime properties of each submodule
 -----------------------------------
-vi alfresco-repo/src/main/properties/local/application.properties
+vi */src/main/properties/local/application.properties
 
 
-Ldap
-----
+USE ALM
+-------
+Run either from alfresco-root(recommended) or from the root path of the submodules (i.e. alfresco-repo)
+
+		mvn clean && mvn -P
+			[local,] \
+			[hsqldb|mysql] \
+			[ldap,cas,liferay,] \
+			[j2ee-deploy,integration-test,selenium-test,run,]
+
+
+FEATURES:
+---------
+
+MySQL Support (-P mysql) 
+------------------------
+dev@mybox ~/ $ mysql -u root -p
+mysql> create database alfresco;
+mysql> grant all privileges on alfresco.* to 'alfresco'@'localhost' identified by 'alfresco';
+
+Ldap Support (-P ldap)
+----------------------
 - Install ApacheDS 1.5.4 and run it
 - Install an LDAP Client (i.e ldapexplorer - http://www.mcs.anl.gov/~gawor/ldap/)
 - Login using the admin credentials (Host: localhost; BaseDN: ou=system; UserDN: uid=admin,ou=system; Password: secret)
@@ -32,32 +42,18 @@ Ldap
 - mvn -P local,mysql,ldap,run
 - Login on Alfresco with useradmin/secret
 
-USE
----
-Run either from : alfresco-root, alfresco-repo, alfresco-share
-with:
+CAS (not tested yet)
+--------------------
 
- mvn clean && mvn -P[local,]mysql[,ldap,cas,]integration-test
+Liferay (not tested yet)
+------------------------
+(xpatch first to integrate w/ cas)
 
+Alfresco external dependencies
+------------------------------
+sudo apt-get install swftools
+sudo apt-get install imagemagick
 
-LAYOUT:
--------
-Submodules:
-
-- alfresco-repo
-- alfresco-share
-
--- Behaviors can be defined at any level but should be inherited by alm-parent were possible
--- Dependencies can be defined at alfresco root level
-
-
-FEATURES:
----------
-Available profiles:
-- Mysql (and hsqldb? no?)
-- Ldap
-- CAS (untested)
-- Liferay (xpatch first to integrate w/ cas)
 
 FLOWS:
 ------
@@ -97,7 +93,7 @@ Release checklist:
 -- document a lot
 -- certificate on localhost with CAS (depends on hostmane??)
 -- test maven-release-plugin (write prerequisites ie SVN 1.4)
--- split CALM and maven-alfresco-archetypes
+-- split CALM and maven-alfresco-archetypes / remove relativePath from alfresco-root to alm-parent
 -- create archetypes
 -- release on nexus sourcesense http://repository.sourcesense.com/nexus
   - maven surefire 2.5 snapshot
