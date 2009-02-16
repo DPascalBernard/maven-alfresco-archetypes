@@ -26,6 +26,7 @@
 	-->
 	<properties>
 
+		<!-- TODO: move it into alm-parent, as tomcat5x and jboss -->
 		<!-- Maven Tc Server Plugin settings -->
 		<tc.server.name>apache-tomcat-6.0.18</tc.server.name>
 		<tc.server.url>
@@ -63,7 +64,6 @@
 		<amp.plugin.version>2.0.1</amp.plugin.version>
 
 		<!-- TODO : put it relative, but not on submodules -->
-		<tc.server.sequenceNumber>norun</tc.server.sequenceNumber>
 		<tc.server.home>/home/dev/workspace/alfresco-root/tc-server</tc.server.home>
 	</properties>
 
