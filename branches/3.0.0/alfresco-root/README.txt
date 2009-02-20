@@ -95,14 +95,10 @@ Release checklist:
 -- certificate on localhost with CAS (depends on hostmane??)
 -- test maven-release-plugin (write prerequisites ie SVN 1.4)
 -- move tc-server (tc.server.home) into alm-parent, like tomcat5x and jboss4x
--- split CALM and maven-alfresco-archetypes / remove relativePath from alfresco-root to alm-parent
+-- remove relativePath from alfresco-root to alm-parent
 -- create archetypes
 -- release on nexus sourcesense http://repository.sourcesense.com/nexus
-  - maven surefire 2.5 snapshot
-  - cignex-sso-ldap.jar (private - check pateinting)
   - maven archetypes
-  - tc-server (private - check pateinting)
-  - all snapshot deps with specific classifier
 -- Test with Maven 2.0.10
 -- licensing on file headers
 
