@@ -94,7 +94,7 @@ Release checklist:
 -- document a lot
 -- certificate on localhost with CAS (depends on hostmane??)
 -- test maven-release-plugin (write prerequisites ie SVN 1.4)
--- move tc-server into alm-parent, like tomcat5x and jboss4x
+-- move tc-server (tc.server.home) into alm-parent, like tomcat5x and jboss4x
 -- split CALM and maven-alfresco-archetypes / remove relativePath from alfresco-root to alm-parent
 -- create archetypes
 -- release on nexus sourcesense http://repository.sourcesense.com/nexus
@@ -103,7 +103,8 @@ Release checklist:
   - maven archetypes
   - tc-server (private - check pateinting)
   - all snapshot deps with specific classifier
-
+-- Test with Maven 2.0.10
+-- licensing on file headers
 
 Nice to have:
 --------------
