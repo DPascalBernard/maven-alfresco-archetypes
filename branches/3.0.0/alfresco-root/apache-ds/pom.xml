@@ -20,7 +20,6 @@
 	<groupId>com.sourcesense.maven</groupId>
 	<artifactId>apacheds-server</artifactId>
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
 	<name>Embed ApacheDS as a Web Application</name>
 	<url>http://maven.apache.org</url>
 

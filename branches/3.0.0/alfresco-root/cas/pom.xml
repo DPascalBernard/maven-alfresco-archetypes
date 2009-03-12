@@ -6,7 +6,6 @@
 	<artifactId>cas</artifactId>
 	<packaging>war</packaging>
 	<name>Embed Cas Server as a Web Application</name>
-	<version>1.0</version>
 
 	<parent>
 		<groupId>org.alfresco.maven</groupId>
