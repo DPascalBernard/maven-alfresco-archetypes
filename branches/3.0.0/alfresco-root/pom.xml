@@ -19,6 +19,7 @@
 		<module>cas</module>
 		<module>alfresco-repo</module>
 		<module>alfresco-share</module>
+		<module>runner</module>
 	</modules>
 	<!--
 		Here we syntetically define core libraries versions. Centralized
@@ -32,6 +33,9 @@
 		<tc.server.url>
 			http://mirror.hostfuss.com/apache/tomcat/tomcat-6/v6.0.18/bin/${tc.server.name}.zip
 		</tc.server.url>
+
+		<!-- TODO : put it relative, but not on submodules -->
+		<tc.server.home>/home/dev/workspace/alfresco-root/containers/tc-server</tc.server.home>
 
 		<!-- Maven Deploy Plugin settings -->
 		<maven.release.svn.url>
@@ -62,9 +66,6 @@
 		<jta.version>1.1</jta.version>
 		<commons.el.version>1.0</commons.el.version>
 		<amp.plugin.version>2.0.1</amp.plugin.version>
-
-		<!-- TODO : put it relative, but not on submodules -->
-		<tc.server.home>/home/dev/workspace/alfresco-root/tc-server</tc.server.home>
 	</properties>
 
 	<!--

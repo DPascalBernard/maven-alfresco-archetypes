@@ -4,14 +4,25 @@ mvn archetype:create -DarchetypeGroupId=org.alfresco.maven -DarchetypeArtifactId
 cd alfresco-root
 
 
-Edit build-time properties
------------------------------------
-vi profiles.xml
+Edit build-time properties of each submodule
+--------------------------------------------
+vi alfresco-repo/profiles.xml
+vi alfresco-share/profiles.xml
+vi apache-ds/profiles.xml
+vi cas/profiles.xml
 
-Edit runtime properties of each submodule
------------------------------------
-vi */src/main/properties/local/application.properties
 
+Edit runtime environment-related properties of each submodule
+-------------------------------------------------------------
+vi alfresco-repo/src/main/properties/local/application.properties
+vi alfresco-share/src/main/properties/local/application.properties
+vi apache-ds/src/main/properties/local/application.properties
+vi cas/src/main/properties/local/application.properties
+
+(Optional) Alfresco third-party tools
+------------------------------
+sudo apt-get install swftools
+sudo apt-get install imagemagick
 
 USE ALM
 -------
@@ -22,8 +33,11 @@ Run either from alfresco-root(recommended) or from the root path of the submodul
 			[hsqldb|mysql] \
 			[ldap,cas,liferay,] \
 			[tomcat5x,tc-server,jboss4x] \
-			[start-container,j2ee-deploy,integration-test,selenium-test,run,]
+			[start-container,j2ee-deploy,integration-test,selenium-test,]
 
+examples
+--------
+			+ mvn 
 
 FEATURES:
 ---------
@@ -36,11 +50,10 @@ mysql> grant all privileges on alfresco.* to 'alfresco'@'localhost' identified b
 
 Ldap Support (-P ldap)
 ----------------------
-- Install ApacheDS 1.5.4 and run it
 - Install an LDAP Client (i.e ldapexplorer - http://www.mcs.anl.gov/~gawor/ldap/)
 - Login using the admin credentials (Host: localhost; BaseDN: ou=system; UserDN: uid=admin,ou=system; Password: secret)
 - Copy uid=admin,ou=system into uid=useradmin,ou=users,ou=system (remove the property uid=admin from the newly created entry)
-- mvn -P local,mysql,ldap,run
+- mvn -P ???
 - Login on Alfresco with useradmin/secret
 
 CAS (not tested yet)
@@ -50,15 +63,9 @@ Liferay (not tested yet)
 ------------------------
 (xpatch first to integrate w/ cas)
 
-Alfresco external dependencies
-------------------------------
-sudo apt-get install swftools
-sudo apt-get install imagemagick
-
 
 FLOWS:
 ------
-- Run (WIP)
 - integration-test (with patched version of surefire)
   - The surefire dependency is to 2.5-SNAPSHOT build which allows loading Resources in classpath to enable WEB-INF/lib seamless loading
   - This version of the plugin is hosted in  http://box.session.it:8080/nexus/content/repositories/snapshots/org/apache/maven/surefire/
@@ -90,7 +97,6 @@ Release checklist:
 -- site and maven-changes-plugin
 -- finalize refactor properties
 -- add maven-amp-archetype
--- fix maven-amp-plugin 3.0
 -- document a lot
 -- certificate on localhost with CAS (depends on hostmane??)
 -- test maven-release-plugin (write prerequisites ie SVN 1.4)
