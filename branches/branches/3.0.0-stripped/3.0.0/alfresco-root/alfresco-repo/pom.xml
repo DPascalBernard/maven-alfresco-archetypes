@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.alfresco.maven</groupId>
+	<artifactId>alfresco-repo</artifactId>
+	<name>Alfresco Repository and Webclient base instance</name>
+	<packaging>war</packaging>
+
+	<parent>
+		<groupId>org.alfresco.maven</groupId>
+		<artifactId>alfresco-root</artifactId>
+		<version>3.0.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+
+	<!--
+		Alfresco Version is inherited by the parent trough
+		<dependencyManagement>
+	-->
+	<dependencies>
+		<dependency>
+			<groupId>org.alfresco</groupId>
+			<artifactId>alfresco</artifactId>
+			<type>war</type>
+			<classifier>${alfresco.classifier}</classifier>
+		</dependency>
+	</dependencies>
+
+	<build>
+
+		<filters>
+			<filter>src/main/properties/${env}/application.properties</filter>
+		</filters>
+
+		<!--
+			Default profile to build as an Alfresco extension - resources are
+			copied into classpath
+		-->
+		<resources>
+			<!--
+				| Include application properties file in classpath: this allows
+				Spring contexts to have customization properties available at |
+				classpath:alfresco/extension/application.properties
+			-->
+			<!-- By default also no content is restored -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>**/feature-*-context.xml</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/properties/${env}</directory>
+				<includes>
+					<include>application.properties</include>
+				</includes>
+				<filtering>true</filtering>
+				<targetPath>alfresco/extension</targetPath>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>log4j.properties</include>
+					<include>alfresco/extension/*custom.xml</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-amps</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeTypes>amp</includeTypes>
+							<outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
+							<excludes>META*</excludes>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.alfresco.maven.plugin</groupId>
+						<artifactId>maven-amp-plugin</artifactId>
+						<version>${amp.plugin.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webResources>
+					</webResources>
+					<overlays>
+						<!--
+							Add here overlays of dependent AMPs/WARs. Strategy is first win
+							so to overwrite you need to add your custom module first
+							<overlay> <groupId>org.alfresco</groupId>
+							<artifactId>alfresco-recordsmanagement</artifactId>
+							<classifier>enterprise</classifier> <type>amp</type> </overlay>
+						-->
+						<!-- The current project overlay -->
+						<overlay />
+					</overlays>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.alfresco.maven.plugin</groupId>
+						<artifactId>maven-amp-plugin</artifactId>
+						<version>${amp.plugin.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<configuration>
+					<deployer>
+						<type>remote</type>
+						<deployables>
+							<deployable>
+								<properties>
+									<context>${cargo.webapp.context}</context>
+								</properties>
+							</deployable>
+						</deployables>
+					</deployer>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<!--
+			|
+			| Feature oriented profiles
+			|
+			 -->
+		<profile>
+			<id>hsqldb</id>
+			<properties>
+				<alfresco.db.username>sa</alfresco.db.username>
+				<alfresco.db.password></alfresco.db.password>
+				<alfresco.db.driver>org.hsqldb.jdbcDriver</alfresco.db.driver>
+				<alfresco.db.url>jdbc:hsqldb:file:${dir.root}/hsql_data/;ifexists=false;shutdown=true;</alfresco.db.url>
+				<alfresco.hibernate.dialect>org.hibernate.dialect.HSQLDialect</alfresco.hibernate.dialect>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>mysql</id>
+			<properties>
+				<alfresco.db.username>alfresco</alfresco.db.username>
+				<alfresco.db.password>alfresco</alfresco.db.password>
+				<alfresco.db.url>jdbc:mysql://localhost/${alfresco.db.name}</alfresco.db.url>
+				<alfresco.db.driver>org.gjt.mm.mysql.Driver</alfresco.db.driver>
+				<alfresco.hibernate.dialect>org.hibernate.dialect.MySQLInnoDBDialect</alfresco.hibernate.dialect>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>features/mysql</directory>
+						<includes>
+							<include>*.sql</include>
+						</includes>
+						<filtering>true</filtering>
+						<targetPath>features/mysql</targetPath>
+					</resource>
+				</resources>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>ldap</id>
+			<build>
+				<!--
+					No defaultGoal here as this is *not* an "execution flow" type of
+					profile
+				-->
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<includes>
+							<include>**/feature-ldap-*-context.xml</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
+			<id>liferay</id>
+			<build>
+				<!--
+					No defaultGoal here as this is *not* an "execution flow" type of
+					profile
+				-->
+				<plugins>
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<configuration>
+							<archiveClasses>false</archiveClasses>
+							<filters>
+								<filter>${application.properties.location}/${application.properties.filename}</filter>
+							</filters>
+							<webResources>
+								<resource>
+									<directory>features/liferay</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>*</include>
+									</includes>
+									<targetPath>WEB-INF</targetPath>
+								</resource>
+							</webResources>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>cas</id>
+			<build>
+				<!--
+					No defaultGoal here as this is *not* an "execution flow" type of
+					profile
+				-->
+				<plugins>
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<configuration>
+							<archiveClasses>false</archiveClasses>
+							<filters>
+								<filter>${application.properties.location}/${application.properties.filename}</filter>
+							</filters>
+							<webResources>
+								<resource>
+									<directory>features/cas</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>web.xml</include>
+									</includes>
+									<targetPath>WEB-INF</targetPath>
+								</resource>
+								<resource>
+									<directory>features/cas</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>relogin.jsp</include>
+									</includes>
+									<targetPath>jsp</targetPath>
+								</resource>
+							</webResources>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<dependency>
+					<type>jar</type>
+					<groupId>cas</groupId>
+					<artifactId>casclient</artifactId>
+					<version>2.1.1</version>
+				</dependency>
+				<dependency>
+					<groupId>com.cignex.alfresco</groupId>
+					<artifactId>cignex-sso-ldap</artifactId>
+					<version>1.0</version>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>selenium-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>selenium-maven-plugin</artifactId>
+						<inherited>true</inherited>
+						<!--
+							to run headless in a Unix server with a virtual framebuffer X
+							server Xvfb you need to call first the goal selenium:xvfb ie.
+							"mvn clean selenium:xvfb install" see
+							http://mojo.codehaus.org/selenium-maven-plugin/examples/headless-with-xvfb.html
+						-->
+						<executions>
+							<execution>
+								<id>run-selenese</id>
+								<!-- 
+								<phase>integration-test</phase>
+								 -->
+								<goals>
+									<goal>selenese</goal>
+								</goals>
+								<configuration>
+									<suite>src/test/resources/selenium/suite.html</suite>
+									<startURL>${webapp.baseUrl}</startURL>
+									<browser>${selenium.browser}</browser>
+									<port>${selenium.selenese.port}</port>
+								</configuration>
+								<inherited>true</inherited>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>
