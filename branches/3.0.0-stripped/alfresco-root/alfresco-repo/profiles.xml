@@ -9,13 +9,4 @@
 			<debug.level>INFO</debug.level>
 		</properties>
 	</profile>
-	<profile>
-		<id>distro</id>
-		<activation>
-			<activeByDefault>false</activeByDefault>
-		</activation>
-		<properties>
-			<tc.server.sequenceNumber>3</tc.server.sequenceNumber>
-		</properties>
-	</profile>
 </profiles>
