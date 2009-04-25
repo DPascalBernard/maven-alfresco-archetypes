@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>com.sourcesense.maven</groupId>
 		<artifactId>alm-parent</artifactId>
-		<version>3.0.0-SNAPSHOT</version>
+		<version>0.9</version>
 	</parent>
 
 	<modules>
@@ -28,7 +28,7 @@
 			https://dev.sourcesense.com/repos/dev/whiteboard/
 		</maven.release.svn.url>
 
-		<maven.deploy.repository.id>releases</maven.deploy.repository.id>
+		<maven.deploy.repository.id>ss-releases</maven.deploy.repository.id>
 		<maven.deploy.repository.url>
 			http://repository.sourcesense.com/nexus/content/repositories/releases
 		</maven.deploy.repository.url>
