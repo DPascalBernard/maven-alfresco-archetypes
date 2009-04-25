@@ -11,15 +11,11 @@
 		<groupId>com.sourcesense.maven</groupId>
 		<artifactId>alm-parent</artifactId>
 		<version>3.0.0-SNAPSHOT</version>
-		<relativePath>../alm-parent</relativePath>
 	</parent>
 
 	<modules>
-		<module>apache-ds</module>
-		<module>cas</module>
 		<module>alfresco-repo</module>
 		<module>alfresco-share</module>
-		<module>runner</module>
 	</modules>
 	<!--
 		Here we syntetically define core libraries versions. Centralized
@@ -27,24 +23,14 @@
 	-->
 	<properties>
 
-		<!-- TODO: move it into alm-parent, as tomcat5x and jboss -->
-		<!-- Maven Tc Server Plugin settings -->
-		<tc.server.name>apache-tomcat-6.0.18</tc.server.name>
-		<tc.server.url>
-			http://mirror.hostfuss.com/apache/tomcat/tomcat-6/v6.0.18/bin/${tc.server.name}.zip
-		</tc.server.url>
-
-		<!-- TODO : put it relative, but not on submodules -->
-		<tc.server.home>/home/dev/workspace/alfresco-root/containers/tc-server</tc.server.home>
-
 		<!-- Maven Deploy Plugin settings -->
 		<maven.release.svn.url>
-			https://box.session.it/svn/whiteboard/root-pom
+			https://dev.sourcesense.com/repos/dev/whiteboard/
 		</maven.release.svn.url>
 
 		<maven.deploy.repository.id>releases</maven.deploy.repository.id>
 		<maven.deploy.repository.url>
-			http://box.session.it:8080/nexus/content/repositories/releases
+			http://repository.sourcesense.com/nexus/content/repositories/releases
 		</maven.deploy.repository.url>
 
 		<!-- Alfresco dependencies versions -->
