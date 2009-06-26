@@ -1,5 +1,5 @@
 #summary Project documentation
-#labels Phase-Implementation,Phase-Deploy
+#labels Phase-Implementation,Phase-Deploy,Featured
 
 = Maven Sites =
 *Extension*: http://repository.sourcesense.com/maven2-sites/maven-alfresco-extension-archetype/index.html
