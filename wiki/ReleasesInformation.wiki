@@ -1,0 +1,21 @@
+#summary Trunk/3.x branches differences
+#labels Phase-Implementation,Featured
+
+= 3.x Working branch =
+
+The current working branch for the Alfresco (Extension + SHARE) 3.0 ready release is:
+
+http://maven-alfresco-archetypes.googlecode.com/svn/branches/3.0.0
+http://maven-alfresco-archetypes.googlecode.com/svn/branches/3.0.0-stripped
+
+It features Maven Calm, a framework for Application Lifecycle Management on Maven. See more info here: http://code.google.com/p/maven-calm.
+
+We should consider merging this branch.
+
+= Trunk =
+
+Trunk is at 
+
+http://maven-alfresco-archetypes.googlecode.com/svn/trunk
+
+It's the 1.1.x archetype version and it's been recently upgrade to support Alfresco 3.0Stable release. 
