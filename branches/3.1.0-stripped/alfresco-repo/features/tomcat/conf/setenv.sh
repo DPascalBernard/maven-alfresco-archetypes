@@ -1,0 +1,1 @@
+export JAVA_OPTS="${JAVA_OPTS} -Djava.awt.headless=true -Dorg.apache.jackrabbit.core.cluster.node_id=lnx0003vm -Xmx1024m -Xms256M -XX:PermSize=128M -XX:MaxPermSize=256M -XX:+UseConcMarkSweepGC -XX:+CMSPermGenSweepingEnabled -XX:+CMSClassUnloadingEnabled -verbose:gc -Xloggc:${tomcat.home}/lib/gc.log"
