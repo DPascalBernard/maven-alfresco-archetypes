@@ -27,24 +27,4 @@
 		</dependency>
 	</dependencies>
 
-	<!-- build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/application.properties</include>
-				</includes>
-				<targetPath>alfresco/web-extension</targetPath>
-				<filtering>true</filtering>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<excludes>
-					<exclude>**/application.properties</exclude>
-				</excludes>
-				<targetPath>alfresco/web-extension</targetPath>
-				<filtering>false</filtering>
-			</resource>
-		</resources>
-	</build-->
 </project>
