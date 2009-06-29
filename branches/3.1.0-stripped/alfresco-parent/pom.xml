@@ -18,7 +18,15 @@
 		<module>alfresco-repo</module>
 		<module>alfresco-share</module>
 	</modules>
-
+    
+    <repositories>
+        <repository>
+			<id>com.sourcesense.repository.releases</id>
+			<name>sourcesense repository</name>
+			<url>http://repository.sourcesense.com/nexus/content/repositories/releases</url>
+        </repository>
+    </repositories>
+    
 	<properties>		
 		<maven.release.scm.url>
 			https://dev.sourcesense.com/repos/dev/whiteboard/
