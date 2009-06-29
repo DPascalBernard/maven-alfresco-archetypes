@@ -8,9 +8,11 @@ This page to discuss practical design/planning/implementation about the next com
 = 3.2.0 Release Plan =
 
 *Having a deadline* 
+
 we could phase with 3.2 (Labs out in one month, Enterprise in September) release timeframe (alfresco release date + 15dd). Of course we should provide archetypes for Labs and Enterprise version (different functionalities and deadlines)  
 
 *Timebox*
+
 For this release (3.2.0), I'd agree with Mau we should only (I will have a look at restructuring the issues [1] ):
  * (A) Fore-port LDAP,CAS and other 1.x specific functionalities (AMP archetype)
  * (B) Copy maven documentation site, both for the archetypes themselves and for the generated projects
