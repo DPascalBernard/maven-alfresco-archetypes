@@ -9,7 +9,8 @@ This page to discuss practical design/planning/implementation about the next com
 
 *Having a deadline* 
 
-we could phase with 3.2 (Labs out in one month, Enterprise in September) release timeframe (alfresco release date + 15dd). Of course we should provide archetypes for Labs and Enterprise version (different functionalities and deadlines)  
+We could phase with 3.2 (Labs out 08/2009, Enterprise in 09/2009) release timeframe (alfresco release date + 15dd). Of course we should provide archetypes for Labs and Enterprise version (different functionalities and deadlines). 
+This strategy should increase attention and is very marketable with Alfresco.
 
 *Timebox*
 
