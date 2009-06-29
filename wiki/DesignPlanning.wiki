@@ -1,0 +1,21 @@
+#summary If you're looking where to contribute to the Maven Alfresco Archetypes, then this is the right place :)
+#labels Phase-Design,Featured
+
+= Introduction =
+
+This page to discuss practical design/planning/implementation about the next coming archetypes releases.
+
+= 3.2.0 Release Plan =
+
+*Having a deadline* 
+we could phase with 3.2 (Labs out in one month, Enterprise in September) release timeframe (alfresco release date + 15dd). Of course we should provide archetypes for Labs and Enterprise version (different functionalities and deadlines)  
+
+*Timebox*
+For this release (3.2.0), I'd agree with Mau we should only (I will have a look at restructuring the issues [1] ):
+ * (A) Fore-port LDAP,CAS and other 1.x specific functionalities (AMP archetype)
+ * (B) Copy maven documentation site, both for the archetypes themselves and for the generated projects
+ * (C) Swap trunk/branch-3.0.0-stripped (I'd like to release from trunk)
+ * (D) Document (add samples in the archetypes), document, document...
+ * (E) Bug fixing and test against 3.2.0 (or trunk)
+
+*Release*
