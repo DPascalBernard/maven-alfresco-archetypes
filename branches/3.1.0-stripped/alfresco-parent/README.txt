@@ -1,4 +1,13 @@
+NOTE!!!
+the archetype is not yet in pla e!
+this is a normal alfresco customization project that aims to be the base on which the archetypes 3.1.0 will be build upon
+
+svn co http://maven-alfresco-archetypes.googlecode.com/svn/branches/3.1.0-stripped/alfresco-parent/
+
+
+
 CREATING THE PROJECT
+
 --------------------
 mvn archetype:create -DarchetypeGroupId=org.alfresco.maven -DarchetypeArtifactId=alfresco-archetype -DarchetypeVersion=0.5 -DgroupId=it.session.maven -DartifactId=alfresco-parent -Dversion=3.1.0-beta-1
 cd alfresco-parent
