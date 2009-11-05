@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sourcesense.alfresco</groupId>
+	<artifactId>maven-alfresco-archetypes</artifactId>
+	<packaging>pom</packaging>
+	<version>1.9.0</version>
+	<name>Maven Alfresco Archetypes base project</name>
+	<description>
+		This project is meant to gather all commons configurations and settings between the two maven-alfresco-*-archetypes, i.e. maven-alfresco-extension-archetype and maven-alfresco-amp-archetype
+	</description>
+	<url>${project.artifactId}</url>
+	<parent>
+		<groupId>org.alfresco</groupId>
+		<artifactId>maven-alfresco-lifecycle</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	<modules>
+		<module>maven-alfresco-amp-archetype</module>
+		<module>maven-alfresco-extension-archetype</module>
+	</modules>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-archetype-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
