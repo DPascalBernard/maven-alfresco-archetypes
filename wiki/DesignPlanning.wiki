@@ -9,16 +9,18 @@ This page to discuss practical design/planning/implementation about the next com
 
 *Having a deadline* 
 
-We could phase with 3.2 (Labs out 08/2009, Enterprise in 09/2009) release timeframe (alfresco release date + 15dd). Of course we should provide archetypes for Labs and Enterprise version (different functionalities and deadlines). 
+We could phase with 3.2 (Labs out 08/2009, Enterprise in 12/2009) release timeframe (alfresco release date + 15dd). Of course we should provide archetypes for Labs and Enterprise version (different functionalities and deadlines). 
 This strategy should increase attention and is very marketable with Alfresco.
 
 *Timebox*
+For this release (3.2.0):
 
-For this release (3.2.0), I'd agree with Mau we should only (I will have a look at restructuring the issues [1] ):
- * (A) Fore-port LDAP,CAS and other 1.x specific functionalities (AMP archetype)
- * (B) Copy maven documentation site, both for the archetypes themselves and for the generated projects
- * (C) Swap trunk/branch-3.0.0-stripped (I'd like to release from trunk)
- * (D) Document (add samples in the archetypes), document, document...
- * (E) Bug fixing and test against 3.2.0 (or trunk)
+ * Bug fixing and test against 3.2.0 EE
+ * Merge 3.x Maven Calm features
+ * align to 3.2.x alfresco-global.properties configuration mechanism
+ * Refactor more stuff in maven-alfresco-archetypes superPOM
+ * review the [http://code.google.com/p/maven-alfresco-archetypes/issues/list issue list]
 
 *Release*
+
+1.9.x of archetypes is out from trunk featuring Share archetype we should target to have  final 3.2 ready for end of the year
