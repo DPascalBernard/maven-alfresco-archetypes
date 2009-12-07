@@ -2,9 +2,13 @@
 #labels Phase-Implementation,Phase-Deploy,Featured
 
 = Maven Sites =
-*Extension*: http://repository.sourcesense.com/maven2-sites/maven-alfresco-extension-archetype/index.html
-
-*AMP*: http://repository.sourcesense.com/maven2-sites/maven-alfresco-amp-archetype/index.html
+*Maven Alfresco Lifecycle*: http://maven.alfresco.com/nexus/content/repositories/alfresco-docs/maven-alfresco-lifecycle/index.html
+(archetypes and plugins are sub modules)
 
 = Hosting repository =
-Sourcesense public: http://repository.sourcesense.com/nexus
+Maven Alfresco Community repository: http://maven.alfresco.com/nexus/
+
+
+= Howto =
+
+See [http://wiki.alfresco.com/wiki/Managing_Alfresco_Lifecyle_with_Maven here]
