@@ -1,4 +1,4 @@
-#summary How to deploy new Alfresco releases to maven.alfresco.com
+#summary How to deploy new Alfresco releases to your Repository (as done on maven.alfresco.com)
 #labels Featured,Phase-Deploy,Phase-Support,Maven
 
 = Introduction =
