@@ -11,9 +11,9 @@ In order to have a new version deployed in your repo you can download the Alfres
 {{{
 Base Folder
       - alfresco.war
-      - alfresco (_unzipped alfresco.war_)
+      - alfresco (unzipped alfresco.war)
       - share.war 
-      - share (_unzipped share.war_)
+      - share (unzipped share.war)
 }}}
 You can run the attached a bash script to upload all the required JARs/WARs in the defined repository.
 
