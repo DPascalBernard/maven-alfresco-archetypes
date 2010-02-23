@@ -18,8 +18,8 @@ Base Folder
 You can run the attached a bash script to upload all the required JARs/WARs in the defined repository.
 
 The script m2-bootstrap.sh is located here:
-    * For Alfresco 3.2.x 
-    * For Alfresco 3.3 (HEAD)
+    * [http://maven-alfresco-archetypes.googlecode.com/files/m2-bootstrap.sh For Alfresco 3.2.x]
+    * [http://maven-alfresco-archetypes.googlecode.com/files/m2-bootstrap-33plus.sh For Alfresco 3.3 (HEAD)]
 
 Script synopsis is documented in the comments of the script but for completeness a typical command line looks like:
 
