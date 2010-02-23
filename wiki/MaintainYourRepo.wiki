@@ -8,13 +8,13 @@ This is useful to _unofficially_ maintain Alfresco artifact versions on a corpor
 = How to deploy a new Alfresco Version =
 
 In order to have a new version deployed in your repo you can download the Alfresco Community / Enterprise War distribution and after unpacking them with the following layout:
-
+{{{
 Base Folder
       - alfresco.war
       - alfresco (_unzipped alfresco.war_)
       - share.war 
       - share (_unzipped share.war_)
-
+}}}
 You can run the attached a bash script to upload all the required JARs/WARs in the defined repository.
 
 The script m2-bootstrap.sh is located here:
