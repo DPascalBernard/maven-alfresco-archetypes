@@ -36,29 +36,29 @@
 	<repositories>
 		<repository>
 			<id>alfresco-public-snapshots</id>
-      <url>http://maven.alfresco.com/nexus/content/groups/public-snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </snapshots>
+			<url>http://maven.alfresco.com/nexus/content/groups/public-snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>daily</updatePolicy>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>alfresco-public</id>
-      <url>http://maven.alfresco.com/nexus/content/groups/public</url>
+			<url>http://maven.alfresco.com/nexus/content/groups/public</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>alfresco-public</id>
-      <url>http://maven.alfresco.com/nexus/content/groups/public</url>
+			<url>http://maven.alfresco.com/nexus/content/groups/public</url>
 		</pluginRepository>
 		<pluginRepository>
 			<id>alfresco-public-snapshots</id>
 			<url>http://repository.sourcesense.com/nexus/content/groups/public-snapshots</url>
 			<snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>daily</updatePolicy>
+			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 	<properties>
@@ -153,7 +153,7 @@
 			<plugin>
 				<artifactId>maven-nosnapshot-plugin</artifactId>
 				<groupId>com.sourcesense.maven</groupId>
-				 <version>0.0.5</version>
+				<version>0.0.5</version>
 				<executions>
 					<execution>
 						<id>default</id>
@@ -346,7 +346,7 @@
 					</plugin>
 					<plugin>
 						<groupId>org.mortbay.jetty</groupId>
-						<artifactId>maven-jetty-plugin</artifactId>
+						<artifactId>jetty-maven-plugin</artifactId>
 						<executions>
 							<!-- Runs jetty when 'integration-test' phase is called -->
 							<execution>
@@ -356,15 +356,11 @@
 									<goal>run-exploded</goal>
 								</goals>
 								<configuration>
-									<contextPath>/${webapp.name}</contextPath>
+									<webAppConfig>
+										<contextPath>/${webapp.name}</contextPath>
+									</webAppConfig>
 									<webApp>${pom.build.directory}/${webapp.name}</webApp>
 									<scanIntervalSeconds>10</scanIntervalSeconds>
-									<connectors>
-										<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-											<port>8080</port>
-											<maxIdleTime>60000</maxIdleTime>
-										</connector>
-									</connectors>
 								</configuration>
 							</execution>
 						</executions>
