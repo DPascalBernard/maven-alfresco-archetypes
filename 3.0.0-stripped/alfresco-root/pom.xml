@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.alfresco.maven</groupId>
+	<artifactId>alfresco-root</artifactId>
+	<packaging>pom</packaging>
+	<name>Alfresco Applications Common Lifecycle Configuration</name>
+
+	<parent>
+		<groupId>com.sourcesense.maven</groupId>
+		<artifactId>alm-parent</artifactId>
+		<version>0.9</version>
+	</parent>
+
+	<modules>
+		<module>alfresco-repo</module>
+		<module>alfresco-share</module>
+	</modules>
+	<!--
+		Here we syntetically define core libraries versions. Centralized
+		dependency control can baseline happen here
+	-->
+	<properties>
+
+		<!-- Maven Deploy Plugin settings -->
+		<maven.release.svn.url>
+			https://dev.sourcesense.com/repos/dev/whiteboard/
+		</maven.release.svn.url>
+
+		<maven.deploy.repository.id>ss-releases</maven.deploy.repository.id>
+		<maven.deploy.repository.url>
+			http://repository.sourcesense.com/nexus/content/repositories/releases
+		</maven.deploy.repository.url>
+
+		<!-- Alfresco dependencies versions -->
+		<alfresco.version>3.0Stable</alfresco.version>
+		<alfresco.classifier>labs</alfresco.classifier>
+		<!-- Building blocks versions -->
+		<junit.version>4.5</junit.version>
+		<saxon.version>8.7</saxon.version>
+		<jdom.version>1.1</jdom.version>
+		<commons.httpclient.version>3.1</commons.httpclient.version>
+		<ehcache.version>1.4.1</ehcache.version>
+		<servlet.version>2.5</servlet.version>
+		<spring.version>2.0.6</spring.version>
+		<!--
+			Actually alfresco uses a patched 0.8.2 version but for compilation
+			purpose this is fine.
+		-->
+		<acegi.version>0.8.2</acegi.version>
+		<jta.version>1.1</jta.version>
+		<commons.el.version>1.0</commons.el.version>
+		<amp.plugin.version>2.0.1</amp.plugin.version>
+	</properties>
+
+	<!--
+		The following dependencies are inherited from all projects that
+		reference this as parent
+	-->
+	<dependencies>
+		<!-- Alfresco inherited dependencies -->
+		<dependency>
+			<groupId>org.alfresco</groupId>
+			<artifactId>alfresco-repository</artifactId>
+			<version>${alfresco.version}</version>
+			<classifier>${alfresco.classifier}</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.alfresco</groupId>
+			<artifactId>alfresco-core</artifactId>
+			<version>${alfresco.version}</version>
+			<classifier>${alfresco.classifier}</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.alfresco</groupId>
+			<artifactId>alfresco-web-client</artifactId>
+			<version>${alfresco.version}</version>
+			<classifier>${alfresco.classifier}</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.alfresco</groupId>
+			<artifactId>alfresco-webscript-framework</artifactId>
+			<version>${alfresco.version}</version>
+			<classifier>${alfresco.classifier}</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.alfresco</groupId>
+			<artifactId>alfresco-remote-api</artifactId>
+			<version>${alfresco.version}</version>
+			<classifier>${alfresco.classifier}</classifier>
+			<scope>provided</scope>
+		</dependency>
+
+		<!--
+			Provided dependencies, used by subproject for compilation and IDE
+			configuration
+		-->
+		<dependency>
+			<groupId>net.sf.saxon</groupId>
+			<artifactId>saxon</artifactId>
+			<version>${saxon.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.saxon</groupId>
+			<artifactId>saxon-jdom</artifactId>
+			<version>${saxon.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.saxon</groupId>
+			<artifactId>saxon-xpath</artifactId>
+			<version>${saxon.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>${jdom.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>${ehcache.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>acegisecurity</groupId>
+			<artifactId>acegi-security</artifactId>
+			<version>${acegi.version}</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-mock</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>ant</groupId>
+					<artifactId>ant</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>${jta.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-el</groupId>
+			<artifactId>commons-el</artifactId>
+			<version>${commons.el.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-mock</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<!--
+		For these dependencies we only enforce instead version and classifier
+	-->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.alfresco</groupId>
+				<artifactId>alfresco</artifactId>
+				<version>${alfresco.version}</version>
+				<classifier>${alfresco.classifier}</classifier>
+				<type>war</type>
+			</dependency>
+			<dependency>
+				<groupId>org.alfresco</groupId>
+				<artifactId>share</artifactId>
+				<version>${alfresco.version}</version>
+				<type>war</type>
+				<classifier>${alfresco.classifier}</classifier>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${servlet.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<!-- Test dependencies -->
+			<dependency>
+				<groupId>commons-httpclient</groupId>
+				<artifactId>commons-httpclient</artifactId>
+				<version>${commons.httpclient.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.alfresco.maven.plugin</groupId>
+				<artifactId>maven-amp-plugin</artifactId>
+				<version>${amp.plugin.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>5.0.3</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<archiveClasses>false</archiveClasses>
+					<warSourceExcludes>tools/**</warSourceExcludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

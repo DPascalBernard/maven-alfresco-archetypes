@@ -1,0 +1,12 @@
+<profiles>
+	<!-- Inherited profiles -->
+	<profile>
+		<id>local</id>
+		<properties>
+			<alfresco.db.name>alfresco</alfresco.db.name>
+			<alfresco.dir.root>${project.basedir}/alf_data</alfresco.dir.root>
+			<cargo.webapp.context>${project.artifactId}</cargo.webapp.context>
+			<debug.level>INFO</debug.level>
+		</properties>
+	</profile>
+</profiles>
