@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.alfresco.maven</groupId>
+	<artifactId>alfresco-repo</artifactId>
+	<name>Alfresco Repository and Webclient base instance</name>
+	<packaging>war</packaging>
+
+	<parent>
+		<groupId>org.alfresco.maven</groupId>
+		<artifactId>alfresco-parent</artifactId>
+		<version>3.1.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<!--
+		Alfresco Version is inherited by the parent trough
+		<dependencyManagement>
+	-->
+	<dependencies>
+		<dependency>
+			<groupId>org.alfresco</groupId>
+			<artifactId>alfresco</artifactId>
+			<type>war</type>
+			<classifier>${alfresco.classifier}</classifier>
+		</dependency>
+	</dependencies>
+
+	<build>
+	
+		<resources>
+			<resource>
+				<directory>src/main/resources/alfresco/extension</directory>
+				<includes>
+					<include>**-custom.xml</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-amps</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeTypes>amp</includeTypes>
+							<outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
+							<excludes>META*</excludes>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.alfresco.maven.plugin</groupId>
+						<artifactId>maven-amp-plugin</artifactId>
+						<version>${amp.plugin.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webResources>
+					</webResources>
+					<overlays>
+						<!-- The current project overlay -->
+						<overlay />
+					</overlays>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.alfresco.maven.plugin</groupId>
+						<artifactId>maven-amp-plugin</artifactId>
+						<version>${amp.plugin.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<profiles>
+		<profile>
+			<id>mysql</id>
+			<build>
+				<resources>
+					<resource>
+						<directory>features/mysql</directory>
+						<includes>
+							<include>*.sql</include>
+						</includes>
+						<filtering>true</filtering>
+						<targetPath>features/mysql</targetPath>
+					</resource>
+				</resources>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+</project>
