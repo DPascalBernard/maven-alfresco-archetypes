@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.alfresco.maven</groupId>
+	<artifactId>alfresco-share</artifactId>
+	<name>Alfresco Share client</name>
+	<packaging>war</packaging>
+	<description>
+		This Webapp is meant to be the main Alfresco UI which enables collaboration
+	</description>
+
+	<parent>
+		<groupId>org.alfresco.maven</groupId>
+		<artifactId>alfresco-root</artifactId>
+		<version>3.0.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+
+	<!-- Alfresco dependencies -->
+	<dependencies>
+		<!--
+			Alfresco Dependencies | NB: These files are not publicly available.
+			Please vote for Alfresco to release them :) | Jboss alfresco build
+			(e.g. no log4j.properties and fix for myFaces)
+		-->
+		<dependency>
+			<groupId>org.alfresco</groupId>
+			<artifactId>share</artifactId>
+			<type>war</type>
+			<classifier>${alfresco.classifier}</classifier>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+
+		<filters>
+			<filter>src/main/properties/${env}/application.properties</filter>
+		</filters>
+
+		<!--
+			Default profile to build as an Alfresco extension - resources are
+			copied into classpath
+		-->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<!--
+				| Include application properties file in classpath: this allows
+				Spring contexts to have customization properties available at |
+				classpath:alfresco/extension/application.properties
+			-->
+			<resource>
+				<directory>src/main/properties</directory>
+				<includes>
+					<include>application.properties</include>
+				</includes>
+				<!--
+					This gets loaded to be the filter for spring runtime placeholding,
+					so no need for build time filtering
+				-->
+				<targetPath>alfresco/web-extension</targetPath>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<archiveClasses>false</archiveClasses>
+					<filters>
+						<filter>src/main/properties/${env}/application.properties</filter>
+					</filters>
+					<webResources>
+					</webResources>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<configuration>
+					<deployer>
+						<type>remote</type>
+						<deployables>
+							<deployable>
+								<properties>
+									<context>${cargo.webapp.context}</context>
+								</properties>
+							</deployable>
+						</deployables>
+					</deployer>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

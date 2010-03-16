@@ -1,0 +1,18 @@
+<profiles>
+	<profile>
+		<id>local</id>
+		<properties>
+			<cargo.webapp.context>${pom.artifactId}</cargo.webapp.context>
+			<share.log.level>info</share.log.level>
+		</properties>
+	</profile>
+    <profile>
+        <id>distro</id>
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <properties>
+           	<tc.server.sequenceNumber>4</tc.server.sequenceNumber>
+        </properties>                    
+    </profile>
+</profiles>

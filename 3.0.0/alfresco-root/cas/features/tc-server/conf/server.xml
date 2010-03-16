@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Server port="${shutdown.port}" shutdown="SHUTDOWN">
+
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+  <Listener className="org.apache.catalina.core.JasperListener" />
+  <Listener className="org.apache.catalina.mbeans.ServerLifecycleListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+
+
+  <GlobalNamingResources>
+    <Resource name="UserDatabase" auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="${tcserver.shared}/conf/tomcat-users.xml" />
+  </GlobalNamingResources>
+
+  <Service name="Catalina">
+  
+    <Connector port="${http.port}" protocol="HTTP/1.1"
+               connectionTimeout="20000"/>
+
+    <!-- Define a SSL HTTP/1.1 Connector on port 8443
+         This connector uses the JSSE configuration, when using APR, the
+         connector should be using the OpenSSL style configuration
+         described in the APR documentation -->
+    <Connector port="${https.port}" minSpareThreads="5" maxSpareThreads="75"
+           enableLookups="true" disableUploadTimeout="true" 
+           acceptCount="100"  maxThreads="200"
+           scheme="https" secure="true" SSLEnabled="true"
+           keystoreFile="${catalina.base}/conf/keystore" keystorePass="password"
+           clientAuth="false" sslProtocol="TLS"/>
+
+    <Engine name="Catalina" defaultHost="${http.domain}">
+
+      <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+             resourceName="UserDatabase"/>
+      <Host name="${http.domain}"  appBase="webapps"
+            unpackWARs="true" autoDeploy="true"
+            xmlValidation="false" xmlNamespaceAware="false">
+      </Host>
+      
+    </Engine>
+  </Service>
+</Server>

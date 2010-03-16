@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sourcesense.maven</groupId>
+	<artifactId>alm-runner</artifactId>
+	<name>Embedded Web Server and Functional Test module</name>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.alfresco.maven</groupId>
+		<artifactId>alfresco-root</artifactId>
+		<version>3.0.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<properties>
+		<!-- Cargo defaults -->
+		<cargo.remote.hostname>localhost</cargo.remote.hostname>
+		<cargo.remote.servlet.port>8080</cargo.remote.servlet.port>
+
+		<!-- Framework dependencies plugin versions -->
+		<plugin.cargo.version>1.0-SNAPSHOT</plugin.cargo.version>
+		<plugin.selenium.version>1.0-rc-2-SNAPSHOT</plugin.selenium.version>
+		<plugin.surefire.version>2.5-20090220</plugin.surefire.version>
+
+		<!-- Env defaults -->
+		<env>local</env>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.sourcesense.maven</groupId>
+			<artifactId>apacheds-server</artifactId>
+			<version>3.0.0-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>com.sourcesense.maven</groupId>
+			<artifactId>cas</artifactId>
+			<version>3.0.0-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>org.alfresco.maven</groupId>
+			<artifactId>alfresco-repo</artifactId>
+			<version>3.0.0-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>org.alfresco.maven</groupId>
+			<artifactId>alfresco-share</artifactId>
+			<version>3.0.0-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium.client-drivers</groupId>
+			<artifactId>selenium-java-client-driver</artifactId>
+			<version>1.0-beta-2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>selenium-maven-plugin</artifactId>
+					<version>${plugin.selenium.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.cargo</groupId>
+					<artifactId>cargo-maven2-plugin</artifactId>
+					<version>${plugin.cargo.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${plugin.surefire.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${plugin.resources.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<!--
+				Tests are skipped by default and executed with the specfic flow
+				profile
+			-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!--
+		Profile for appserver deployment. To deploy locally on an appserver
+		(other then the embedded NB: you have to call this profile explicitly
+	-->
+
+	<profiles>
+
+		<!-- Flow profiles: define execution flows of this and child project -->
+
+		<profile>
+			<id>run</id>
+			<build>
+				<defaultGoal>cargo:start</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.cargo</groupId>
+						<artifactId>cargo-maven2-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>install</goal>
+								</goals>
+								<inherited>false</inherited>
+							</execution>
+							<execution>
+								<id>start-container</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>start</goal>
+								</goals>
+								<configuration>
+									<wait>false</wait>
+								</configuration>
+								<inherited>false</inherited>
+							</execution>
+							<execution>
+								<id>stop-container</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+								<inherited>false</inherited>
+							</execution>
+						</executions>
+						<configuration>
+							<container>
+								<containerId>${cargo.remote.id}</containerId>
+								<zipUrlInstaller>
+									<url>${cargo.container.url}</url>
+									<installDir>${cargo.install.directory}</installDir>
+								</zipUrlInstaller>
+								<log>${project.build.directory}/logs/${cargo.remote.id}.log</log>
+								<output>${project.build.directory}/logs/${cargo.remote.id}.out</output>
+								<timeout>600000</timeout>
+							</container>
+							<configuration>
+								<!--
+									<home>${project.build.directory}/${container.name}conf</home>
+									<type>existing</type>
+								-->
+								<properties>
+									<cargo.servlet.port>${cargo.remote.servlet.port}</cargo.servlet.port>
+								</properties>
+
+								<deployables>
+									<deployable>
+										<groupId>com.sourcesense.maven</groupId>
+										<artifactId>apacheds-server</artifactId>
+										<type>war</type>
+										<properties>
+											<context>apacheds</context>
+										</properties>
+									</deployable>
+									<deployable>
+										<groupId>com.sourcesense.maven</groupId>
+										<artifactId>cas</artifactId>
+										<type>war</type>
+										<properties>
+											<context>cas</context>
+										</properties>
+									</deployable>
+									<deployable>
+										<groupId>org.alfresco.maven</groupId>
+										<artifactId>alfresco-repo</artifactId>
+										<type>war</type>
+										<properties>
+											<context>alfresco-repo</context>
+										</properties>
+									</deployable>
+									<deployable>
+										<groupId>org.alfresco.maven</groupId>
+										<artifactId>alfresco-share</artifactId>
+										<type>war</type>
+										<properties>
+											<context>alfresco-share</context>
+										</properties>
+									</deployable>
+								</deployables>
+							</configuration>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+
+		<!--
+			Targets profiles. Tomcat5x and Jboss4x (to be tested) are supported
+			for now
+		-->
+		<profile>
+			<id>tomcat5x</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<cargo.remote.id>tomcat5x</cargo.remote.id>
+				<cargo.remote.username>tomcat</cargo.remote.username>
+				<cargo.remote.password>tomcat</cargo.remote.password>
+				<cargo.install.directory>${project.basedir}/containers</cargo.install.directory>
+				<cargo.container.url>http://apache.mirrors.webazilla.nl/tomcat/tomcat-5/v5.5.27/bin/${cargo.container.name}.zip</cargo.container.url>
+				<cargo.container.name>apache-tomcat-5.5.27</cargo.container.name>
+			</properties>
+			<!--
+				build> <plugins> <plugin> <groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId> <executions>
+				<execution> <id>install-start-container</id>
+				<phase>generate-resources</phase> <configuration> <configuration>
+				<files> <copy>
+				<file>${project.basedir}/targets/tomcat5x/tomcat-users.xml</file>
+				<tofile>conf/tomcat-users.xml</tofile> <configfile>true</configfile>
+				<overwrite>true</overwrite> </copy> </files> </configuration>
+				</configuration> <inherited>false</inherited> </execution>
+				</executions> </plugin> </plugins> </build
+			-->
+		</profile>
+		<profile>
+			<id>jboss4x</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<cargo.remote.id>jboss4x</cargo.remote.id>
+				<cargo.remote.username></cargo.remote.username>
+				<cargo.remote.password></cargo.remote.password>
+				<cargo.install.directory>${project.basedir}/containers</cargo.install.directory>
+				<cargo.container.name>jboss-4.2.3.GA</cargo.container.name>
+				<cargo.container.url>http://downloads.sourceforge.net/jboss/${cargo.container.name}.zip</cargo.container.url>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>selenium-test</id>
+			<activation>
+				<property>
+					<name>flow</name>
+					<value>selenium-test</value>
+				</property>
+			</activation>
+			<build>
+				<defaultGoal>post-integration-test</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<!--
+								Skip the normal tests, we'll run them in the integration-test
+								phase
+							-->
+							<skip>true</skip>
+							<systemProperties>
+								<property>
+									<name>browser</name>
+									<value>${selenium.browser}</value>
+								</property>
+								<property>
+									<name>webapp.hostname</name>
+									<value>${cargo.remote.hostname}</value>
+								</property>
+								<property>
+									<name>webapp.port</name>
+									<value>${cargo.remote.servlet.port}</value>
+								</property>
+								<property>
+									<name>webapp.context</name>
+									<value>${cargo.webapp.context}</value>
+								</property>
+								<property>
+									<name>selenium.port</name>
+									<value>${selenium.server.port}</value>
+								</property>
+							</systemProperties>
+						</configuration>
+						<executions>
+							<execution>
+								<id>selenium-test</id>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<skip>false</skip>
+									<includes>
+										<include>**/selenium/**.java</include>
+									</includes>
+								</configuration>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>org.seleniumhq.selenium.client-drivers</groupId>
+								<artifactId>selenium-java-client-driver</artifactId>
+								<version>1.0-beta-2</version>
+								<scope>provided</scope>
+							</dependency>
+						</dependencies>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>selenium-maven-plugin</artifactId>
+						<!--
+							to run headless in a Unix server with a virtual framebuffer X
+							server Xvfb you need to call first the goal selenium:xvfb ie.
+							"mvn clean selenium:xvfb install" see
+							http://mojo.codehaus.org/selenium-maven-plugin/examples/headless-with-xvfb.html
+						-->
+						<executions>
+							<execution>
+								<id>start-selenium</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>start-server</goal>
+								</goals>
+								<inherited>true</inherited>
+							</execution>
+							<execution>
+								<id>stop-selenium</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop-server</goal>
+								</goals>
+								<inherited>true</inherited>
+							</execution>
+						</executions>
+						<configuration>
+							<background>${selenium.background}</background>
+							<port>${selenium.server.port}</port>
+							<logOutput>${selenium.logOutput}</logOutput>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sourcesense.maven</groupId>
+	<artifactId>cas</artifactId>
+	<packaging>war</packaging>
+	<name>Embed Cas Server as a Web Application</name>
+
+	<parent>
+		<groupId>org.alfresco.maven</groupId>
+		<artifactId>alfresco-root</artifactId>
+		<version>3.0.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<configuration>
+					<deployer>
+						<type>remote</type>
+						<deployables>
+							<deployable>
+								<properties>
+									<context>${cargo.webapp.context}</context>
+								</properties>
+							</deployable>
+						</deployables>
+					</deployer>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>2.5.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jasig.cas</groupId>
+			<artifactId>cas-server-webapp</artifactId>
+			<version>3.3.1</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>org.jasig.cas</groupId>
+			<artifactId>cas-server-support-ldap</artifactId>
+			<version>3.3.1</version>
+		</dependency>
+	</dependencies>
+</project> 
