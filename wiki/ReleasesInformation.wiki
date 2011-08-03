@@ -1,16 +1,16 @@
-#summary Trunk/branches differences
+#summary Trunk/branches codelines differences
 #labels Phase-Implementation,Featured
 
 = Bleeding edge Working branch =
 
-The current working branch for the Alfresco (Extension + SHARE) 3.0 ready release is:
+The current working branch for the Alfresco (Extension + SHARE) 3.0 / 4.0 ready release is:
 
 http://maven-alfresco-archetypes.googlecode.com/svn/branches/3.0.0
 http://maven-alfresco-archetypes.googlecode.com/svn/branches/3.0.0-stripped
 
 It features Maven Calm, a framework for Application Lifecycle Management on Maven. See more info here: http://code.google.com/p/maven-calm.
-w
-We already merged to trunk the following 3.x achievements:
+
+We already merged to trunk the following achievements:
 
 * [http://wiki.alfresco.com/wiki/Managing_Alfresco_Lifecyle_with_Maven#NEW.21.21.21_How_to_manage_Alfresco_Share_Extensions_.28alfresco.2Fweb-extension_Spring_customization_WAR_builds.29 Alfresco Share archetype]
 
