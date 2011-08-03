@@ -1,0 +1,25 @@
+#summary Roadmap information
+#labels Featured,Phase-Requirements,Phase-Implementation
+
+= Introduction =
+
+This is the roadmap for the Maven Alfresco Archetypes/Lifecycle project.
+
+
+= Roadmap =
+
+Some objectives we want to achieve in the next versions of Maven Alfresco Archetypes:
+
+  * Support for *Swift* _Share_ like_ extensions
+  * General cleanup of old unused/features
+  * Maven 3 support
+  * In Memory DB Support
+  * Unit / integration test support
+  * org.alfresco repackaging (remove commercial references)
+  * Pre-packaged multimodule archetypes (share + repo customization)
+
+
+= Releases =
+  * Last 3.x maintainance release ==> soon :)
+  * 4.x ==> later :)
+  * See more details at [ReleasesInformation]
