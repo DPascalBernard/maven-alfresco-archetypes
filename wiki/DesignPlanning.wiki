@@ -3,24 +3,25 @@
 
 = Introduction =
 
-This page to discuss practical design/planning/implementation about the next coming archetypes releases.
+This page to discuss practical design/planning/implementation about the next coming archetypes releases (see also [ProjectRoadmap]
 
-= 3.2.0 Release Plan =
 
-*Having a deadline* 
+= Trunk Design  =
 
-We could phase with 3.2 (Labs out 08/2009, Enterprise in 12/2009) release timeframe (alfresco release date + 15dd). Of course we should provide archetypes for Labs and Enterprise version (different functionalities and deadlines). 
-This strategy should increase attention and is very marketable with Alfresco.
+==In Memory DB== 
 
-*Timebox*
-For this release (3.2.0):
+= 4x Design  =
+ 
+==Usage of Maven Calm== 
 
- * Bug fixing and test against 3.2.0 EE
- * Merge 3.x Maven Calm features
- * align to 3.2.x alfresco-global.properties configuration mechanism
- * Refactor more stuff in maven-alfresco-archetypes superPOM
- * review the [http://code.google.com/p/maven-alfresco-archetypes/issues/list issue list]
+==Swift Support==
 
-*Release*
+ * Extensibility project
+ * Share JAR improved support
+ * Dynamic classloading? 
 
-1.9.x of archetypes is out from trunk featuring Share archetype we should target to have  final 3.2 ready for end of the year
+==Comparison with Alfresco MMT== 
+
+
+
+
