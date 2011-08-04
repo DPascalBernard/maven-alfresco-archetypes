@@ -3,12 +3,14 @@
 
 = Introduction =
 
-This page to discuss practical design/planning/implementation about the next coming archetypes releases (see also [ProjectRoadmap]
+This page to discuss practical design/planning/implementation about the next coming archetypes releases (see also [ProjectRoadmap])
 
 
 = Trunk Design  =
 
 ==In Memory DB== 
+
+==file-mapping.properties==
 
 = 4x Design  =
  
@@ -21,7 +23,6 @@ This page to discuss practical design/planning/implementation about the next com
  * Dynamic classloading? 
 
 ==Comparison with Alfresco MMT== 
-
 
 
 
