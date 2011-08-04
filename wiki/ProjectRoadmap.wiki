@@ -37,6 +37,7 @@ Some objectives we want to achieve in the next versions of Maven Alfresco Archet
              * Share AMP support
              * Maven Calm
              * Refactoring of project layout
+             * Activiti archetype?
 
 
 See more details on codelines at [ReleasesInformation]
