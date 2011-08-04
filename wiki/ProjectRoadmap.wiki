@@ -20,6 +20,20 @@ Some objectives we want to achieve in the next versions of Maven Alfresco Archet
 
 
 = Releases =
-  * Last 3.x maintainance release ==> soon :)
-  * 4.x ==> later :)
-  * See more details at [ReleasesInformation]
+  * *Last trunk maintainance release* (_Archetypes 1.x_) ==> *soon* :)
+      * [http://code.google.com/p/maven-alfresco-archetypes/issues/list?can=2&q=Milestone%3DNextRelease&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles Issues Targeted for this release]
+      * Highlights: 
+        * Support for file-mapping.properties (Alfresco MMT feature) 
+        * Merge application.properties and alfresco-global.properties
+        * Update AMP archetype to have a JNDI datasource in Jetty 	 
+        * Maven can't find Alfresco AMP Plugin anywhere 
+  * New major release (_Archetypes 4.x_) ==> *later* :)
+          * [http://code.google.com/p/maven-alfresco-archetypes/issues/list?can=2&q=Milestone%3DRelease4x&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles Issues targeted for this release]
+          * Highlights:
+             * Support for Alfresco Swift
+             * Share AMP support
+             * Maven Calm
+             * Refactoring of project layout
+
+
+See more details on codelines at [ReleasesInformation]
