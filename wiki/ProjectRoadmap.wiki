@@ -26,7 +26,8 @@ Some objectives we want to achieve in the next versions of Maven Alfresco Archet
         * Support for file-mapping.properties (Alfresco MMT feature) 
         * Merge application.properties and alfresco-global.properties
         * Update AMP archetype to have a JNDI datasource in Jetty 	 
-        * Maven can't find Alfresco AMP Plugin anywhere 
+        * Maven can't find Alfresco AMP Plugin anywhere
+        * In-memory DB support 
   * New major release (_Archetypes 4.x_) ==> *later* :)
           * [http://code.google.com/p/maven-alfresco-archetypes/issues/list?can=2&q=Milestone%3DRelease4x&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles Issues targeted for this release]
           * Highlights:
