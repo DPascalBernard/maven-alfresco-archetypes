@@ -39,3 +39,7 @@ Where parameters mean:
 This approach can be used both for Community and Enterprise artifacts (in case you're a subscribing client), in case you want to manage your Alfresco lifecycle with Maven.
 
 *Limitation*: This approach provides no POMs (as there are none ATM) so you'll have to flatten your dependency tree in order to be able to build and test extensions based on Alfresco runtime libraries.
+
+= Unofficial Alfresco POMs =
+
+A new attempt to maintain Alfresco POMs is to be found here see [https://github.com/hubick/alfresco_sdk_mvn_deploy] 
