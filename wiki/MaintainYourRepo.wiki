@@ -34,6 +34,17 @@ Where parameters mean:
     # Alfresco Internal Version (suffix of JARs inside WEB-INF/lib, typically same as parameter 4 for releases, different   for snapshots) 
     
 
+= Improvement Ideas = 
+
+A fully automated script from Alfresco trunk could:
+- build Alfresco
+- copy the the Ant built release WARs in SVN checkout 
+cp root/projects/*/build/dist/*.war to $TMPFOLDER
+- unpack *.war in $TMPFOLDER
+- mvn deploy *.war in $TMPFOLDER
+- mvn deploy $TMPFOLDER/*/WEB-INF/lib/alfresco-*.jar 
+
+
 = Notes =
 
 This approach can be used both for Community and Enterprise artifacts (in case you're a subscribing client), in case you want to manage your Alfresco lifecycle with Maven.
