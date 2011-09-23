@@ -37,12 +37,11 @@ Where parameters mean:
 = Improvement Ideas = 
 
 A fully automated script from Alfresco trunk could:
-- build Alfresco
-- copy the the Ant built release WARs in SVN checkout 
-cp root/projects/*/build/dist/*.war to $TMPFOLDER
-- unpack *.war in $TMPFOLDER
-- mvn deploy *.war in $TMPFOLDER
-- mvn deploy $TMPFOLDER/*/WEB-INF/lib/alfresco-*.jar 
+ * build Alfresco
+ * copy the the Ant built release WARs in SVN checkout {{{cp root/projects/*/build/dist/*.war to $TMPFOLDER}}}
+ * {{{unzip *.war -d $TMPFOLDER}}}
+ * {{{mvn deploy *.war in $TMPFOLDER}}}
+ * {{{mvn deploy $TMPFOLDER/*/WEB-INF/lib/alfresco-*.jar}}}
 
 
 = Notes =
