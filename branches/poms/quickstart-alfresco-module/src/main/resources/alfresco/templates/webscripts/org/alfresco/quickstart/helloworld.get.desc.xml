@@ -1,0 +1,6 @@
+<webscript>
+  <shortname>Hello world</shortname>
+  <description>Hello world demo</description>
+  <url>/helloworld</url>
+  <authentication>user</authentication>
+</webscript>

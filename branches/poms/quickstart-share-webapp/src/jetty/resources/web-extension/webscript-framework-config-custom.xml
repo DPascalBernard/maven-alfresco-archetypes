@@ -1,0 +1,45 @@
+<alfresco-config>
+
+
+	<config evaluator="string-compare" condition="Server">
+		<server>
+			<!--
+				Enable and adjust the following settings to allow for external
+				access URLs to the WebScript Framework - to return an externally
+				accessable address for absolute url generation.
+			-->
+			<scheme>${share.server.scheme}</scheme>
+			<hostname>${share.server.name}</hostname>
+			<port>${share.server.port}</port>
+		</server>
+	</config>
+
+
+	<!-- Overriding endpoints to reference a remote Alfresco server -->
+	<config evaluator="string-compare" condition="Remote">
+		<remote>
+			<endpoint>
+				<id>alfresco-noauth</id>
+				<name>Alfresco - unauthenticated access</name>
+				<description>Access to Alfresco Repository WebScripts that do not require authentication</description>
+				<connector-id>alfresco</connector-id>
+				<endpoint-url>
+					${alfresco.server.scheme}://${alfresco.server.name}:${alfresco.server.port}/${alfresco.webapp.name}/s
+				</endpoint-url>
+				<identity>none</identity>
+			</endpoint>
+
+			<endpoint>
+				<id>alfresco</id>
+				<name>Alfresco - user access</name>
+				<description>Access to Alfresco Repository WebScripts that require user authentication</description>
+				<connector-id>alfresco</connector-id>
+				<endpoint-url>
+					${alfresco.server.scheme}://${alfresco.server.name}:${alfresco.server.port}/${alfresco.webapp.name}/s
+				</endpoint-url>
+				<identity>user</identity>
+			</endpoint>
+		</remote>
+	</config>
+
+</alfresco-config>
