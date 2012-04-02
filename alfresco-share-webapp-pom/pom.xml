@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.alfresco.maven</groupId>
+		<artifactId>alfresco-super-pom</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>org.alfresco.maven</groupId>
+	<artifactId>alfresco-share-webapp-pom</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Alfresco Share web application example customization</name>
+	<description>SHARE customization meant to be the main Alfresco UI, which enables collaboration and easy ReST based remotable customization.</description>
+	
+	<!-- 
+		@author		Stijn de Reede
+		Heavily based on the alfresco archetypes, http://code.google.com/p/maven-alfresco-archetypes/.
+	 -->
+	
+	<!-- 
+		TODO:
+		* Check if Spring runtime properties need to be put back in
+		* Make logging configurable (debug by default in Jetty?)
+	
+	 	Usage:
+	 	`mvn -Prun`
+	 		When called without any Maven goals on the command line, the default goals will be `clean jetty:run`.
+	 		Runs the local customizations on Share in Jetty, using the Share WAR file as overlay. Jetty points to the
+	 		target directory to be able to handle filtered files, so be sure to have your IDE automatically rebuild 
+	 		your project. Automatic reloading of the webapp is disabled, since Jetty produces a NPE in overlay 
+	 		reloading. This means that for Spring changes you need to restart Jetty (which shouldn't take that long).
+
+	-->
+	
+	<!-- 
+		Need to overwrite the parent connection, as Maven automatically adds ${artifactId} to the URL, http://jira.codehaus.org/browse/MNG-4508, 
+		http://jira.codehaus.org/browse/MNG-4670 
+	-->
+	<scm>
+		<connection>scm:svn:${svn.server.url}/${project.artifactId}/</connection>
+		<developerConnection>scm:svn:${svn.server.url}/${project.artifactId}/</developerConnection>
+		<url>${svn.server.url}/${project.artifactId}</url>
+	</scm>
+
+	<properties>
+        <!-- Alfresco version/edition selection, inherited by default, but can be overriden -->
+        <!--  
+        <alfresco.version>4.0.b</alfresco.version>
+        <alfresco.edition>community</alfresco.edition>
+        -->
+	
+		<share.server.scheme>http</share.server.scheme>
+		<share.server.name>localhost</share.server.name>
+		<share.server.port>8080</share.server.port>
+		<alfresco.server.scheme>http</alfresco.server.scheme>
+		<alfresco.server.name>localhost</alfresco.server.name>
+		<alfresco.server.port>8080</alfresco.server.port>
+		<alfresco.webapp.name>alfresco</alfresco.webapp.name>
+			
+		<!-- Name of the packaged web app, also the context path where Jetty will run -->
+		<webapp.name>share</webapp.name>
+		
+		<share.log.level>info</share.log.level>
+        <surf.wiring.mode>development</surf.wiring.mode><!-- "production" is the other allowed value -->
+        
+    </properties>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>org.alfresco</groupId>
+			<artifactId>share</artifactId>
+			<version>${alfresco.version}</version>
+			<type>war</type>
+			<scope>provided</scope>
+			<classifier>${alfresco.edition}</classifier>
+		</dependency>
+	</dependencies>
+
+	
+	<profiles>
+	
+		<!-- profile that is active when a src directory exists, this skips execution for the pom, while it is active for children -->
+		<profile>
+			<id>non-pom</id>
+			<activation>
+				<file>
+					<exists>src</exists>
+				</file>
+			</activation>
+			<build>
+			
+				<finalName>${webapp.name}</finalName>
+
+				<resources>
+					<!--
+						Default profile to build as an Alfresco extension - resources are
+						copied into classpath
+					-->
+					<resource>
+						<directory>src/main/resources</directory>
+						<filtering>true</filtering>
+					</resource>
+					<!-- 
+						explicitly filter the webapp directory to trigger automatic project rebuilds for Jetty (these 
+						files aren't used in the normal build process)
+					-->
+					<resource>
+						<directory>src/main/webapp</directory>
+						<targetPath>${project.build.directory}/filtered</targetPath>				
+						<filtering>true</filtering>
+						<includes>
+							<include>**/*.xml</include>
+							<include>**/*.properties</include>
+							<include>**/*.jsp</include>
+							<include>**/*.ftl</include>
+							<include>**/*.html</include>
+						</includes>						
+					</resource>			
+				</resources>
+			
+	
+				<plugins>
+				
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<!-- 
+								copy the share war dependency into the build directory
+								need to use the copy instead of copy-dependencies to be able to rename the output file 
+							-->
+							<execution>
+								<id>copy-share-war</id>
+								<goals>
+									<goal>copy</goal>
+								</goals>
+								<phase>package</phase>
+								<configuration>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.alfresco</groupId>
+											<artifactId>share</artifactId>
+											<version>${alfresco.version}</version>
+											<type>war</type>
+											<classifier>${alfresco.edition}</classifier>
+											<destFileName>${webapp.name}.war</destFileName>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${project.build.directory}/</outputDirectory>
+								</configuration>
+							</execution>				
+						</executions>
+					</plugin>		
+				
+					<!-- create the exploded web app to use as source for copying into the Alfresco webapp WAR -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-war-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>default-war</id>
+								<phase>package</phase>
+								<goals>
+									<goal>exploded</goal>
+								</goals>
+								<configuration>
+									<!-- override the war name to prevent overwriting the Alfresco WAR file -->
+									<warName>${webapp.name}.custom</warName>
+									<failOnMissingWebXml>false</failOnMissingWebXml>
+									<!-- filter text files -->
+									<webResources>
+										<resource>
+											<directory>${project.basedir}/src/main/webapp</directory>
+											<includes>
+												<include>**/*.xml</include>
+												<include>**/*.properties</include>
+												<include>**/*.jsp</include>
+												<include>**/*.ftl</include>
+												<include>**/*.html</include>
+											</includes>
+											<filtering>true</filtering>
+										</resource>
+									</webResources>									
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>  			
+					
+					<!-- copy the generated webapp WAR (with the AMP's already packaged in there) into the Alfresco webapp WAR -->
+					<!-- @TODO fix packaging an empty webapp -->
+					<plugin>
+						<groupId>com.goldin.plugins</groupId>
+						<artifactId>maven-copy-plugin</artifactId>
+						<executions>
+							<execution>
+					            <id>update-war</id>
+					            <phase>package</phase>
+					            <goals>
+					                <goal>copy</goal>
+					            </goals>
+								<configuration>
+									<!-- failIfNotFound doesn't work! -->
+									<failIfNotFound>false</failIfNotFound>
+									<groovyConfig>
+										<verboseBinding>true</verboseBinding>
+									</groovyConfig>
+									<resource>
+									    <targetPath>${project.build.directory}/${webapp.name}.war</targetPath>
+									    <directory>${project.build.directory}/${webapp.name}</directory>
+									    <pack>true</pack>
+									    <update>true</update>
+									</resource>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>				
+				
+				</plugins>
+			</build>
+		</profile>
+	
+
+		<profile>
+			<id>run</id>
+			
+			<properties>
+				<!-- Override these properties in your settings.xml with a profile that is by default enabled -->
+				<share.server.scheme>http</share.server.scheme>
+				<share.server.name>localhost</share.server.name>
+				<share.server.port>8081</share.server.port>
+				<alfresco.server.scheme>http</alfresco.server.scheme>
+				<alfresco.server.name>localhost</alfresco.server.name>
+				<alfresco.server.port>8080</alfresco.server.port>
+				<alfresco.webapp.name>alfresco</alfresco.webapp.name>
+			</properties>
+			
+			<build>
+			
+		
+				<!-- if using the profile without any goals on the command line, run this goal -->
+				<defaultGoal>clean jetty:run</defaultGoal>
+				<plugins>
+				
+					<!-- 
+						I ran into two issue with the Jetty plugin.
+						
+						First of all, the Jetty 7.x plugin is required instead of the Jetty 6.x plugin. This is because in the 6.x codeline
+						there is a bug related to resolving file system paths from WAR overlays, see http://jira.codehaus.org/browse/JETTY-1027.
+						This resulted in a lot of errors like this:
+						07:38:29,972 WARN  [org.springframework.extensions.webscripts.DeclarativeRegistry] Unable to register script classpath:alfresco/site-webscripts/WEB-INF/classes/alfresco/site-webscripts/org/alfresco/components/admin/replication-job.get.desc.xml due to error: 02140000 Failed to read Web Script description document classpath:alfresco/site-webscriptsWEB-INF/classes/alfresco/site-webscripts/org/alfresco/components/admin/replication-job.get.desc.xml ; Document WEB-INF/classes/alfresco/site-webscripts/org/alfresco/components/admin/replication-job.get.desc.xml does not exist within store classpath:alfresco/site-webscripts
+						
+						Secondly, by default Jetty will fall back to a standard error log if SLF4J is not on the classpath. For every HTTP
+						request Share (through the webapp context) tries to lookup the resource on the classpath at first, and if it isn't found
+						there, it fails back to a file system lookup. Since Jetty produces a WARN log statement (which is written to stderr if 
+						no SLF4J is found) for every classpath lookup that fails, the console output will be full of log statements (with
+						stacktraces). FYI: Tomcat silently ignores these classpath lookup errors.
+						To get rid of these errors, I added SLF4J and the Log4J adapter to the Jetty plugin classpath. I didn't add a Log4J 
+						configuration to the Jetty plugin System properties, since this will override the Log4J configuration of Share. The 
+						only downside of this is that there are three Log4J WARN statements in stderr since Jetty starts logging through 
+						Log4J before the Share webapp initializes Log4J.					
+					 -->
+					<plugin>
+						<groupId>org.mortbay.jetty</groupId>
+						<artifactId>jetty-maven-plugin</artifactId>
+						<configuration>
+						<!-- 
+							Dynamic reloading doesn't work since Jetty adds two overlays as null objects. This causes
+							an NPE at org.mortbay.jetty.plugin.MavenWebInfConfiguration.deconfigure(MavenWebInfConfiguration.java:172)
+						 	<scanIntervalSeconds>10</scanIntervalSeconds>
+						 -->
+							<webAppConfig>
+								<contextPath>/${webapp.name}</contextPath>
+								<unpackOverlays>true</unpackOverlays>
+								<resourceBases>
+									<!-- add the filtered webapp directory -->
+									<resourceBase>${project.build.directory}/filtered</resourceBase>
+									<resourceBase>src/main/webapp</resourceBase>
+								</resourceBases>
+							</webAppConfig>
+							<connectors>
+								<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+									<port>${share.server.port}</port>
+								</connector>
+							</connectors>
+							<!-- configure SLF4J to use Log4J -->
+							<systemProperties>
+								<systemProperty>
+									<name>org.apache.commons.logging.Log</name>
+									<value>org.apache.commons.logging.impl.Log4JLogger</value>
+								</systemProperty>
+							</systemProperties>
+						</configuration>
+						<dependencies>
+							<!-- add SLF4J and Log4J to the plugin classpath to prevent logging to stderr -->
+							<dependency>
+								<groupId>org.slf4j</groupId>
+								<artifactId>slf4j-api</artifactId>
+								<version>1.6.4</version>
+							</dependency>
+							<dependency>
+								<groupId>org.slf4j</groupId>
+								<artifactId>slf4j-log4j12</artifactId>
+								<version>1.6.4</version>
+							</dependency>							
+						</dependencies>						
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+		
+	</profiles>
+
+</project>

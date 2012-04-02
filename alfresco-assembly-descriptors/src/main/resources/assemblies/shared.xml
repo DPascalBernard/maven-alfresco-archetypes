@@ -1,0 +1,92 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+	<id>shared</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<baseDirectory>shared</baseDirectory>
+
+	<fileSets>
+	
+		<!-- Copy each environment folder (does nothing if the source folder doesn't exist) -->
+		<fileSet>
+			<directory>src/main/shared/dev</directory>
+			<outputDirectory>/dev</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/shared/tst</directory>
+			<outputDirectory>/tst</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/shared/acc</directory>
+			<outputDirectory>/acc</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/shared/prd</directory>
+			<outputDirectory>/prd</outputDirectory>
+		</fileSet>	
+		
+		<!-- Copy the common folder to each environment folder (does nothing if the source folder doesn't exist) -->
+		<fileSet>
+			<directory>src/main/shared/common</directory>
+			<outputDirectory>/dev</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/shared/common</directory>
+			<outputDirectory>/tst</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/shared/common</directory>
+			<outputDirectory>/acc</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/shared/common</directory>
+			<outputDirectory>/prd</outputDirectory>
+		</fileSet>
+		
+		<!-- Force creation of dev, tst, acc and prd environment folders in assembly (if not created previously) -->
+		<fileSet>
+			<directory>src/main/shared</directory>
+			<outputDirectory>/dev</outputDirectory>
+			<excludes>
+				<exclude>**/*</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/shared</directory>
+			<outputDirectory>/tst</outputDirectory>
+			<excludes>
+				<exclude>**/*</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/shared</directory>
+			<outputDirectory>/acc</outputDirectory>
+			<excludes>
+				<exclude>**/*</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/shared</directory>
+			<outputDirectory>/prd</outputDirectory>
+			<excludes>
+				<exclude>**/*</exclude>
+			</excludes>
+		</fileSet>		
+		
+		<!-- Copy all other files, to allow custom folders and files like readme's -->
+		<fileSet>
+			<directory>src/main/shared</directory>
+			<outputDirectory>/</outputDirectory>
+			<excludes>
+				<exclude>common/**</exclude>
+				<exclude>dev/**</exclude>
+				<exclude>tst/**</exclude>
+				<exclude>acc/**</exclude>
+				<exclude>prd/**</exclude>
+			</excludes>
+		</fileSet>
+			
+	</fileSets>
+
+</assembly>

@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.alfresco.maven</groupId>
+		<artifactId>alfresco-super-pom</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>org.alfresco.maven</groupId>
+	<artifactId>alfresco-assembly-descriptors</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Alfresco assembly descriptors</name>
+	<description>Assembly descriptors for alfresco modules</description>
+
+	<!-- Need to overwrite the parent connection, as Maven automatically adds ${artifactId}, http://jira.codehaus.org/browse/MNG-4508, 
+		http://jira.codehaus.org/browse/MNG-4670 -->
+	<scm>
+		<connection>scm:svn:${svn.server.url}/trunk/${project.artifactId}/</connection>
+		<developerConnection>scm:svn:${svn.server.url}/trunk/${project.artifactId}/</developerConnection>
+		<url>${svn.server.url}/trunk/${project.artifactId}</url>
+	</scm>
+	
+</project>
