@@ -10,7 +10,6 @@ This page defines the target use cases for the archetypes/plugins defined in thi
  # run customized alfresco WAR embedded with Jetty and H2
  # run AMP against a pre-defined Alfresco.WAR embedded with Jetty and H2
  # allow Alfresco WAR and Share WAR to depend on AMPs/JARs, and run WARs with modules embedded in Jetty + H2
-
  # package AMP and distribute to maven repository
  # package Share JAR modules and distribute to maven repository
 
