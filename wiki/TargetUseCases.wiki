@@ -1,0 +1,30 @@
+#summary Target goals / use cases for this project(What can I do with this project?)
+#labels Phase-Requirements,Phase-QA,Phase-Support,Featured
+
+= Introduction =
+
+This page defines the target use cases for the archetypes/plugins defined in this project. This also defines what is supported/needs to be tested upon new releases of this project.
+
+= Core use cases (functional requirements) =
+
+ # run customized alfresco WAR embedded with Jetty and H2
+ # run AMP against a pre-defined Alfresco.WAR embedded with Jetty and H2
+ # allow Alfresco WAR and Share WAR to depend on AMPs/JARs, and run WARs with modules embedded in Jetty + H2
+
+ # package AMP and distribute to maven repository
+ # package Share JAR modules and distribute to maven repository
+
+
+== Stretch goals ==
+
+ # run against mysql
+ # deploy to running tomcat
+ # use jrebel to enable rapid application development
+ # by default, share custom WAR should work with Alfresco custom WAR running in jetty (no port conflict, and proper share-config-custom.xml config)
+
+= Non functional requirements =
+
+ # being able to reference / switch alfresco version with a maven property
+ # support for SCM (svn and git to start with)
+ # clean / lean archetypes and fixed dependencies / plugins coming from parent pom
+ # support for community / enterprise
