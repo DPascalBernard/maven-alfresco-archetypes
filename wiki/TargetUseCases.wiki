@@ -20,6 +20,7 @@ This page defines the target use cases for the archetypes/plugins defined in thi
  # deploy to running tomcat
  # use jrebel to enable rapid application development
  # by default, share custom WAR should work with Alfresco custom WAR running in jetty (no port conflict, and proper share-config-custom.xml config)
+ # provide a way use the SOLR search subsystem (for Alfresco 4.x+)
 
 = Non functional requirements =
 
@@ -27,3 +28,4 @@ This page defines the target use cases for the archetypes/plugins defined in thi
  # support for SCM (svn and git to start with)
  # clean / lean archetypes and fixed dependencies / plugins coming from parent pom
  # support for community / enterprise
+ # setup test cases to validate (at least) core user stories
