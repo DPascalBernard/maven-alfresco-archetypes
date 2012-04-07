@@ -21,6 +21,7 @@ This page defines the target use cases for the archetypes/plugins defined in thi
  # use jrebel to enable rapid application development
  # by default, share custom WAR should work with Alfresco custom WAR running in jetty (no port conflict, and proper share-config-custom.xml config)
  # provide a way use the SOLR search subsystem (for Alfresco 4.x+)
+ # embedded repository scenario (FirstFoundationClient like). should be possible with the advent of the POMs
 
 = Non functional requirements =
 
