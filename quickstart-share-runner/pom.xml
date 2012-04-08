@@ -28,7 +28,7 @@
         <alfresco.webapp.name>alfresco</alfresco.webapp.name>
         <share.webapp.name>share</share.webapp.name>
 
-        <!-- Alfresco Repo configuration -->
+        <!-- Alfresco Repo configuration with embedded DB -->
         <alfresco.data.location.name>alf_data_jetty</alfresco.data.location.name>
         <alfresco.data.location>./${alfresco.data.location.name}</alfresco.data.location>
         <alfresco.db.name>alf_jetty</alfresco.db.name>
@@ -37,12 +37,23 @@
         <alfresco.db.params>MODE=PostgreSQL;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=10000;MVCC=TRUE</alfresco.db.params>
         <alfresco.db.url>jdbc:h2:${alfresco.data.location}/h2_data/${alfresco.db.name};${alfresco.db.params}</alfresco.db.url>
         <alfresco.db.datasource.class>org.h2.jdbcx.JdbcDataSource</alfresco.db.datasource.class>
+
+        <!-- Logging in project's root alfresco.log -->
         <log.dir></log.dir>
 
         <!-- Share configuration -->
         <share.log.level>info</share.log.level>
         <surf.wiring.mode>development</surf.wiring.mode><!-- "production" is the other allowed value -->
         <env>local</env>
+
+        <!--
+        Built-in multi-environment property placeholding support; to enable it on your sub-module
+        * create src/main/properties/${env} folder structure
+        * place <anyname>.properties and define <webapp.resource.filter> with the correct name
+        -->
+        <webapp.resource.filter>alfresco-global.properties</webapp.resource.filter>
+        <webapp.resource.build.folder>${project.build.outputDirectory}</webapp.resource.build.folder>
+        <webapp.name>${project.artifactId}</webapp.name>
 
         <!--
         All the properties that follows should be moved into the next-generation alfresco-parent POM
@@ -57,8 +68,8 @@
         <maven.jar.version>2.4</maven.jar.version>
         <maven.war.version>2.2</maven.war.version>
         <maven.release.version>2.2.2</maven.release.version>
-        <maven.amp.version>3.0.3</maven.amp.version>
-        <maven.nosnapshot.version>0.0.7</maven.nosnapshot.version>
+        <maven.amp.version>3.0.4</maven.amp.version>
+        <maven.nosnapshot.version>0.0.8</maven.nosnapshot.version>
         <buildnumber.maven.version>1.0</buildnumber.maven.version>
         <jetty.maven.version>8.1.0.RC5</jetty.maven.version>
 
@@ -70,11 +81,11 @@
 
 
     <!--
-    All the code that follows should be moved into the next-generation alfresco-parent POM
+    All the code that follows should be moved into the next-generation alfresco-integration-parent POM
     -->
 
     <prerequisites>
-        <maven>2.2.1</maven>
+        <maven>3.0.3</maven>
     </prerequisites>
 
     <repositories>
@@ -112,6 +123,8 @@
     </pluginRepositories>
 
     <build>
+        <finalName>${webapp.name}</finalName>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -210,7 +223,7 @@
                     <version>${buildnumber.maven.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>com.sourcesense.maven</groupId>
+                    <groupId>org.alfresco.maven</groupId>
                     <artifactId>maven-nosnapshot-plugin</artifactId>
                     <version>${maven.nosnapshot.version}</version>
                 </plugin>
@@ -294,4 +307,41 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <!--
+    All the code that follows should be moved into the next-generation alfresco-web-integration-parent POM
+    -->
+
+    <profiles>
+        <profile>
+            <id>enable-filtering</id>
+            <activation>
+                <file>
+                    <exists>src/main/properties</exists>
+                </file>
+            </activation>
+            <properties>
+                <webapp.resource.folder>src/main/properties/${env}</webapp.resource.folder>
+            </properties>
+            <build>
+                <filters>
+                    <filter>${webapp.resource.folder}/${webapp.resource.filter}</filter>
+                </filters>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                    <resource>
+                        <directory>${webapp.resource.folder}</directory>
+                        <includes>
+                            <include>${webapp.resource.filter}</include>
+                        </includes>
+                        <filtering>true</filtering>
+                        <targetPath>${webapp.resource.build.folder}</targetPath>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+    </profiles>
 </project>
