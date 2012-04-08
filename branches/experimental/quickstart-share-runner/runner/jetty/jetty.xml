@@ -60,8 +60,8 @@
                  <Call name="addHandler">
                      <Arg>
                          <New class="org.eclipse.jetty.webapp.WebAppContext">
-                             <Set name="contextPath">/${alfresco.webapp.name}</Set>
-                             <Set name="war">${project.parent.basedir}/${alfresco.webapp.name}/target/${alfresco.webapp.name}.war</Set>
+                             <Set name="contextPath">/alfresco</Set>
+                             <Set name="war">${project.parent.basedir}/alfresco/target/alfresco.war</Set>
 
                              <Get name="securityHandler">
                                  <Set name="loginService">
@@ -90,8 +90,8 @@
                  <Call name="addHandler">
                    <Arg>
                        <New class="org.eclipse.jetty.webapp.WebAppContext">
-                           <Set name="contextPath">/${share.webapp.name}</Set>
-                           <Set name="war">${project.parent.basedir}/${share.webapp.name}/target/${share.webapp.name}.war</Set>
+                           <Set name="contextPath">/share</Set>
+                           <Set name="war">${project.parent.basedir}/share/target/share.war</Set>
                        </New>
                    </Arg>
                </Call>

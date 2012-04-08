@@ -27,6 +27,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <amp.overlay.enable>true</amp.overlay.enable>
+    </properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.alfresco</groupId>
