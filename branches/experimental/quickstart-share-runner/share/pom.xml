@@ -12,6 +12,11 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <webapp.resource.filter>application.properties</webapp.resource.filter>
+        <webapp.resource.build.folder>${project.build.directory}/classes/alfresco/web-extension</webapp.resource.build.folder>
+    </properties>
+
     <dependencies>
 		<dependency>
 			<groupId>org.alfresco</groupId>
@@ -20,25 +25,4 @@
 			<classifier>${alfresco.edition}</classifier>
 		</dependency>
 	</dependencies>
-
-	<build>
-        <finalName>${share.webapp.name}</finalName>
-		<filters>
-			<filter>${project.basedir}/src/main/properties/${env}/application.properties</filter>
-		</filters>
-		<resources>
-            <resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-			<resource>
-				<directory>${project.basedir}/src/main/properties/${env}</directory>
-				<includes>
-					<include>application.properties</include>
-				</includes>
-				<targetPath>alfresco/web-extension</targetPath>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-	</build>
 </project>

@@ -35,20 +35,4 @@
             <type>war</type>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<finalName>${alfresco.webapp.name}</finalName>
-		<filters>
-			<filter>${project.basedir}/src/main/properties/${env}/alfresco-global.properties</filter>
-		</filters>
-		<resources>
-			<resource>
-				<directory>src/main/properties/${env}</directory>
-				<includes>
-					<include>alfresco-global.properties</include>
-				</includes>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-	</build>
 </project>
