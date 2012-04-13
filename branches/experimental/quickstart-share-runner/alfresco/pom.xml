@@ -27,10 +27,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <properties>
-        <amp.overlay.enable>true</amp.overlay.enable>
-    </properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.alfresco</groupId>
@@ -38,5 +34,33 @@
 			<classifier>${alfresco.edition}</classifier>
             <type>war</type>
 		</dependency>
+        <dependency>
+            <groupId>com.mycompany</groupId>
+            <artifactId>amp</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <type>amp</type>
+        </dependency>
 	</dependencies>
+
+    <!--<profiles>-->
+        <!--<profile>-->
+            <!--<id>enable-amp-overlay</id>-->
+            <!--<activation>-->
+                <!--<file>-->
+                    <!--<exists>overlay.properties</exists>-->
+                <!--</file>-->
+            <!--</activation>-->
+            <!--<build>-->
+                <!--<plugins>-->
+                    <!--<plugin>-->
+                        <!--<artifactId>maven-dependency-plugin</artifactId>-->
+                    <!--</plugin>-->
+                    <!--<plugin>-->
+                        <!--<artifactId>maven-war-plugin</artifactId>-->
+                    <!--</plugin>-->
+                <!--</plugins>-->
+            <!--</build>-->
+        <!--</profile>-->
+    <!--</profiles>-->
+
 </project>

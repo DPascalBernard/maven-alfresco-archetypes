@@ -13,7 +13,6 @@
     </parent>
 
     <properties>
-        <amp.overlay.enable>true</amp.overlay.enable>
         <webapp.resource.filter>application.properties</webapp.resource.filter>
         <webapp.resource.build.folder>${project.build.directory}/classes/alfresco/web-extension</webapp.resource.build.folder>
     </properties>
