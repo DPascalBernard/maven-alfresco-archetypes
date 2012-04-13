@@ -41,9 +41,13 @@
         <jetty.maven.version>8.1.0.RC5</jetty.maven.version>
 
         <!-- Dependencies Versions -->
+        <spring.version>3.0.5.RELEASE</spring.version>
         <h2.version>1.3.158</h2.version>
         <h2-support.version>1.2</h2-support.version>
         <servlet.api.version>2.5</servlet.api.version>
+        <faces.version>1.1_02</faces.version>
+        <digester.version>1.6</digester.version>
+        <log4j.version>1.2.15</log4j.version>
     </properties>
 
 
@@ -93,25 +97,16 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>${maven.clean.version}</version>
+                    <groupId>org.alfresco.maven.plugin</groupId>
+                    <artifactId>maven-amp-plugin</artifactId>
+                    <version>${maven.amp.version}</version>
+                    <extensions>true</extensions>
                     <configuration>
-                        <filesets>
-                            <fileset>
-                                <directory>${project.basedir}/${alfresco.data.location.name}</directory>
-                            </fileset>
-                            <fileset>
-                                <directory>${project.basedir}</directory>
-                                <includes>
-                                    <include>**.log</include>
-                                    <include>${alfresco.data.location.name}</include>
-                                </includes>
-                            </fileset>
-                        </filesets>
+                        <archive>
+                            <addMavenDescriptor>false</addMavenDescriptor>
+                        </archive>
                     </configuration>
                 </plugin>
-
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -134,17 +129,22 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>${maven.dependency.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
                     <version>${maven.war.version}</version>
                     <configuration>
                         <archiveClasses>false</archiveClasses>
                         <warSourceExcludes>tools/**</warSourceExcludes>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven.clean.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven.dependency.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -170,6 +170,11 @@
                     <groupId>org.alfresco.maven</groupId>
                     <artifactId>maven-nosnapshot-plugin</artifactId>
                     <version>${maven.nosnapshot.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>${jetty.maven.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -227,9 +232,45 @@
                 <classifier>${alfresco.edition}</classifier>
             </dependency>
             <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${spring.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>servlet-api</artifactId>
                 <version>${servlet.api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.faces</groupId>
+                <artifactId>jsf-api</artifactId>
+                <version>${faces.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.faces</groupId>
+                <artifactId>jsf-impl</artifactId>
+                <version>${faces.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-digester</groupId>
+                <artifactId>commons-digester</artifactId>
+                <version>${digester.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>
