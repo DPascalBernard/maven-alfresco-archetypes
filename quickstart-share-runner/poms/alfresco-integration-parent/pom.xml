@@ -38,7 +38,7 @@
         <maven.amp.version>3.0.4</maven.amp.version>
         <maven.nosnapshot.version>0.0.8</maven.nosnapshot.version>
         <buildnumber.maven.version>1.0</buildnumber.maven.version>
-        <jetty.maven.version>8.1.0.RC5</jetty.maven.version>
+        <maven.jetty.version>6.1.26</maven.jetty.version>
 
         <!-- Dependencies Versions -->
         <spring.version>3.0.5.RELEASE</spring.version>
@@ -173,7 +173,7 @@
                 </plugin>
                 <plugin>
                     <groupId>org.mortbay.jetty</groupId>
-                    <artifactId>jetty-maven-plugin</artifactId>
+                    <artifactId>maven-jetty-plugin</artifactId>
                     <version>${jetty.maven.version}</version>
                 </plugin>
             </plugins>
