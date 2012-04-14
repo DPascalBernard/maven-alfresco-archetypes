@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mycompany</groupId>
-	<artifactId>quickstart-alfresco-share</artifactId>
+	<artifactId>quickstart-alfresco-integration</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<name>Quickstart of Alfresco and Share with DB and runner embedded</name>
     <packaging>pom</packaging>
@@ -16,6 +16,7 @@
     </parent>
 
     <modules>
+      <module>amp</module>
       <module>alfresco</module>
       <module>share</module>
       <module>runner</module>

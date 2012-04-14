@@ -9,7 +9,7 @@
 
     <parent>
         <groupId>com.mycompany</groupId>
-        <artifactId>quickstart-alfresco-share</artifactId>
+        <artifactId>quickstart-alfresco-integration</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -23,6 +23,9 @@
             </activation>
             <build>
                 <plugins>
+                    <!--<plugin>-->
+                        <!--<artifactId>maven-resources-plugin</artifactId>-->
+                    <!--</plugin>-->
                     <plugin>
                         <groupId>org.mortbay.jetty</groupId>
                         <artifactId>maven-jetty-plugin</artifactId>
