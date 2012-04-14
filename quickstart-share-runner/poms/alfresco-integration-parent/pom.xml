@@ -174,7 +174,7 @@
                 <plugin>
                     <groupId>org.mortbay.jetty</groupId>
                     <artifactId>maven-jetty-plugin</artifactId>
-                    <version>${jetty.maven.version}</version>
+                    <version>${maven.jetty.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
