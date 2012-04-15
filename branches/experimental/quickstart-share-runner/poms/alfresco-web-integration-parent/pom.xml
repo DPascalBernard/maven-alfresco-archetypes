@@ -48,6 +48,24 @@
         <finalName>${webapp.name}</finalName>
 
         <plugins>
+            <!-- Cleaning Alfresco Repository storage/log folders/files -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}/${alfresco.data.location}</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${project.basedir}</directory>
+                            <includes>
+                                <include>*.log</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
             <!-- Maven resources plugin is (mis)used here to create an
             empty folder; could/should be maven-amp-plugin's role -->
             <plugin>
@@ -111,23 +129,6 @@
                             <directory>${project.build.directory}/ampoverlays</directory>
                         </resource>
                     </webResources>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${project.basedir}/${alfresco.data.location}</directory>
-                        </fileset>
-                        <fileset>
-                            <directory>${project.basedir}</directory>
-                            <includes>
-                                <include>*.log</include>
-                            </includes>
-                        </fileset>
-                    </filesets>
                 </configuration>
             </plugin>
         </plugins>
