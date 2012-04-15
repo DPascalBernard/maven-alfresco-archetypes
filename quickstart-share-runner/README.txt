@@ -14,7 +14,7 @@ Here follows a list of build features that have not been ported yet:
 * Maven SCM and release
 * JBoss run
 * Tomcat remote deployment
-* Jetty Jave source and resources reloading (Jetty currently runs .war files)
+* Jetty Java source and resources reloading (Jetty currently runs .war files)
 * Maven Site generation
 * Maven reporting
 * Maven distributionManagement
