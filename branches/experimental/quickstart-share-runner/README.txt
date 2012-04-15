@@ -1,3 +1,31 @@
+Disclaimer
+---
+This codebase is currently work in progress; the effort have been split in two directions:
+a) the definition of 2 POM files that can handle versions and common build behaviors/features
+b) the definition of an all-in-one quickstart with nearly no customizations, mostly focused on
+environment configuration and build process.
+
+Most of the build features have been successfully ported to a new structure, whose main advantage is
+to keep pom.xml files extremely simple and readable (since a lot of logic have been moved to the parent).
+Inherited behaviors are configurable simply defining specific properties in the project's or module's pom.xml
+(see documentation below).
+
+Here follows a list of build features that have not been ported yet:
+* Maven SCM and release
+* JBoss run
+* Tomcat remote deployment
+* Jetty Jave source and resources reloading (Jetty currently runs .war files)
+* Maven Site generation
+* Maven reporting
+* Maven distributionManagement
+
+Apart from SCM and release, all the mentioned features are probably best suited for a more enterprise archetype,
+using the Alfresco Web Integration POM as parent and adding more build features around Maven, Tomcat and JBoss.
+
+Regarding the POM files, I'd like to see them deployed on maven.alfresco.com, hopefully generated (by the
+Alfresco build?) and tested for each Alfresco release.
+
+
 Introduction
 ---
 The quickstart-alfresco-integration archetype aims to show a clean and simple Alfresco
