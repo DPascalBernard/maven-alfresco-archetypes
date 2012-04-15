@@ -76,6 +76,20 @@ The following services will start:
 POM files
 
 ---
+FEATURES - alfresco-integration-parent
+---
+Activation: built-in
+
+* DependencyManagement for all Alfresco commonly used and WAR artifacts.
+* PluginManagement for all Maven plugin commonly used
+
+-- Properties
+
+<alfresco.version>4.0.b</alfresco.version>
+<alfresco.edition>community</alfresco.edition>
+
+
+---
 FEATURES - alfresco-web-integration-parent
 ---
 
@@ -126,6 +140,7 @@ simply attach -Denv=yourenv to your mvn commands.
 
 -- Properties
 
+<env>local</env>
 <webapp.resource.filter>alfresco-global.properties</webapp.resource.filter>
 <webapp.resource.build.folder>${project.build.outputDirectory}</webapp.resource.build.folder>
 <webapp.name>${project.artifactId}</webapp.name>
