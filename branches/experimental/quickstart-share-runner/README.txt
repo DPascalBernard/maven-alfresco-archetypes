@@ -1,6 +1,5 @@
 Introduction
 ---
-
 This archetype aims to show a clean and simple Alfresco SDK based on Maven in order to implement
 an Alfresco foundation project composed by Repository and Share.
 
@@ -14,45 +13,96 @@ Biggest efforts we aimed to
 
 Run it
 ---
+To run quickstart-alfresco-integration, simply type (from the project's root folder)
 
-To run quickstart-share-runner, simply type (from the project's root folder)
-
-mvn package -Prun
+MAVEN_OPTS="-Xms256m -Xmx1G -XX:PermSize=300m" mvn install -Prun
 
 The following services will start:
-- http://localhost:8080/alfresco (still buggy)
+- http://localhost:8080/alfresco
 - http://localhost:8080/share
 
 Specs
 ---
-
-One Jetty Server instance will be run on a forked JVM using the following args: -Xms256m -Xmx1G -XX:PermSize=256m
-To tweak your JVM parameters, check (project's root) pom.xml <jetty.jvmArgs>
-
 The DB in use is H2 embedded (thanks @skuro), therefore you don't need to setup a DB by your own.
 
 
 ---
-FEATURES
+FEATURES - alfresco-web-integration-parent
 ---
 
 
-Multi-environment properties placeholding
+* Alfresco Repository Log and storage cleaning
 ---
+Activation: built-in
 
-As additional feature, you can enable multi-environment property placeholding simply creating the
-src/main/properties/${env} folder structure used in both alfresco and share modules; within your pom.xml, make sure that
-you redefine (when defaults don't suit your needs):
+When mvn clean is invoked, all files produced by Maven runs must be removed; this is the list of
+filesets inherited from alfresco-web-integration-parent:
+
+ * target/ (default)
+ * *.log
+ * ${alfresco.data.location}
+
+-- Properties
+
+  <alfresco.data.location>alf_data_jetty</alfresco.data.location>
+
+
+* Multi-environment properties placeholding
+---
+Activation: exists src/main/properties
+
+You can enable multi-environment property placeholding by simply creating the
+src/main/properties/${env} folder structure; in order to switch between environments,
+simply attach -Denv=yourenv to your mvn commands; filter propertyfile is located in
+src/main/properties/${env}/${webapp.resource.filter}
+
+By default, filtered resources are
+ * src/main/resources, copied into ${project.build.outputDirectory}/classes
+ * src/main/properties, copied into ${webapp.resource.build.folder}
+(@TODO - and src/main/webapp is not?)
+
+-- Properties
 
   <webapp.resource.filter>alfresco-global.properties</webapp.resource.filter>
   <webapp.resource.build.folder>${project.build.outputDirectory}</webapp.resource.build.folder>
   <webapp.name>${project.artifactId}</webapp.name>
 
-This way, you can invoke your mvn commands adding -Denv=yourenv in order to use as property filter file:
 
-src/main/properties/yourenv/${webapp.resource.filter}
+* Jetty H2 configuration
+---
+Activation: exists jetty/jetty-env.xml
 
-By default the folders filtered are
+You can enable Jetty to run your application(s); by default Jetty will run the ROOT context
+using jetty/root-web.xml (defined by <jetty.root.webxml> within your pom.xml), so that
+you can easily define the contextHandlers of one or more applications as follows:
 
-src/main/resources, copied into ${project.build.outputDirectory}/classes
-src/main/properties, copied into ${webapp.resource.build.folder}
+<plugin>
+    <groupId>org.mortbay.jetty</groupId>
+    <artifactId>maven-jetty-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>run</id>
+            <goals><goal>run</goal></goals>
+            <phase>package</phase>
+            <configuration>
+                <contextHandlers>
+                    <contextHandler implementation="org.mortbay.jetty.webapp.WebAppContext">
+                        <war>${project.basedir}/../alfresco/target/alfresco.war</war>
+                        <contextPath>/alfresco</contextPath>
+                    </contextHandler>
+                    <contextHandler implementation="org.mortbay.jetty.webapp.WebAppContext">
+                        <war>${project.basedir}/../share/target/share.war</war>
+                        <contextPath>/share</contextPath>
+                    </contextHandler>
+                </contextHandlers>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+
+-- Properties
+
+  <jetty.port>8080</jetty.port>
+  <jetty.root.contextpath>/</jetty.root.contextpath>
+  <jetty.root.sourcedir>.</jetty.root.sourcedir>
+  <jetty.root.webxml>jetty/root-web.xml</jetty.root.webxml>
