@@ -1,15 +1,32 @@
 Introduction
 ---
 This archetype aims to show a clean and simple Alfresco SDK based on Maven in order to implement
-an Alfresco foundation project composed by Repository and Share.
+an Alfresco foundation project composed by Repository, Share and one AMP module.
 
-The project is fully configurable via the (project's root) pom.xml, specifically its properties; the rest of the Maven code
-is not meant to changed and hopefully will be soon inherited by some Alfresco Parent POMs (see comments inline in pom.xml)
+The project is composed by the following modules:
 
-Biggest efforts we aimed to
-* one command to run it all
-* all embedded (no external components nor configuration needed)
-* keep pom.xml files readable
+* amp - an AMP module containing a Java Demo component
+* alfresco - an Alfresco Repository/Explorer Extension which provides a custom alfresco-config.properties
+and depends on the sibling amp module
+* share - an Alfresco Share Client that connects to a local Alfresco Repository and depends on the sibling
+amp module
+* runner - a module that runs Jetty with alfresco and share modules deployed on separate contexts
+
+The alfresco-web-integration-parent POM (the parent POM of this project) provides some cool features
+that saves a lot of code in the current project's build, such as:
+- Maven pluginManagement fixes versions and common configurations (compiler, war, resources plugin);
+can be overridden via properties; no plugin versions should be necessary in project's sub-modules
+- Maven dependencyManagement fixes versions and scope of Alfresco (and third-party) artifacts; no
+dependency versions should be necessary in project's sub-modules
+- No DB installation needed; Alfresco Repository - by default - runs using H2 embedded DB; there is
+no need to tweak DB configuration
+- Maven clean plugin removes any trace of your Alfresco runs (be careful with mvn clean)
+- Alfresco Extensions are automatically overlayed with all their AMP dependencies, with no need of
+Maven code
+- Multi-environment property filtering with no Maven configuration hassle
+- Maven Jetty plugin can run Alfresco and Share on the same server using few lines of configuration
+
+The project is fully configurable via the (project's root) pom.xml properties.
 
 Run it
 ---
@@ -20,11 +37,6 @@ MAVEN_OPTS="-Xms256m -Xmx1G -XX:PermSize=300m" mvn install -Prun
 The following services will start:
 - http://localhost:8080/alfresco
 - http://localhost:8080/share
-
-Specs
----
-The DB in use is H2 embedded (thanks @skuro), therefore you don't need to setup a DB by your own.
-
 
    --- oOo ---
 
