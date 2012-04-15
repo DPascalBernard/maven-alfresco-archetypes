@@ -1,7 +1,8 @@
 Introduction
 ---
-This archetype aims to show a clean and simple Alfresco SDK based on Maven in order to implement
-an Alfresco foundation project composed by Repository, Share and one AMP module.
+The quickstart-alfresco-integration archetype aims to show a clean and simple Alfresco
+SDK based on Maven in order to implement an Alfresco foundation project composed by
+Repository, Share and one AMP module.
 
 The project is composed by the following modules:
 
@@ -12,12 +13,18 @@ and depends on the sibling amp module
 amp module
 * runner - a module that runs Jetty with alfresco and share modules deployed on separate contexts
 
-The alfresco-web-integration-parent POM (the parent POM of this project) provides some cool features
-that saves a lot of code in the current project's build, such as:
+The parent pom.xml - besides defining the list of sub-modules and some of its properties - inherits
+(and propagates) different configurations from alfresco-specific parent pom:
+
+The alfresco-integration-parent POM (the parent POM of alfresco-web-integration-parent) specifies many
+versions and common plugin configurations:
 - Maven pluginManagement fixes versions and common configurations (compiler, war, resources plugin);
 can be overridden via properties; no plugin versions should be necessary in project's sub-modules
 - Maven dependencyManagement fixes versions and scope of Alfresco (and third-party) artifacts; no
 dependency versions should be necessary in project's sub-modules
+
+The alfresco-web-integration-parent POM (the parent POM of this project) provides some cool features
+that saves a lot of code in the current project's build, such as:
 - No DB installation needed; Alfresco Repository - by default - runs using H2 embedded DB; there is
 no need to tweak DB configuration
 - Maven clean plugin removes any trace of your Alfresco runs (be careful with mvn clean)
@@ -26,11 +33,9 @@ Maven code
 - Multi-environment property filtering with no Maven configuration hassle
 - Maven Jetty plugin can run Alfresco and Share on the same server using few lines of configuration
 
-The project is fully configurable via the (project's root) pom.xml properties.
-
-Run it
+Run
 ---
-To run quickstart-alfresco-integration, simply type (from the project's root folder)
+Simply type (from the project's root folder)
 
 MAVEN_OPTS="-Xms256m -Xmx1G -XX:PermSize=300m" mvn install -Prun
 
