@@ -27,6 +27,11 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <!-- Logging in project's root alfresco.log -->
+        <log.dir></log.dir>
+    </properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.alfresco</groupId>

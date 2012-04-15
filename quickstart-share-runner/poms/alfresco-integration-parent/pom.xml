@@ -13,19 +13,6 @@
         <alfresco.version>4.0.b</alfresco.version>
         <alfresco.edition>community</alfresco.edition>
 
-        <!-- Alfresco Repo configuration with embedded DB -->
-        <alfresco.data.location.name>alf_data_jetty</alfresco.data.location.name>
-        <alfresco.data.location>./${alfresco.data.location.name}</alfresco.data.location>
-        <alfresco.db.name>alf_jetty</alfresco.db.name>
-        <alfresco.db.username>alfresco</alfresco.db.username>
-        <alfresco.db.password>alfresco</alfresco.db.password>
-        <alfresco.db.params>MODE=PostgreSQL;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=10000;MVCC=TRUE</alfresco.db.params>
-        <alfresco.db.url>jdbc:h2:${alfresco.data.location}/h2_data/${alfresco.db.name};${alfresco.db.params}</alfresco.db.url>
-        <alfresco.db.datasource.class>org.h2.jdbcx.JdbcDataSource</alfresco.db.datasource.class>
-
-        <!-- Logging in project's root alfresco.log -->
-        <log.dir></log.dir>
-
         <!-- Maven Plugins Versions -->
         <maven.compiler.version>2.3.2</maven.compiler.version>
         <maven.clean.version>2.4.1</maven.clean.version>
