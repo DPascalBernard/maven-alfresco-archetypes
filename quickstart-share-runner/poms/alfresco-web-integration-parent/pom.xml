@@ -94,29 +94,17 @@
             using a WAR layout on an empty folder; AMP to WAR
             mapping is provided by maven-amp-plugin -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
+                <groupId>org.alfresco.maven.plugin</groupId>
+                <artifactId>mmt-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>unpack-amps</id>
-                        <phase>process-resources</phase>
+                        <phase>package</phase>
                         <goals>
-                            <goal>unpack-dependencies</goal>
+                            <goal>install</goal>
                         </goals>
-                        <configuration>
-                            <includeTypes>amp</includeTypes>
-                            <outputDirectory>${project.build.directory}/ampoverlays</outputDirectory>
-                            <excludes>META*</excludes>
-                        </configuration>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.alfresco.maven.plugin</groupId>
-                        <artifactId>maven-amp-plugin</artifactId>
-                        <version>${maven.amp.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <!-- All AMP unpacking target folder is included into
             the WAR being produced -->
@@ -284,12 +272,11 @@
                                 <goals><goal>copy-resources</goal></goals>
                                 <phase>process-resources</phase>
                                 <configuration>
-                                    <outputDirectory>${project.build.directory}</outputDirectory>
+                                    <outputDirectory>${project.build.outputDirectory}/alfresco/module/${project.artifactId}</outputDirectory>
                                     <resources>
                                         <resource>
                                             <filtering>true</filtering>
                                             <directory>src/main/config</directory>
-                                            <targetPath>alfresco/module/${project.artifactId}</targetPath>
                                             <excludes>
                                                 <exclude>**README-*</exclude>
                                             </excludes>
@@ -300,7 +287,6 @@
                                             <includes>
                                                 <include>module.properties</include>
                                             </includes>
-                                            <targetPath>alfresco/module/${project.artifactId}</targetPath>
                                         </resource>
                                     </resources>
                                 </configuration>
