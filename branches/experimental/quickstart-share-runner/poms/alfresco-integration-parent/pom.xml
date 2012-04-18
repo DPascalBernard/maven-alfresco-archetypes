@@ -22,7 +22,7 @@
         <maven.jar.version>2.4</maven.jar.version>
         <maven.war.version>2.2</maven.war.version>
         <maven.release.version>2.2.2</maven.release.version>
-        <maven.amp.version>3.0.4</maven.amp.version>
+        <mmt.maven.version>1.0-SNAPSHOT</mmt.maven.version>
         <maven.nosnapshot.version>0.0.8</maven.nosnapshot.version>
         <buildnumber.maven.version>1.0</buildnumber.maven.version>
         <maven.jetty.version>6.1.26</maven.jetty.version>
@@ -85,14 +85,9 @@
             <plugins>
                 <plugin>
                     <groupId>org.alfresco.maven.plugin</groupId>
-                    <artifactId>maven-amp-plugin</artifactId>
-                    <version>${maven.amp.version}</version>
+                    <artifactId>mmt-maven-plugin</artifactId>
+                    <version>${mmt.maven.version}</version>
                     <extensions>true</extensions>
-                    <configuration>
-                        <archive>
-                            <addMavenDescriptor>false</addMavenDescriptor>
-                        </archive>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

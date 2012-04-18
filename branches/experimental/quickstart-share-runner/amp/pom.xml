@@ -63,7 +63,7 @@
         <plugins>
             <plugin>
                 <groupId>org.alfresco.maven.plugin</groupId>
-                <artifactId>maven-amp-plugin</artifactId>
+                <artifactId>mmt-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

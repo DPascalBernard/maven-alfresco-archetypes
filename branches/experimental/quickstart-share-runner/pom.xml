@@ -16,6 +16,11 @@
     </parent>
 
     <modules>
+      <module>mmt-maven-plugin</module>
+      <!-- These 2 POM files should live on maven.alfresco.com -->
+      <module>poms/alfresco-integration-parent</module>
+      <module>poms/alfresco-web-integration-parent</module>
+      <!-- The following modules compose the Quickstart Alfresco Archetype -->
       <module>amp</module>
       <module>alfresco</module>
       <module>share</module>
