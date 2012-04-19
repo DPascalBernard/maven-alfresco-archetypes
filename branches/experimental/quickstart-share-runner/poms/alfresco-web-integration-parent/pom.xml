@@ -91,8 +91,7 @@
                 </executions>
             </plugin>
             <!-- All artifacts with AMP extensions are unpacked
-            using a WAR layout on an empty folder; AMP to WAR
-            mapping is provided by maven-amp-plugin -->
+            using a WAR layout on an empty folder using mmt-maven-plugin -->
             <plugin>
                 <groupId>org.alfresco.maven.plugin</groupId>
                 <artifactId>mmt-maven-plugin</artifactId>

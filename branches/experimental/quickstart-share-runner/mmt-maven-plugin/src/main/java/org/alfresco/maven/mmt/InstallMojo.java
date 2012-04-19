@@ -126,7 +126,10 @@ public class InstallMojo extends AbstractMojo {
             mmt.setVerbose(true);
             mmt.installModules(
                     this.ampDestinationDir.getAbsolutePath(),
-                    war.getAbsolutePath());
+                    war.getAbsolutePath(),
+                    false,  //preview
+                    true,   //force install
+                    false); //backup
         }
     }
 }
