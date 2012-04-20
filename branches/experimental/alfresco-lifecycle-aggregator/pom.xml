@@ -9,12 +9,12 @@
     <packaging>pom</packaging>
 
     <modules>
+        <!-- Plugins -->
+        <module>plugins/mmt-maven-plugin</module>
+
         <!-- POM files -->
         <module>poms/alfresco-integration-parent</module>
         <module>poms/alfresco-web-integration-parent</module>
-
-        <!-- Plugins -->
-        <module>plugins/mmt-maven-plugin</module>
 
         <!-- Archetypes -->
         <module>archetypes/quickstart-amp-archetype</module>
