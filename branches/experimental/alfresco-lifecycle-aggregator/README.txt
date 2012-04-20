@@ -57,7 +57,7 @@ mvn install:install-file -Dfile=alfresco-lifecycle-aggregator/plugins/mmt-maven-
 cd alfresco-lifecycle-aggregator/mmt-maven-plugin && mvn install
 cd ../poms && mvn install
 cd .. && mvn install
-
+(with empty repository, Maven will download 365Mb)
 
 ---
 
