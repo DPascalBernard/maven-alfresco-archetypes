@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>amp</artifactId>
+    <name>Quickstart Alfresco AMP Module</name>
+    <packaging>amp</packaging>
+    <description>Quickstart Alfresco AMP Module</description>
+
+    <parent>
+        <groupId>com.mycompany</groupId>
+        <artifactId>quickstart-alfresco-integration</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <!--
+    Following dependencies are needed for compiling
+    Java code in src/main/java; <scope>provided</scope>
+    is inherited for each of the following; for more
+    info, please refer to alfresco-integration-parent
+    POM definition
+    @TODO - document
+    -->
+    <dependencies>
+        <dependency>
+            <groupId>org.alfresco</groupId>
+            <artifactId>alfresco-repository</artifactId>
+            <classifier>${alfresco.edition}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!-- Provides lifecycle for amp extension -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.alfresco.maven.plugin</groupId>
+                <artifactId>mmt-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

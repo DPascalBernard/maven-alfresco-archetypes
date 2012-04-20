@@ -1,30 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>amp</artifactId>
+    <groupId>com.mycompany</groupId>
+    <artifactId>quickstart-amp-archetype</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <name>Quickstart Alfresco AMP Module</name>
     <packaging>amp</packaging>
     <description>Quickstart Alfresco AMP Module</description>
 
     <parent>
-        <groupId>com.mycompany</groupId>
-        <artifactId>quickstart-alfresco-integration</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <groupId>org.alfresco.integration</groupId>
+        <artifactId>alfresco-web-integration-parent</artifactId>
+        <relativePath>../poms/alfresco-web-integration-parent/pom.xml</relativePath>
+        <version>4.0.b</version>
     </parent>
-
-    <!--
-      You can replace the parent with the following snippet in order
-      to move the AMP project in any other SCM or project structure.
-      You might also want - in this case - to override <groupId> and
-      <artifactId> in your own POM
-      @TODO - document
-    -->
-    <!--<parent>-->
-        <!--<groupId>org.alfresco.integration</groupId>-->
-        <!--<artifactId>alfresco-web-integration-parent</artifactId>-->
-        <!--<relativePath>../poms/alfresco-web-integration-parent/pom.xml</relativePath>-->
-        <!--<version>4.0.b</version>-->
-    <!--</parent>-->
 
     <!--
     Following dependencies are needed for compiling
@@ -50,6 +39,7 @@
         </dependency>
     </dependencies>
 
+    <!-- Provides lifecycle for amp extension -->
     <build>
         <plugins>
             <plugin>
@@ -67,6 +57,17 @@
                     <name>runamp</name>
                 </property>
             </activation>
+
+    <properties>
+        <!-- Alfresco Repo configuration with embedded DB -->
+        <alfresco.db.name>alf_jetty</alfresco.db.name>
+        <alfresco.db.username>alfresco</alfresco.db.username>
+        <alfresco.db.password>alfresco</alfresco.db.password>
+        <alfresco.db.params>MODE=PostgreSQL;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=10000;MVCC=TRUE</alfresco.db.params>
+        <alfresco.db.url>jdbc:h2:./${alfresco.data.location}/h2_data/${alfresco.db.name};${alfresco.db.params}</alfresco.db.url>
+        <alfresco.db.datasource.class>org.h2.jdbcx.JdbcDataSource</alfresco.db.datasource.class>
+    </properties>
+
             <dependencies>
                 <dependency>
                     <groupId>org.alfresco</groupId>

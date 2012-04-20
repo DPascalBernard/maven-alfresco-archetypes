@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.mycompany</groupId>
+	<artifactId>quickstart-allinone-archetype</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>Quickstart of Alfresco and Share with DB and runner embedded</name>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>org.alfresco.integration</groupId>
+        <artifactId>alfresco-web-integration-parent</artifactId>
+        <version>4.0.b</version>
+        <relativePath>poms/alfresco-web-integration-parent/pom.xml</relativePath>
+    </parent>
+
+    <modules>
+      <module>amp</module>
+      <module>alfresco</module>
+      <module>share</module>
+      <module>runner</module>
+    </modules>
+
+    <properties>
+        <!-- Alfresco Repo configuration with embedded DB -->
+        <alfresco.db.name>alf_jetty</alfresco.db.name>
+        <alfresco.db.username>alfresco</alfresco.db.username>
+        <alfresco.db.password>alfresco</alfresco.db.password>
+        <alfresco.db.params>MODE=PostgreSQL;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=10000;MVCC=TRUE</alfresco.db.params>
+        <alfresco.db.url>jdbc:h2:./${alfresco.data.location}/h2_data/${alfresco.db.name};${alfresco.db.params}</alfresco.db.url>
+        <alfresco.db.datasource.class>org.h2.jdbcx.JdbcDataSource</alfresco.db.datasource.class>
+
+        <!-- Share configuration -->
+        <share.log.level>info</share.log.level>
+        <surf.wiring.mode>development</surf.wiring.mode><!-- "production" is the other allowed value -->
+    </properties>
+
+    <!--
+    No more repos are needed since they will be inherited by the parent POM
+    No snapshot repo is needed because snapshot is not intended to be used and won't be deployed
+    -->
+    <repositories>
+        <repository>
+            <id>alfresco-public</id>
+            <url>http://maven.alfresco.com/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+</project>
