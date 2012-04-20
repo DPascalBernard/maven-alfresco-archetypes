@@ -32,6 +32,11 @@
                                 <goals><goal>run</goal></goals>
                                 <phase>package</phase>
                                 <configuration>
+                                    <!-- Following 3 properties set an empty ROOT context,
+                                    which is mandatory to run jetty:run plugin -->
+                                    <contextPath>/</contextPath>
+                                    <webAppSourceDirectory>.</webAppSourceDirectory>
+                                    <webXml>jetty/root-web.xml</webXml>
                                     <contextHandlers>
                                         <contextHandler implementation="org.mortbay.jetty.webapp.WebAppContext">
                                             <war>${project.basedir}/../alfresco/target/alfresco.war</war>

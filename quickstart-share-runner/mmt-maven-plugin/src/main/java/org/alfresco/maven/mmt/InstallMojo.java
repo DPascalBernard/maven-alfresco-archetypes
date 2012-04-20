@@ -34,7 +34,6 @@ import java.io.IOException;
  * @version $Id:$
  * @requiresDependencyResolution
  * @goal install
- * @phase package
  */
 public class InstallMojo extends AbstractMojo {
 
@@ -48,6 +47,15 @@ public class InstallMojo extends AbstractMojo {
      *
      */
     private File ampDestinationDir;
+
+    /**
+     * One single amp file that, if exists, gets included into the list
+     * of modules to install within the Alfresco WAR
+     *
+     * @parameter expression="${singleAmp}"
+     *
+     */
+    private File singleAmp;
 
     /**
      * Name of the artifact generated into target/ folder.
@@ -87,22 +95,29 @@ public class InstallMojo extends AbstractMojo {
          * Collect all AMP runtime dependencies and copy all files
          * in one single build folder, *ampDirectoryDir*
          */
-        for (Object artifactObj : project.getRuntimeArtifacts()) {
-            if (artifactObj instanceof Artifact) {
-                Artifact artifact = (Artifact)artifactObj;
-                if ("amp".equals(artifact.getType())) {
-                    File artifactFile = artifact.getFile();
-                    try {
+        try {
+            for (Object artifactObj : project.getRuntimeArtifacts()) {
+                if (artifactObj instanceof Artifact) {
+                    Artifact artifact = (Artifact)artifactObj;
+                    if ("amp".equals(artifact.getType())) {
+                        File artifactFile = artifact.getFile();
                         FileUtils.copyFileToDirectory(artifactFile,this.ampDestinationDir);
-                    } catch (IOException e) {
-                        getLog().error(
-                                String.format(
-                                        "Cannot copy file %s to folder %s",
-                                        artifactFile.getAbsolutePath(),
-                                        this.ampDestinationDir));
+                        getLog().debug(String.format("Copied %s into %s", artifactFile,this.ampDestinationDir));
                     }
                 }
             }
+            if (this.singleAmp!= null && this.singleAmp.exists()) {
+                if (!this.ampDestinationDir.exists()) {
+                    this.ampDestinationDir.mkdirs();
+                }
+                FileUtils.copyFileToDirectory(this.singleAmp,this.ampDestinationDir);
+                getLog().debug(String.format("Copied %s into %s", this.singleAmp,this.ampDestinationDir));
+            }
+        } catch (IOException e) {
+            getLog().error(
+                    String.format(
+                            "Cannot copy AMP module to folder %s",
+                            this.ampDestinationDir));
         }
 
         /**
@@ -112,7 +127,7 @@ public class InstallMojo extends AbstractMojo {
         if (!war.exists()) {
             getLog().error(
                     String.format(
-                            "Cannot find artifact being packaged; file %s does not exist",
+                            "This project is not a war packaging project; AMP overlay is skipped",
                             war.getAbsolutePath()));
         } else if (!war.getAbsolutePath().endsWith(".war")) {
             getLog().error(
