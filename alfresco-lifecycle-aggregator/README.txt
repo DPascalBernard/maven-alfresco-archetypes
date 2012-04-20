@@ -40,23 +40,38 @@ Prerequisites
 
 --- oOo ---
 
-***
-Run
-***
+*************
+Build and Run
+*************
 
+-----
+Build
+-----
+All the steps that follow are necessary because neither POMs nor
+mmt-maven-plugin are yet available on maven.alfresco.com; as soon
+as their implementation is consolidated, you will be able to skip
+this first part and just enjoy the second.
+---
 #NOTE. First command needs to be run outside the project!
 mvn install:install-file -Dfile=alfresco-lifecycle-aggregator/plugins/mmt-maven-plugin/truezip.jar -DgroupId=de.schlichtherle.truezip -DartifactId=truezip -Dversion=5.1.2 -Dpackaging=jar
-cd alfresco-lifecycle-aggregator && mvn install
+cd alfresco-lifecycle-aggregator/mmt-maven-plugin && mvn install
+cd ../poms && mvn install
+cd .. && mvn install
 
+
+---
+
+---
+Run
+---
 cd archetypes/quickstart-allinone-archetype
 MAVEN_OPTS="-Xms256m -Xmx1G -XX:PermSize=300m" mvn clean package -Drun
 -> http://localhost:8080/alfresco and http://localhost:8080/share
-
-OR
-
+--- OR
 cd archetypes/quickstart-amp-archetype
 MAVEN_OPTS="-Xms256m -Xmx1G -XX:PermSize=300m" mvn clean package -Drunamp
 -> http://localhost:8080/quickstart-amp-archetype
+---
 
 --- oOo ---
 
