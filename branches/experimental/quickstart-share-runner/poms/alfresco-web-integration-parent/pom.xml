@@ -29,12 +29,6 @@
         <env>local</env>
         <webapp.resource.filter>alfresco-global.properties</webapp.resource.filter>
         <webapp.resource.build.folder>${project.build.outputDirectory}</webapp.resource.build.folder>
-
-        <!-- Jetty configurations used by Runner -->
-        <jetty.port>8080</jetty.port>
-        <jetty.root.contextpath>/</jetty.root.contextpath>
-        <jetty.root.sourcedir>.</jetty.root.sourcedir>
-        <jetty.root.webxml>jetty/root-web.xml</jetty.root.webxml>
     </properties>
 
     <repositories>
@@ -66,30 +60,6 @@
                     </filesets>
                 </configuration>
             </plugin>
-            <!-- Maven resources plugin is (mis)used here to create an
-            empty folder; could/should be maven-amp-plugin's role -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>create-empty-folder</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>copy-resources</goal></goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/ampoverlays</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>.</directory>
-                                    <excludes>
-                                        <exclude>**</exclude>
-                                    </excludes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <!-- All artifacts with AMP extensions are unpacked
             using a WAR layout on an empty folder using mmt-maven-plugin -->
             <plugin>
@@ -104,19 +74,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <!-- All AMP unpacking target folder is included into
-            the WAR being produced -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <webResources>
-                        <resource>
-                            <directory>${project.build.directory}/ampoverlays</directory>
-                        </resource>
-                    </webResources>
-                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -185,7 +142,7 @@
             <id>enable-embedded-jetty</id>
             <activation>
                 <file>
-                    <exists>jetty/jetty-env.xml</exists>
+                    <exists>jetty</exists>
                 </file>
             </activation>
             <build>
@@ -214,18 +171,7 @@
                         <groupId>org.mortbay.jetty</groupId>
                         <artifactId>maven-jetty-plugin</artifactId>
                         <configuration>
-                            <jettyEnvXml>${project.build.directory}/jetty-env.xml</jettyEnvXml>
-                            <!-- Following 3 properties set an empty ROOT context,
-                             which is mandatory to run jetty:run plugin -->
-                            <contextPath>${jetty.root.contextpath}</contextPath>
-                            <webAppSourceDirectory>${jetty.root.sourcedir}</webAppSourceDirectory>
-                            <webXml>${jetty.root.webxml}</webXml>
-                            <connectors>
-                                <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-                                    <port>${jetty.port}</port>
-                                    <maxIdleTime>60000</maxIdleTime>
-                                </connector>
-                            </connectors>
+                            <jettyConfig>${project.build.directory}/jetty.xml</jettyConfig>
                         </configuration>
                         <dependencies>
                             <dependency>
@@ -258,7 +204,7 @@
                         <includes>
                             <include>module.properties</include>
                         </includes>
-                        <targetPath>alfresco/module/${project.artifactId}</targetPath>
+                        <targetPath>${project.build.outputDirectory}</targetPath>
                     </testResource>
                 </testResources>
                 <plugins>
@@ -286,6 +232,7 @@
                                             <includes>
                                                 <include>module.properties</include>
                                             </includes>
+                                            <targetPath>${project.build.outputDirectory}</targetPath>
                                         </resource>
                                     </resources>
                                 </configuration>
