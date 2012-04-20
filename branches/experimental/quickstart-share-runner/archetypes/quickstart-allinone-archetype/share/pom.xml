@@ -8,7 +8,7 @@
 
     <parent>
         <groupId>com.mycompany</groupId>
-        <artifactId>quickstart-alfresco-integration</artifactId>
+        <artifactId>quickstart-allinone-archetype</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
