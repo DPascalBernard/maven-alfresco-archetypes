@@ -197,16 +197,6 @@
                 </file>
             </activation>
             <build>
-                <testResources>
-                    <testResource>
-                        <filtering>true</filtering>
-                        <directory>.</directory>
-                        <includes>
-                            <include>module.properties</include>
-                        </includes>
-                        <targetPath>${project.build.outputDirectory}</targetPath>
-                    </testResource>
-                </testResources>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
