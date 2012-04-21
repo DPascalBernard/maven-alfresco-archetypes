@@ -88,9 +88,10 @@ public class InstallMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (this.ampDestinationDir == null) {
-            this.ampDestinationDir = new File(this.outputDirectory + '/' + AMP_OVERLAY_FOLDER_NAME);
+            this.ampDestinationDir = new File(this.outputDirectory, AMP_OVERLAY_FOLDER_NAME);
         }
         getLog().debug("Setting AMP Destination dir to "+this.ampDestinationDir.getAbsolutePath());
+
         /**
          * Collect all AMP runtime dependencies and copy all files
          * in one single build folder, *ampDirectoryDir*
