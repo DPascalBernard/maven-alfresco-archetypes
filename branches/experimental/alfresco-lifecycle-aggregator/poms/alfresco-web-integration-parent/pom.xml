@@ -229,19 +229,6 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <plugin>
-                        <artifactId>maven-nosnapshot-plugin</artifactId>
-                        <groupId>org.alfresco.maven</groupId>
-                        <executions>
-                            <execution>
-                                <id>default</id>
-                                <phase>initialize</phase>
-                                <goals>
-                                    <goal>strip</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
                 </plugins>
             </build>
         </profile>

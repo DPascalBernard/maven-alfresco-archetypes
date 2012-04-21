@@ -23,8 +23,6 @@
         <maven.war.version>2.2</maven.war.version>
         <maven.release.version>2.2.2</maven.release.version>
         <mmt.maven.version>1.0-SNAPSHOT</mmt.maven.version>
-        <maven.nosnapshot.version>0.0.8</maven.nosnapshot.version>
-        <buildnumber.maven.version>1.0</buildnumber.maven.version>
         <maven.jetty.version>6.1.26</maven.jetty.version>
 
         <!-- Dependencies Versions -->
@@ -142,16 +140,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${maven.jar.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>buildnumber-maven-plugin</artifactId>
-                    <version>${buildnumber.maven.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.alfresco.maven</groupId>
-                    <artifactId>maven-nosnapshot-plugin</artifactId>
-                    <version>${maven.nosnapshot.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.mortbay.jetty</groupId>
