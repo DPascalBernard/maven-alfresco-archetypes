@@ -20,6 +20,7 @@ package org.alfresco.maven.mmt;
  */
 
 import org.alfresco.maven.mmt.archiver.AmpArchiver;
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.archiver.MavenArchiver;
 import org.apache.maven.execution.MavenSession;
@@ -28,7 +29,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 
-import java.io.File;
+import java.io.*;
 
 /**
  * Build a AMP from the current project.
@@ -48,6 +49,22 @@ public class AmpMojo extends AbstractMojo {
      * @required
      */
     private String finalName;
+
+    /**
+     * Current version of the project
+     *
+     * @parameter expression="${project.version}" default-value="3.0.0-SNAPSHOT"
+     * @required
+     */
+    private String version;
+
+    /**
+     * The separator used to identify and strip the suffix
+     *
+     * @parameter expression="${separator}" default-value="-"
+     * @required
+     */
+    private String separator;
 
     /**
      * Directory containing the classes and resource files that should be packaged into the JAR.
@@ -137,11 +154,69 @@ public class AmpMojo extends AbstractMojo {
      */
     public void execute()
             throws MojoExecutionException {
+
+        /**
+         * Check module.properties version; if it's a SNAPSHOT, replace it
+         * with a no-snapshot version.
+         * We need to avoid SNAPSHOT since Alfresco only allows numeric versions
+         * for AMP, otherwise will fail to load the module
+         */
+        String noSnapshotVersion = getNoSnapshotVersion();
+        if (noSnapshotVersion != this.version) {
+            getLog().info("Removing SNAPSHOT suffix from version");
+            File moduleFile = new File(this.classesDirectory,"module.properties");
+            File bckModuleFile = new File(this.classesDirectory,"module.properties.bck");
+            replace(
+                    this.version,
+                    noSnapshotVersion,
+                    moduleFile,
+                    bckModuleFile);
+            getLog().info("module.properties successfully patched");
+        }
+
+        /**
+         * Create the archive
+         */
         File ampFile = createArchive();
         if ( this.classifier != null ) {
             this.projectHelper.attachArtifact( this.project, "amp", this.classifier, ampFile );
         } else {
             this.project.getArtifact().setFile( ampFile );
         }
+
     }
+
+    protected String getNoSnapshotVersion() {
+        int separatorIndex = version.indexOf(separator);
+        String noSnapshotVersion = version;
+        if (separatorIndex > -1) {
+            noSnapshotVersion = version.substring(0, separatorIndex);
+        }
+        return noSnapshotVersion;
+    }
+
+    protected static void replace(String oldstring, String newstring, File in, File out) throws MojoExecutionException {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(in));
+            PrintWriter writer = new PrintWriter(new FileWriter(out));
+            String line = null;
+            while ((line = reader.readLine()) != null)
+                writer.println(line.replaceAll(oldstring,newstring));
+
+            // I'm aware of the potential for resource leaks here. Proper resource
+            // handling has been omitted in the interest of brevity
+            reader.close();
+            writer.close();
+
+            //Replace in file with out
+            FileUtils.copyFile(out, in);
+            out.delete();
+        } catch (FileNotFoundException e) {
+            throw new MojoExecutionException("Cannot find module.properties");
+        } catch (IOException e) {
+            throw new MojoExecutionException("Error writing to module.properties");
+        }
+    }
+
 }
