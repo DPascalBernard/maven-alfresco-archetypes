@@ -36,7 +36,7 @@
         </dependency>
     </dependencies>
 
-    <!-- Provides lifecycle for amp extension -->
+    <!-- Provides lifecycle for amp extension and related packaging -->
     <build>
         <plugins>
             <plugin>
