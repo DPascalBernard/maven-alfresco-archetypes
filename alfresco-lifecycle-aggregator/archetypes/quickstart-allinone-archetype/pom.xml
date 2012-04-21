@@ -12,7 +12,6 @@
         <groupId>org.alfresco.integration</groupId>
         <artifactId>alfresco-web-integration-parent</artifactId>
         <version>4.0.b</version>
-        <relativePath>poms/alfresco-web-integration-parent/pom.xml</relativePath>
     </parent>
 
     <modules>
