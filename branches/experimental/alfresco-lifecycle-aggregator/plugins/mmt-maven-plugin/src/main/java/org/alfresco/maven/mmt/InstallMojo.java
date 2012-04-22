@@ -125,14 +125,17 @@ public class InstallMojo extends AbstractMojo {
          * Locate the WAR file to overlay - the one produced by the current project
          */
         File war = new File(this.outputDirectory + '/' + this.finalName + ".war");
-        if (!war.exists()) {
-            getLog().error(
+        if (
+                !war.exists() ||
+                this.ampDestinationDir == null ||
+                !this.ampDestinationDir.exists()) {
+            getLog().info(
                     String.format(
-                            "This project is not a war packaging project; AMP overlay is skipped",
+                            "This project is not a war packaging project; skipping.",
                             war.getAbsolutePath()));
         } else if (!war.getAbsolutePath().endsWith(".war")) {
-            getLog().error(
-                    "The generated artifact cannot be overlaid since it's not a WAR archive; exiting.");
+            getLog().info(
+                    "The generated artifact cannot be overlaid since it's not a WAR archive; skipping.");
         } else {
             /**
              * Invoke the ModuleManagementTool to install AMP modules on the WAR file;
