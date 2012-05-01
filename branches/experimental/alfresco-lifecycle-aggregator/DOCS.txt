@@ -193,8 +193,17 @@ and plugin management inside your pom.xml, but just define it:
 Please note that Alfresco artifacts are not shipped with POM files, therefore transitive dependencies are not handled,
 you will need to define them explicitly in your pom.xml (using <scope>provided</scope>)
 
-- A set of useful build features around Alfresco web integrations on top of alfresco-integration-parent
+- A set of useful build features around Alfresco web integrations on top of alfresco-integration-parent; to use it, use
+the following parent POM in your project's pom.xml:
 
+    <parent>
+        <groupId>org.alfresco.integration</groupId>
+        <artifactId>alfresco-web-integration-parent</artifactId>
+        <version>1</version>
+    </parent>
+
+Besides the alfresco-integration-parent items inherited, this parent POM provides 3 commonly used features that can
+be easily enabled/disabled/configured:
 
 * AMP overlay into an Alfresco (or Share) Extension
 ---
