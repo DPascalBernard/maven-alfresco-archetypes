@@ -33,8 +33,8 @@ using the Alfresco Web Integration POM as parent and adding more build features 
 Alfresco Maven SDK
 ******************
 
-The Maven SDK is an effort that have been developing in the last 5 years, mostly driven by community efforts on
-Google Code (http://code.google.com/p/maven-alfresco-archetypes) which delivers archetypes for building Alfresco
+The Maven SDK is an effort that have been developing in the last 5 years - mostly driven by community efforts on
+Google Code (http://code.google.com/p/maven-alfresco-archetypes) - which delivers archetypes for building Alfresco
 integration project with Maven; builds are based on artifacts that are deployed into maven.alfresco.com Repository
 manually as a community effort.
 
