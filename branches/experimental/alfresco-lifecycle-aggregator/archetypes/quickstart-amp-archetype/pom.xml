@@ -9,9 +9,9 @@
     <description>Quickstart Alfresco AMP Module</description>
 
     <parent>
-        <groupId>org.alfresco.integration</groupId>
-        <artifactId>alfresco-web-integration-parent</artifactId>
-        <version>4.0.b</version>
+        <groupId>org.alfresco.enterprise</groupId>
+        <artifactId>alfresco-platform-parent</artifactId>
+        <version>4.0.1</version>
     </parent>
 
     <!--
@@ -24,9 +24,8 @@
     -->
     <dependencies>
         <dependency>
-            <groupId>org.alfresco</groupId>
+            <groupId>org.alfresco.enterprise</groupId>
             <artifactId>alfresco-repository</artifactId>
-            <classifier>${alfresco.edition}</classifier>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -69,9 +68,8 @@
 
             <dependencies>
                 <dependency>
-                    <groupId>org.alfresco</groupId>
+                    <groupId>org.alfresco.enterprise</groupId>
                     <artifactId>alfresco</artifactId>
-                    <classifier>${alfresco.edition}</classifier>
                     <type>war</type>
                 </dependency>
             </dependencies>

@@ -98,27 +98,36 @@ POM files
 *********
 
 -------------------------------
-ALFRESCO INTEGRATION PARENT POM
+ALFRESCO PLATFORM PARENT POM
 -------------------------------
 * DependencyManagement for all Alfresco commonly used and WAR artifacts.
 * PluginManagement for all Maven plugin commonly used
+* Inherits alfresco-developer-parent POM
 ---
 Properties
 ---
-<alfresco.version>4.0.b</alfresco.version>
-<alfresco.edition>community</alfresco.edition>
+<maven.compiler.version>2.3.2</maven.compiler.version>
+<maven.clean.version>2.4.1</maven.clean.version>
+<maven.dependency.version>2.4</maven.dependency.version>
+<maven.resources.version>2.5</maven.resources.version>
+<maven.install.version>2.3.1</maven.install.version>
+<maven.jar.version>2.4</maven.jar.version>
+<maven.war.version>2.2</maven.war.version>
+<maven.release.version>2.2.2</maven.release.version>
+<mmt.maven.version>1.0-SNAPSHOT</mmt.maven.version>
+<maven.jetty.version>6.1.26</maven.jetty.version>
 ---
 
 
 ---
-ALFRESCO INTEGRATION PARENT POM
+ALFRESCO DEVELOPER PARENT POM
 ---
 * Alfresco Repository Log and storage cleaning
 ---
 Activation: built-in
 ---
 When mvn clean is invoked, all files produced by Maven runs must be removed; this is the list of
-filesets inherited from alfresco-web-integration-parent:
+filesets inherited from alfresco-developer-parent:
  * target/ (default behaviour)
  * *.log
  * ${alfresco.data.location}

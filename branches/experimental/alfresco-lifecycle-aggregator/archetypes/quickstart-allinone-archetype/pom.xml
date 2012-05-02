@@ -9,9 +9,9 @@
     <packaging>pom</packaging>
 
     <parent>
-        <groupId>org.alfresco.integration</groupId>
-        <artifactId>alfresco-web-integration-parent</artifactId>
-        <version>4.0.b</version>
+        <groupId>org.alfresco.enterprise</groupId>
+        <artifactId>alfresco-platform-parent</artifactId>
+        <version>4.0.1</version>
     </parent>
 
     <modules>

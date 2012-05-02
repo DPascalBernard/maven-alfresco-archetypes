@@ -172,35 +172,44 @@ you might want to have a lower integration level with Alfresco SDK; there are ba
 you can rely on, which are basically Alfresco-maintained POM files that provide:
 
 - A list of Alfresco artifacts, including binaries, javadoc and sources, Maven plugins successfully tested against
-the build process; artifacts come with correct platform versions and editions (community vs enterprise). You can
-simply define the following parent POM in your project's pom.xml:
+the standard and supported build process; artifacts come with correct platform versions and editions
+(community vs enterprise) according with the <groupId> and <version> tags parent coordinates.
+You can simply define the following parent POM in your project's pom.xml:
 
     <parent>
-        <groupId>org.alfresco.integration</groupId>
-        <artifactId>alfresco-integration-parent</artifactId>
-        <version>1</version>
+        <groupId>org.alfresco.enterprise</groupId>
+        <artifactId>alfresco-platform-parent</artifactId>
+        <version>4.0.1</version>
     </parent>
 
 In Maven geek terms, this parent POM will define <dependencyManagement>, <pluginManagement> and <properties> elements
 related with Alfresco-produced artifacts.
 
 The main goal of this approach is to give you full access to Alfresco artifacts without needing to handle dependency
-and plugin management inside your pom.xml, but just define it:
+and plugin management inside your pom.xml.
 
-    <alfresco.version>4.0.1</alfresco.version>
-    <alfresco.edition>enterprise</alfresco.edition>
+Please note that Alfresco artifacts are not shipped with POM files at the moment, therefore transitive dependencies
+are not handled; you will need to define them explicitly in your pom.xml (using <scope>provided</scope>
 
-Please note that Alfresco artifacts are not shipped with POM files, therefore transitive dependencies are not handled,
-you will need to define them explicitly in your pom.xml (using <scope>provided</scope>)
-
-- A set of useful build features around Alfresco web integrations on top of alfresco-integration-parent; to use it, use
-the following parent POM in your project's pom.xml:
+- A set of useful build features around Alfresco web integrations, which are also inherited by alfresco-platform-parent;
+if you want to use it directly and skip alfresco-platform-parent, you can define:
 
     <parent>
-        <groupId>org.alfresco.integration</groupId>
-        <artifactId>alfresco-web-integration-parent</artifactId>
+        <groupId>org.alfresco.enterprise</groupId>
+        <artifactId>alfresco-developer-parent</artifactId>
         <version>1</version>
     </parent>
+
+In this case you will have to re-define a list of properties to set your dependency versions:
+
+    <alfresco.version>4.0.1</alfresco.version>
+    <spring.version>3.0.5.RELEASE</spring.version>
+    <h2.version>1.3.158</h2.version>
+    <h2-support.version>1.2</h2-support.version>
+    <servlet.api.version>2.5</servlet.api.version>
+    <faces.version>1.1_02</faces.version>
+    <digester.version>1.6</digester.version>
+    <log4j.version>1.2.15</log4j.version>
 
 Besides the alfresco-integration-parent items inherited, this parent POM provides 3 commonly used features that can
 be easily enabled/disabled/configured:

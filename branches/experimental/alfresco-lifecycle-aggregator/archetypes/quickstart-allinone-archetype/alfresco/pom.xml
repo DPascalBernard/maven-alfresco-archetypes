@@ -34,9 +34,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.alfresco</groupId>
+			<groupId>org.alfresco.enterprise</groupId>
 			<artifactId>alfresco</artifactId>
-			<classifier>${alfresco.edition}</classifier>
             <type>war</type>
 		</dependency>
         <dependency>

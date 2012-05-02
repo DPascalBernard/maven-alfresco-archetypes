@@ -16,7 +16,7 @@
         <!--
         Resource filtering is activated because src/main/properties exists;
         following properties override default property values defined in
-        alfresco-web-integration-parent
+        alfresco-platform-parent
         @TODO - document
         -->
         <webapp.resource.filter>application.properties</webapp.resource.filter>
@@ -25,10 +25,9 @@
 
     <dependencies>
 		<dependency>
-			<groupId>org.alfresco</groupId>
+			<groupId>org.alfresco.enterprise</groupId>
 			<artifactId>share</artifactId>
 			<type>war</type>
-			<classifier>${alfresco.edition}</classifier>
 		</dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

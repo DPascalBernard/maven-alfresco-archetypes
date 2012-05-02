@@ -22,9 +22,8 @@
     -->
     <dependencies>
         <dependency>
-            <groupId>org.alfresco</groupId>
+            <groupId>org.alfresco.enterprise</groupId>
             <artifactId>alfresco-repository</artifactId>
-            <classifier>${alfresco.edition}</classifier>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
