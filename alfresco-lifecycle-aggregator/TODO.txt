@@ -1,3 +1,18 @@
+* Use Nexus groups on alfresco-developer-parent and alfresco-platform-parent POM files, instead of accessing directly
+alfresco-enterprise-releases repo
+
+* Clean Nexus repositories from older manual deployments
+
+* Test against community versions
+
+* Deploy alfresco-developer-parent and alfresco-platform-parent on maven.alfresco.com
+
+* Move alfresco-developer-parent and alfresco-platform-parent code might be moved into an internal Alfresco SCM repo
+
+
+
+
+
 ***************************************
 Supported Archetypes (aka Advanced Use)
 ***************************************
