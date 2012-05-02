@@ -2,15 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>alfresco-web-integration-parent</artifactId>
+    <artifactId>alfresco-developer-parent</artifactId>
     <name>Alfresco Web Integration Parent</name>
     <packaging>pom</packaging>
-
-    <parent>
-        <groupId>org.alfresco.integration</groupId>
-        <artifactId>alfresco-integration-parent</artifactId>
-        <version>4.0.b</version>
-    </parent>
+    <version>1</version>
+    <groupId>org.alfresco.integration</groupId>
 
     <properties>
         <!-- Alfresco Repo disk storage folder (relative path) -->
@@ -30,10 +26,12 @@
         <webapp.resource.build.folder>${project.build.outputDirectory}</webapp.resource.build.folder>
     </properties>
 
+    <!-- Temporary definition of enterprise repositories (with restricted access) in order to test against newly
+    released Alfresco Maven artifacts -->
     <repositories>
         <repository>
-            <id>alfresco-public</id>
-            <url>http://maven.alfresco.com/nexus/content/groups/public</url>
+            <id>alfresco-enterprise-releases</id>
+            <url>http://maven.alfresco.com/nexus/content/repositories/enterprise-releases</url>
         </repository>
     </repositories>
 
