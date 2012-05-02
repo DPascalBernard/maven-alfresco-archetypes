@@ -27,8 +27,6 @@ Here follows a list of build features that have not been ported yet:
 Apart from SCM and release, all the mentioned features are probably best suited for a more enterprise archetype,
 using the Alfresco Web Integration POM as parent and adding more build features around Maven, Tomcat and JBoss.
 
---- oOo ---
-
 ******************
 Alfresco Maven SDK
 ******************
@@ -37,11 +35,6 @@ The Maven SDK is an effort that have been developing in the last 5 years - mostl
 Google Code (http://code.google.com/p/maven-alfresco-archetypes) - which delivers archetypes for building Alfresco
 integration project with Maven; builds are based on artifacts that are deployed into maven.alfresco.com Repository
 manually as a community effort.
-
-Alfresco is moving into fully ALM-enabled technology, with a special focus into coding, testing, and release
-management and it is making use of Maven to achieve these goals; the work is constantly in progress and
-inline with Alfresco official Roadmap, however the current version already provides structural improvements
-and higher flexibility when developing Alfresco integrations/customisations.
 
 The main advantages with the (currently official) Alfresco SDK follows:
 
@@ -69,8 +62,6 @@ on an empty laptop
 
 The following documentation aims to provide three different levels of complexity to tackle an Alfresco integration
 project: simple, advanced and custom; the latter exposes in details the Maven Alfresco SDK features.
-
---- oOo ---
 
 *************
 Prerequisites
@@ -102,9 +93,10 @@ mvn archetype:generate \
 -DgroupId=com.someco \
 -DartifactId=alfresco-amp-quickstart \
 -Dversion=1.0-SNAPSHOT \
--Dedition=community \
 -DarchetypeRepository=http://maven.alfresco.com/nexus/content/repositories/releases \
 -DinteractiveMode=false
+
+You can always switch Alfresco versions/editions by editing the <parent> coordinates of your generated pom.xml
 
 2.
 cd alfresco-amp-quickstart && MAVEN_OPTS="-Xms256m -Xmx1G -XX:PermSize=300m" mvn package -Drunamp
@@ -134,34 +126,6 @@ Compared with the previous flavor, alfresco-allinone-quickstart is a Maven multi
 an AMP project that gets 'overlaid' into both Alfresco and Share web applications.
 Alfresco Explorer is available at http://localhost:8080/alfresco whereas Alfresco Share is available at
 http://localhost:8080/share
-
-**************
-Use - Advanced
-**************
-
-If you have built integration projects with Alfresco, you're familiar with Maven and you have a case study in mind,
-wondering how to integrate it with your software development around the product, you can start from the Alfresco
-Enterprise archetype suite:
-
-1.
-mvn archetype:generate \
--DarchetypeGroupId=org.alfresco.maven \
--DarchetypeArtifactId=quickstart-enterprise-archetype \
--DarchetypeVersion=1.0 \
--DgroupId=com.someco \
--DartifactId=alfresco-enterprise \
--Dversion=1.0-SNAPSHOT \
--Dedition=enterprise \
--DarchetypeRepository=http://maven.alfresco.com/nexus/content/repositories/releases \
--DinteractiveMode=false
-
-2.
-cd alfresco-enterprise && MAVEN_OPTS="-Xms256m -Xmx1G -XX:PermSize=300m" mvn package -Drun
-
-Run the following command if you want to have a list of the available archetypes:
-
-mvn archetype:generate \
--DarchetypeCatalog=http://maven.alfresco.com/nexus/content/repositories/releases/archetype-catalog.xml
 
 ************
 Use - Custom
