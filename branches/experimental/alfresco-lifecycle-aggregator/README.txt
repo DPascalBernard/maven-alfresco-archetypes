@@ -54,7 +54,7 @@ this first part and just enjoy the second.
 ---
 #NOTE. First command needs to be run outside the project!
 mvn install:install-file -Dfile=alfresco-lifecycle-aggregator/plugins/mmt-maven-plugin/truezip.jar -DgroupId=de.schlichtherle.truezip -DartifactId=truezip -Dversion=5.1.2 -Dpackaging=jar
-cd alfresco-lifecycle-aggregator/mmt-maven-plugin && mvn install
+cd alfresco-lifecycle-aggregator/plugins/mmt-maven-plugin && mvn install
 cd ../poms && mvn install
 cd .. && mvn install
 (with empty repository, Maven will download 365Mb)

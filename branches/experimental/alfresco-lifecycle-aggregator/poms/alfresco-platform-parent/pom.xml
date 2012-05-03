@@ -15,6 +15,18 @@
     </parent>
 
     <properties>
+        <!-- Alfresco version/edition selection -->
+        <alfresco.version>4.0.1</alfresco.version>
+
+        <!-- Dependencies Versions -->
+        <spring.version>3.0.5.RELEASE</spring.version>
+        <h2.version>1.3.158</h2.version>
+        <h2-support.version>1.2</h2-support.version>
+        <servlet.api.version>2.5</servlet.api.version>
+        <faces.version>1.1_02</faces.version>
+        <digester.version>1.6</digester.version>
+        <log4j.version>1.2.15</log4j.version>
+
         <!-- Maven Plugins Versions -->
         <maven.compiler.version>2.3.2</maven.compiler.version>
         <maven.clean.version>2.4.1</maven.clean.version>
