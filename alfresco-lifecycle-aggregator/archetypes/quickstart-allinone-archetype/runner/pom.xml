@@ -21,6 +21,9 @@
                     <name>run</name>
                 </property>
             </activation>
+            <properties>
+                <alfresco.solr.dir>${project.basedir}/../solr/target/solr_home</alfresco.solr.dir>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -43,10 +46,20 @@
                                             <contextPath>/alfresco</contextPath>
                                         </contextHandler>
                                         <contextHandler implementation="org.mortbay.jetty.webapp.WebAppContext">
+                                            <war>${alfresco.solr.dir}/apache-solr-1.4.1-overlay.war</war>
+                                            <contextPath>/solr</contextPath>
+                                        </contextHandler>
+                                        <contextHandler implementation="org.mortbay.jetty.webapp.WebAppContext">
                                             <war>${project.basedir}/../share/target/share.war</war>
                                             <contextPath>/share</contextPath>
                                         </contextHandler>
                                     </contextHandlers>
+                                    <systemProperties>
+                                        <systemProperty>
+                                            <name>solr.solr.home</name>
+                                            <value>${alfresco.solr.dir}</value>
+                                        </systemProperty>
+                                    </systemProperties>
                                 </configuration>
                             </execution>
                         </executions>
