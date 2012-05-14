@@ -1,3 +1,5 @@
+package org.alfresco.maven.mmt;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.alfresco.maven.mmt;
 
 import org.alfresco.repo.module.tool.ModuleManagementTool;
 import org.apache.maven.artifact.Artifact;
@@ -30,7 +31,16 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Installs all dependencies of type amp into the current WAR
+ * Performs a AMP to WAR overlay invoking the Alfresco Repository POJO
+ * ModuleManagementTool.installModules() and therefore emulating the same
+ * WAR overlay performed by Alfresco Repository during bootstrap.
+ *
+ * The AMP files overlaid are all AMP runtime dependencies defined in the
+ * current project's build.
+ *
+ * Optionally you can define the full path of a single AMP file that needs to
+ * be overlaid, using the <simpleAmp> configuration element.
+ *
  * @version $Id:$
  * @requiresDependencyResolution
  * @goal install
@@ -44,7 +54,6 @@ public class InstallMojo extends AbstractMojo {
      * overlaid on top of the WAR file
      *
      * @parameter expression="${ampDestinationDir}"
-     *
      */
     private File ampDestinationDir;
 
@@ -53,7 +62,6 @@ public class InstallMojo extends AbstractMojo {
      * of modules to install within the Alfresco WAR
      *
      * @parameter expression="${singleAmp}"
-     *
      */
     private File singleAmp;
 
@@ -90,7 +98,7 @@ public class InstallMojo extends AbstractMojo {
         if (this.ampDestinationDir == null) {
             this.ampDestinationDir = new File(this.outputDirectory, AMP_OVERLAY_FOLDER_NAME);
         }
-        getLog().debug("Setting AMP Destination dir to "+this.ampDestinationDir.getAbsolutePath());
+        getLog().debug("Setting AMP Destination dir to " + this.ampDestinationDir.getAbsolutePath());
 
         /**
          * Collect all AMP runtime dependencies and copy all files
@@ -99,20 +107,20 @@ public class InstallMojo extends AbstractMojo {
         try {
             for (Object artifactObj : project.getRuntimeArtifacts()) {
                 if (artifactObj instanceof Artifact) {
-                    Artifact artifact = (Artifact)artifactObj;
+                    Artifact artifact = (Artifact) artifactObj;
                     if ("amp".equals(artifact.getType())) {
                         File artifactFile = artifact.getFile();
-                        FileUtils.copyFileToDirectory(artifactFile,this.ampDestinationDir);
-                        getLog().debug(String.format("Copied %s into %s", artifactFile,this.ampDestinationDir));
+                        FileUtils.copyFileToDirectory(artifactFile, this.ampDestinationDir);
+                        getLog().debug(String.format("Copied %s into %s", artifactFile, this.ampDestinationDir));
                     }
                 }
             }
-            if (this.singleAmp!= null && this.singleAmp.exists()) {
+            if (this.singleAmp != null && this.singleAmp.exists()) {
                 if (!this.ampDestinationDir.exists()) {
                     this.ampDestinationDir.mkdirs();
                 }
-                FileUtils.copyFileToDirectory(this.singleAmp,this.ampDestinationDir);
-                getLog().debug(String.format("Copied %s into %s", this.singleAmp,this.ampDestinationDir));
+                FileUtils.copyFileToDirectory(this.singleAmp, this.ampDestinationDir);
+                getLog().debug(String.format("Copied %s into %s", this.singleAmp, this.ampDestinationDir));
             }
         } catch (IOException e) {
             getLog().error(
@@ -127,8 +135,8 @@ public class InstallMojo extends AbstractMojo {
         File war = new File(this.outputDirectory + '/' + this.finalName + ".war");
         if (
                 !war.exists() ||
-                this.ampDestinationDir == null ||
-                !this.ampDestinationDir.exists()) {
+                        this.ampDestinationDir == null ||
+                        !this.ampDestinationDir.exists()) {
             getLog().info(
                     String.format(
                             "This project is not a war packaging project; skipping.",

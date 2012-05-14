@@ -24,12 +24,27 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
-import java.io.*;
+import java.io.File;
 import java.util.Arrays;
 
 /**
- * Adds AMP structural resources to the current Maven project
+ * Adds project's files and folders as build resources, so that the AMP packaging will automatically include them into
+ * the build; by default
+ * <p/>
+ * src/main/java is compiled and copied into the root amp target folder
+ * module.properties is copied into the root amp target folder
+ * src/main/webapp is copied into the root amp target folder
+ * src/main/config is copied into alfresco/module/${project.artifactId}
+ * <p/>
+ * You can also override the default settings by overriding the following POM properties
+ * <p/>
+ * <configuration>
+ * <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+ * <webappDirectory>src/main/webapp</webappDirectory>
+ * <configDirectory>src/main/webapp</configDirectory>
+ * </configuration>
  *
+ * @author Maurizio Pillitu
  * @version $Id:$
  * @goal add-resources
  * @phase validate
