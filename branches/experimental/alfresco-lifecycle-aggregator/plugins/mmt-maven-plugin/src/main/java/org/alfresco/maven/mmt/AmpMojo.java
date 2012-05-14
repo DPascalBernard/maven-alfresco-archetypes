@@ -32,8 +32,11 @@ import org.apache.maven.project.MavenProjectHelper;
 import java.io.*;
 
 /**
- * Build a AMP from the current project.
+ * Build a AMP from the current project delegating the File creation to AmpArchiver;
+ * the AMP file name is processed by this Mojo execution, taking in consideration
+ * the classifier and the version (skipping -SNAPSHOT suffix, if needed)
  *
+ * @author Gabriele Columbro, Maurizio Pillitu
  * @version $Id:$
  * @goal amp
  * @phase package
@@ -45,18 +48,18 @@ public class AmpMojo extends AbstractMojo {
     /**
      * Name of the generated JAR.
      *
-     * @parameter alias="jarName" expression="${jar.finalName}" default-value="${project.build.finalName}"
+     * @parameter alias="ampName" expression="${amp.finalName}" default-value="${project.build.finalName}"
      * @required
      */
-    private String finalName;
+    protected String finalName;
 
     /**
      * Current version of the project
      *
-     * @parameter expression="${project.version}" default-value="3.0.0-SNAPSHOT"
+     * @parameter expression="${project.version}"
      * @required
      */
-    private String version;
+    protected String version;
 
     /**
      * The separator used to identify and strip the suffix
@@ -64,7 +67,7 @@ public class AmpMojo extends AbstractMojo {
      * @parameter expression="${separator}" default-value="-"
      * @required
      */
-    private String separator;
+    protected String separator;
 
     /**
      * Directory containing the classes and resource files that should be packaged into the JAR.
@@ -72,7 +75,7 @@ public class AmpMojo extends AbstractMojo {
      * @parameter default-value="${project.build.outputDirectory}"
      * @required
      */
-    private File classesDirectory;
+    protected File classesDirectory;
 
     /**
      * Classifier to add to the artifact generated. If given, the artifact will be attached.
@@ -81,7 +84,7 @@ public class AmpMojo extends AbstractMojo {
      *
      * @parameter
      */
-    private String classifier;
+    protected String classifier;
 
     /**
      * The Maven project.
@@ -90,14 +93,14 @@ public class AmpMojo extends AbstractMojo {
      * @required
      * @readonly
      */
-    private MavenProject project;
+    protected MavenProject project;
 
     /**
      * @parameter default-value="${session}"
      * @readonly
      * @required
      */
-    private MavenSession session;
+    protected MavenSession session;
 
     /**
      * The archive configuration to use.
@@ -105,67 +108,26 @@ public class AmpMojo extends AbstractMojo {
      *
      * @parameter
      */
-    private MavenArchiveConfiguration archive = new MavenArchiveConfiguration();
+    protected MavenArchiveConfiguration archive = new MavenArchiveConfiguration();
 
     /**
      * @component
      */
-    private MavenProjectHelper projectHelper;
+    protected MavenProjectHelper projectHelper;
 
-    /**
-     * Generates the AMP.
-     *
-     */
-    public File createArchive()
-            throws MojoExecutionException {
-        File jarFile = getJarFile(
-                this.classesDirectory.getParentFile(),
-                this.finalName,
-                this.classifier);
-
-        MavenArchiver archiver = new MavenArchiver();
-        archiver.setArchiver( new AmpArchiver() );
-        archiver.setOutputFile( jarFile );
-
-        try {
-            if (!this.classesDirectory.exists()) {
-                getLog().warn( "AMP will be empty - no content was marked for inclusion!" );
-            } else {
-                archiver.getArchiver().addDirectory( this.classesDirectory, new String[]{}, new String[]{} );
-            }
-            archiver.createArchive( this.session, this.project, this.archive );
-        } catch (Exception e) {
-            throw new MojoExecutionException( "Error assembling AMP", e );
-        }
-        return jarFile;
-    }
-
-    protected static File getJarFile( File basedir, String finalName, String classifier ) {
-        if ( classifier == null ) {
-            classifier = "";
-        } else if ( classifier.trim().length() > 0 && !classifier.startsWith( "-" ) ) {
-            classifier = "-" + classifier;
-        }
-        return new File( basedir, finalName + classifier + ".amp" );
-    }
-
-    /**
-     * Generates the AMP.
-     */
     public void execute()
             throws MojoExecutionException {
 
         /**
-         * Check module.properties version; if it's a SNAPSHOT, replace it
-         * with a no-snapshot version.
          * We need to avoid SNAPSHOT since Alfresco only allows numeric versions
-         * for AMP, otherwise will fail to load the module
+         * for AMP, otherwise will fail to load the module.
+         * See issue https://issues.alfresco.com/jira/browse/ENH-1232
          */
         String noSnapshotVersion = getNoSnapshotVersion();
         if (noSnapshotVersion != this.version) {
             getLog().info("Removing SNAPSHOT suffix from version");
-            File moduleFile = new File(this.classesDirectory,"module.properties");
-            File bckModuleFile = new File(this.classesDirectory,"module.properties.bck");
+            File moduleFile = new File(this.classesDirectory, "module.properties");
+            File bckModuleFile = new File(this.classesDirectory, "module.properties.bck");
             replace(
                     this.version,
                     noSnapshotVersion,
@@ -178,14 +140,47 @@ public class AmpMojo extends AbstractMojo {
          * Create the archive
          */
         File ampFile = createArchive();
-        if ( this.classifier != null ) {
-            this.projectHelper.attachArtifact( this.project, "amp", this.classifier, ampFile );
+        if (this.classifier != null) {
+            this.projectHelper.attachArtifact(this.project, "amp", this.classifier, ampFile);
         } else {
-            this.project.getArtifact().setFile( ampFile );
+            this.project.getArtifact().setFile(ampFile);
         }
-
     }
 
+    /**
+     * Creates and returns the AMP archive, invoking the AmpArchiver
+     * @return a File pointing to an existing AMP package, contained
+     * in ${project.build.outputDirectory}
+     */
+    protected File createArchive()
+            throws MojoExecutionException {
+        File ampFile = getAmpFile(
+                this.classesDirectory.getParentFile(),
+                this.finalName,
+                this.classifier);
+
+        MavenArchiver archiver = new MavenArchiver();
+        archiver.setArchiver(new AmpArchiver());
+        archiver.setOutputFile(ampFile);
+
+        try {
+            if (!this.classesDirectory.exists()) {
+                getLog().warn("AMP will be empty - no content was marked for inclusion!");
+            } else {
+                archiver.getArchiver().addDirectory(this.classesDirectory, new String[]{}, new String[]{});
+            }
+            archiver.createArchive(this.session, this.project, this.archive);
+        } catch (Exception e) {
+            throw new MojoExecutionException("Error assembling AMP", e);
+        }
+        return ampFile;
+    }
+
+    /**
+     * Check project's version; if it's a SNAPSHOT, replace and return it
+     * with a no-snapshot version.
+     * @return the current project's version, skipped from '-' char onwards
+     */
     protected String getNoSnapshotVersion() {
         int separatorIndex = version.indexOf(separator);
         String noSnapshotVersion = version;
@@ -195,6 +190,32 @@ public class AmpMojo extends AbstractMojo {
         return noSnapshotVersion;
     }
 
+    /**
+     * Builds a File object pointing to the target AMP package; the pointer to the File is created taking into
+     * account the (optional) artifact classifier defined
+     * @param basedir the Base Directory of the currently built project
+     * @param finalName the Final Name of the artifact being built
+     * @param classifier the optional classifier of the artifact being built
+     * @return a File object pointing to the target AMP package
+     */
+    protected static File getAmpFile(File basedir, String finalName, String classifier) {
+        if (classifier == null) {
+            classifier = "";
+        } else if (classifier.trim().length() > 0 && !classifier.startsWith("-")) {
+            classifier = "-" + classifier;
+        }
+        return new File(basedir, finalName + classifier + ".amp");
+    }
+
+    /**
+     * Patches given file <b>in</b>, replacing every occurrency of <b>oldstring</b> with
+     * <b>newstring</b>; the result is stored in File <b>out</b>
+     * @param oldstring the String to replace
+     * @param newstring the String that replaces every instance of <b>oldstring</b>
+     * @param in the given input File
+     * @param out the given output File
+     * @throws MojoExecutionException
+     */
     protected static void replace(String oldstring, String newstring, File in, File out) throws MojoExecutionException {
         BufferedReader reader = null;
         try {
@@ -202,7 +223,7 @@ public class AmpMojo extends AbstractMojo {
             PrintWriter writer = new PrintWriter(new FileWriter(out));
             String line = null;
             while ((line = reader.readLine()) != null)
-                writer.println(line.replaceAll(oldstring,newstring));
+                writer.println(line.replaceAll(oldstring, newstring));
 
             // I'm aware of the potential for resource leaks here. Proper resource
             // handling has been omitted in the interest of brevity
@@ -218,5 +239,4 @@ public class AmpMojo extends AbstractMojo {
             throw new MojoExecutionException("Error writing to module.properties");
         }
     }
-
 }
