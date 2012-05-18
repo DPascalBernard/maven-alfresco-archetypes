@@ -26,14 +26,12 @@
         <webapp.resource.build.folder>${project.build.outputDirectory}</webapp.resource.build.folder>
     </properties>
 
-    <!-- Temporary definition of enterprise repositories (with restricted access) in order to test against newly
-    released Alfresco Maven artifacts -->
-    <repositories>
-        <repository>
-            <id>alfresco-enterprise-releases</id>
-            <url>http://maven.alfresco.com/nexus/content/repositories/enterprise-releases</url>
-        </repository>
-    </repositories>
+   <repositories>
+       <repository>
+           <id>alfresco-public</id>
+           <url>http://maven.alfresco.com/nexus/content/groups/public</url>
+       </repository>
+   </repositories>
 
     <build>
         <finalName>${webapp.name}</finalName>
@@ -64,7 +62,7 @@
                 <artifactId>mmt-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>unpack-amps</id>
+                        <id>amps-to-war-overlay</id>
                         <phase>package</phase>
                         <goals>
                             <goal>install</goal>

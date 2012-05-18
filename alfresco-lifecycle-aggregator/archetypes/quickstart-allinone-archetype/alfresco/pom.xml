@@ -34,7 +34,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.alfresco.enterprise</groupId>
+			<groupId>${alfresco.groupId}</groupId>
 			<artifactId>alfresco</artifactId>
             <type>war</type>
 		</dependency>
