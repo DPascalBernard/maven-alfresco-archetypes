@@ -9,9 +9,9 @@
     <description>Quickstart Alfresco AMP Module</description>
 
     <parent>
-        <groupId>org.alfresco.enterprise</groupId>
+        <groupId>org.alfresco</groupId>
         <artifactId>alfresco-platform-parent</artifactId>
-        <version>4.0.1</version>
+        <version>4.0.d</version>
     </parent>
 
     <!--
@@ -24,7 +24,7 @@
     -->
     <dependencies>
         <dependency>
-            <groupId>org.alfresco.enterprise</groupId>
+            <groupId>${alfresco.groupId}</groupId>
             <artifactId>alfresco-repository</artifactId>
         </dependency>
         <dependency>
@@ -43,6 +43,11 @@
             <plugin>
                 <groupId>org.alfresco.maven.plugin</groupId>
                 <artifactId>mmt-maven-plugin</artifactId>
+                <version>0.1-SNAPSHOT</version>
+                <configuration>
+                    <snapshotToTimestamp>true</snapshotToTimestamp>
+                    <customVersionSuffix>123456768</customVersionSuffix>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -68,7 +73,7 @@
 
             <dependencies>
                 <dependency>
-                    <groupId>org.alfresco.enterprise</groupId>
+                    <groupId>${alfresco.groupId}</groupId>
                     <artifactId>alfresco</artifactId>
                     <type>war</type>
                 </dependency>

@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>alfresco-platform-parent</artifactId>
-    <groupId>org.alfresco.enterprise</groupId>
-    <version>4.0.1</version>
+    <groupId>org.alfresco</groupId>
+    <version>4.0.d</version>
     <name>Alfresco Platform Parent</name>
     <packaging>pom</packaging>
 
@@ -16,7 +16,8 @@
 
     <properties>
         <!-- Alfresco version/edition selection -->
-        <alfresco.version>4.0.1</alfresco.version>
+        <alfresco.version>4.0.d</alfresco.version>
+        <alfresco.groupId>org.alfresco</alfresco.groupId>
 
         <!-- Dependencies Versions -->
         <spring.version>3.0.5.RELEASE</spring.version>
@@ -47,15 +48,6 @@
     <prerequisites>
         <maven>3.0.3</maven>
     </prerequisites>
-
-    <!-- Temporary definition of enterprise repositories (with restricted access) in order to test against newly
-    released Alfresco Maven artifacts -->
-    <repositories>
-        <repository>
-            <id>alfresco-enterprise-releases</id>
-            <url>http://maven.alfresco.com/nexus/content/repositories/enterprise-releases</url>
-        </repository>
-    </repositories>
 
     <build>
         <pluginManagement>
@@ -132,43 +124,43 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.alfresco.enterprise</groupId>
+                <groupId>${alfresco.groupId}</groupId>
                 <artifactId>alfresco</artifactId>
                 <version>${alfresco.version}</version>
                 <type>war</type>
             </dependency>
             <dependency>
-                <groupId>org.alfresco.enterprise</groupId>
+                <groupId>${alfresco.groupId}</groupId>
                 <artifactId>share</artifactId>
                 <version>${alfresco.version}</version>
                 <type>war</type>
             </dependency>
             <dependency>
-                <groupId>org.alfresco.enterprise</groupId>
+                <groupId>${alfresco.groupId}</groupId>
                 <artifactId>alfresco-core</artifactId>
                 <version>${alfresco.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.alfresco.enterprise</groupId>
+                <groupId>${alfresco.groupId}</groupId>
                 <artifactId>alfresco-datamodel</artifactId>
                 <version>${alfresco.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.alfresco.enterprise</groupId>
+                <groupId>${alfresco.groupId}</groupId>
                 <artifactId>alfresco-remote-api</artifactId>
                 <version>${alfresco.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.alfresco.enterprise</groupId>
+                <groupId>${alfresco.groupId}</groupId>
                 <artifactId>alfresco-repository</artifactId>
                 <version>${alfresco.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.alfresco.enterprise</groupId>
+                <groupId>${alfresco.groupId}</groupId>
                 <artifactId>alfresco-web-client</artifactId>
                 <version>${alfresco.version}</version>
                 <scope>provided</scope>

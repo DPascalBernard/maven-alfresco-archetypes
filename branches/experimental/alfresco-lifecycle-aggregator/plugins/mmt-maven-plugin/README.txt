@@ -45,9 +45,9 @@ As you can see, the file is filtered with Maven project placeholders
 
     <dependencies>
         <dependency>
-            <groupId>org.alfresco.enterprise</groupId>
+            <groupId>org.alfresco</groupId>
             <artifactId>alfresco</artifactId>
-            <version>4.0.1</version>
+            <version>4.0.d</version>
             <type>war</type>
         </dependency>
     </dependencies>
@@ -67,6 +67,7 @@ As you can see, the file is filtered with Maven project placeholders
                 </goals>
                 <configuration>
                     <singleAmp>${project.build.directory}/${project.build.finalName}.${project.packaging}</singleAmp>
+                    <snapshotToTimestamp>true</snapshotToTimestamp>
                 </configuration>
             </execution>
         </executions>

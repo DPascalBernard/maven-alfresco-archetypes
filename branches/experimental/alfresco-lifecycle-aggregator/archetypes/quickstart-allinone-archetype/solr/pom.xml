@@ -31,7 +31,7 @@
                             <artifactItems>
                                 <artifactItem>
                                     <artifactId>alfresco-solr</artifactId>
-                                    <groupId>org.alfresco.enterprise</groupId>
+                                    <groupId>${alfresco.groupId}</groupId>
                                     <version>${alfresco.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
@@ -134,7 +134,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.alfresco.enterprise</groupId>
+            <groupId>${alfresco.groupId}</groupId>
             <artifactId>alfresco-solr</artifactId>
             <version>${alfresco.version}</version>
             <type>zip</type>

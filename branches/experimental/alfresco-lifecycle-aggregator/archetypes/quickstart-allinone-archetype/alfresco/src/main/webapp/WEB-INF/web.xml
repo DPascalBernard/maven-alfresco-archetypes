@@ -555,8 +555,9 @@
       <servlet-name>authenticatorServlet</servlet-name>
       <servlet-class>org.alfresco.repo.web.scripts.servlet.AuthenticatorServlet</servlet-class>
    </servlet>
-   
-   <servlet><servlet-name>Vaadin Application Servlet</servlet-name><servlet-class>org.activiti.explorer.servlet.ExplorerApplicationServlet</servlet-class></servlet>
+
+   <!-- Enterprise only -->
+   <!--<servlet><servlet-name>Vaadin Application Servlet</servlet-name><servlet-class>org.activiti.explorer.servlet.ExplorerApplicationServlet</servlet-class></servlet>-->
 	
    <servlet-mapping>
       <servlet-name>Faces Servlet</servlet-name>
@@ -750,9 +751,10 @@
       <url-pattern>/cmistck</url-pattern>
    </servlet-mapping>
    CMISTCK -->
-   
-   <servlet-mapping><servlet-name>Vaadin Application Servlet</servlet-name><url-pattern>/activiti-admin/*</url-pattern></servlet-mapping>
-   <servlet-mapping><servlet-name>Vaadin Application Servlet</servlet-name><url-pattern>/VAADIN/*</url-pattern></servlet-mapping>
+
+   <!-- Enterprise only -->
+   <!--<servlet-mapping><servlet-name>Vaadin Application Servlet</servlet-name><url-pattern>/activiti-admin/*</url-pattern></servlet-mapping>-->
+   <!--<servlet-mapping><servlet-name>Vaadin Application Servlet</servlet-name><url-pattern>/VAADIN/*</url-pattern></servlet-mapping>-->
 
    <session-config>
       <session-timeout>60</session-timeout>

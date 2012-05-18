@@ -28,6 +28,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 
 /**
@@ -132,18 +133,17 @@ public class InstallMojo extends AbstractMojo {
         /**
          * Locate the WAR file to overlay - the one produced by the current project
          */
-        File war = new File(this.outputDirectory + '/' + this.finalName + ".war");
+        String warLocation = this.outputDirectory + '/' + this.finalName + ".war";
+        File war = new File(warLocation);
         if (
                 !war.exists() ||
-                        this.ampDestinationDir == null ||
-                        !this.ampDestinationDir.exists()) {
+                this.ampDestinationDir == null ||
+                !this.ampDestinationDir.exists()) {
             getLog().info(
-                    String.format(
-                            "This project is not a war packaging project; skipping.",
-                            war.getAbsolutePath()));
-        } else if (!war.getAbsolutePath().endsWith(".war")) {
+                    "No WAR file found in "+warLocation+" - skipping overlay.");
+        } else if (this.ampDestinationDir.listFiles().length == 0) {
             getLog().info(
-                    "The generated artifact cannot be overlaid since it's not a WAR archive; skipping.");
+                    "No runtime AMP dependencies found for this build - skipping overlay.");
         } else {
             /**
              * Invoke the ModuleManagementTool to install AMP modules on the WAR file;
