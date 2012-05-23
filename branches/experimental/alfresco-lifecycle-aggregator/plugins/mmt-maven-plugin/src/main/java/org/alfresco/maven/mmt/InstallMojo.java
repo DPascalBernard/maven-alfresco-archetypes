@@ -28,17 +28,16 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 
 /**
  * Performs a AMP to WAR overlay invoking the Alfresco Repository POJO
  * ModuleManagementTool.installModules() and therefore emulating the same
  * WAR overlay performed by Alfresco Repository during bootstrap.
- *
+ * <p/>
  * The AMP files overlaid are all AMP runtime dependencies defined in the
  * current project's build.
- *
+ * <p/>
  * Optionally you can define the full path of a single AMP file that needs to
  * be overlaid, using the <simpleAmp> configuration element.
  *
@@ -137,10 +136,10 @@ public class InstallMojo extends AbstractMojo {
         File war = new File(warLocation);
         if (
                 !war.exists() ||
-                this.ampDestinationDir == null ||
-                !this.ampDestinationDir.exists()) {
+                        this.ampDestinationDir == null ||
+                        !this.ampDestinationDir.exists()) {
             getLog().info(
-                    "No WAR file found in "+warLocation+" - skipping overlay.");
+                    "No WAR file found in " + warLocation + " - skipping overlay.");
         } else if (this.ampDestinationDir.listFiles().length == 0) {
             getLog().info(
                     "No runtime AMP dependencies found for this build - skipping overlay.");
