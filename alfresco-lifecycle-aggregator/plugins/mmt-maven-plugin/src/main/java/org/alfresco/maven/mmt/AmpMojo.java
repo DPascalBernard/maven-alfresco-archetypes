@@ -148,7 +148,7 @@ public class AmpMojo extends AbstractMojo {
                     normalizedVersion,
                     moduleFile,
                     bckModuleFile);
-            getLog().info("module.properties successfully patched; replaced "+this.version+" with "+normalizedVersion);
+            getLog().info("module.properties successfully patched; replaced " + this.version + " with " + normalizedVersion);
         }
 
         /**
@@ -164,8 +164,9 @@ public class AmpMojo extends AbstractMojo {
 
     /**
      * Creates and returns the AMP archive, invoking the AmpArchiver
+     *
      * @return a File pointing to an existing AMP package, contained
-     * in ${project.build.outputDirectory}
+     *         in ${project.build.outputDirectory}
      */
     protected File createArchive()
             throws MojoExecutionException {
@@ -196,6 +197,7 @@ public class AmpMojo extends AbstractMojo {
      * - Remove the -SNAPSHOT suffix, if present
      * - (Optionally) append the timestamp to the version, if -SNAPSHOT is present
      * - (Optionally) append the build number to the version
+     *
      * @return the current project's version normalized
      */
     protected String getNormalizedVersion() {
@@ -203,14 +205,14 @@ public class AmpMojo extends AbstractMojo {
         String normalizedVersion = version;
         if (separatorIndex > -1) {
             normalizedVersion = version.substring(0, separatorIndex);
-            getLog().info("Removed -SNAPSHOT suffix from version - "+normalizedVersion);
+            getLog().info("Removed -SNAPSHOT suffix from version - " + normalizedVersion);
         }
         if (this.customVersionSuffix != null && this.customVersionSuffix.length() > 0) {
             normalizedVersion += "." + this.customVersionSuffix;
-            getLog().info("Added custom suffix to version - "+normalizedVersion);
+            getLog().info("Added custom suffix to version - " + normalizedVersion);
         } else if (this.snapshotToTimestamp) {
             normalizedVersion += "." + System.currentTimeMillis();
-            getLog().info("Added timestamp to version - "+normalizedVersion);
+            getLog().info("Added timestamp to version - " + normalizedVersion);
         }
         return normalizedVersion;
     }
@@ -218,8 +220,9 @@ public class AmpMojo extends AbstractMojo {
     /**
      * Builds a File object pointing to the target AMP package; the pointer to the File is created taking into
      * account the (optional) artifact classifier defined
-     * @param basedir the Base Directory of the currently built project
-     * @param finalName the Final Name of the artifact being built
+     *
+     * @param basedir    the Base Directory of the currently built project
+     * @param finalName  the Final Name of the artifact being built
      * @param classifier the optional classifier of the artifact being built
      * @return a File object pointing to the target AMP package
      */
@@ -235,10 +238,11 @@ public class AmpMojo extends AbstractMojo {
     /**
      * Patches given file <b>in</b>, replacing every occurrency of <b>oldstring</b> with
      * <b>newstring</b>; the result is stored in File <b>out</b>
+     *
      * @param oldstring the String to replace
      * @param newstring the String that replaces every instance of <b>oldstring</b>
-     * @param in the given input File
-     * @param out the given output File
+     * @param in        the given input File
+     * @param out       the given output File
      * @throws MojoExecutionException
      */
     protected static void replace(String oldstring, String newstring, File in, File out) throws MojoExecutionException {
