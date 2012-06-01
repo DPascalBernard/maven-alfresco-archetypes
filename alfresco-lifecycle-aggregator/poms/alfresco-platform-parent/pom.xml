@@ -4,14 +4,14 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>alfresco-platform-parent</artifactId>
   <groupId>org.alfresco</groupId>
-  <version>4.0.d-SNAPSHOT</version>
+  <version>4.0.d</version>
   <name>Alfresco Platform Parent</name>
   <packaging>pom</packaging>
 
   <parent>
     <groupId>org.alfresco.integration</groupId>
     <artifactId>alfresco-developer-parent</artifactId>
-    <version>1-SNAPSHOT</version>
+    <version>1</version>
   </parent>
 
   <properties>
@@ -27,100 +27,13 @@
     <faces.version>1.1_02</faces.version>
     <digester.version>1.6</digester.version>
     <log4j.version>1.2.15</log4j.version>
-
-    <!-- Maven Plugins Versions -->
-    <maven.compiler.version>2.3.2</maven.compiler.version>
-    <maven.clean.version>2.4.1</maven.clean.version>
-    <maven.dependency.version>2.4</maven.dependency.version>
-    <maven.resources.version>2.5</maven.resources.version>
-    <maven.install.version>2.3.1</maven.install.version>
-    <maven.jar.version>2.4</maven.jar.version>
-    <maven.war.version>2.2</maven.war.version>
-    <maven.release.version>2.2.2</maven.release.version>
-    <mmt.maven.version>1.0-SNAPSHOT</mmt.maven.version>
-    <maven.jetty.version>6.1.26</maven.jetty.version>
   </properties>
 
-  <!--
-  All the code that follows should be moved into the next-generation alfresco-integration-parent POM
-  -->
-
-  <prerequisites>
-    <maven>3.0.3</maven>
-  </prerequisites>
-
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.alfresco.maven.plugin</groupId>
-          <artifactId>mmt-maven-plugin</artifactId>
-          <version>${mmt.maven.version}</version>
-          <extensions>true</extensions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven.compiler.version}</version>
-          <configuration>
-            <source>1.6</source>
-            <target>1.6</target>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>${maven.resources.version}</version>
-          <configuration>
-            <encoding>UTF-8</encoding>
-            <nonFilteredFileExtensions>
-              <nonFilteredFileExtension>ftl</nonFilteredFileExtension>
-            </nonFilteredFileExtensions>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-war-plugin</artifactId>
-          <version>${maven.war.version}</version>
-          <configuration>
-            <archiveClasses>false</archiveClasses>
-            <warSourceExcludes>tools/**</warSourceExcludes>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>${maven.clean.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-dependency-plugin</artifactId>
-          <version>${maven.dependency.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>${maven.install.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>${maven.release.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>${maven.jar.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.mortbay.jetty</groupId>
-          <artifactId>maven-jetty-plugin</artifactId>
-          <version>${maven.jetty.version}</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-
+  <!-- Defines Alfresco platform delivered artifacts, and main dependencies.
+      | NOTE: You still need to add them to your child POM as <dependency>  in order to 
+      | have them in the classpath. You can omit version and scope to use the 
+      | standard SDK ones.
+      --> 
   <dependencyManagement>
     <dependencies>
       <dependency>

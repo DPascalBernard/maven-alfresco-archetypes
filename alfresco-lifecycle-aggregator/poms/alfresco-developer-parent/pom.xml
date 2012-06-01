@@ -3,12 +3,29 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>alfresco-developer-parent</artifactId>
-  <name>Alfresco Web Integration Parent</name>
+  <name>Alfresco Developer Parent</name>
   <packaging>pom</packaging>
-  <version>1-SNAPSHOT</version>
+  <version>1</version>
   <groupId>org.alfresco.integration</groupId>
+  
+  <prerequisites>
+    <maven>3.0.3</maven>
+  </prerequisites>
 
   <properties>
+    <!-- Maven Plugins Versions -->
+    <maven.compiler.version>2.3.2</maven.compiler.version>
+    <maven.clean.version>2.4.1</maven.clean.version>
+    <maven.dependency.version>2.4</maven.dependency.version>
+    <maven.resources.version>2.5</maven.resources.version>
+    <maven.install.version>2.3.1</maven.install.version>
+    <maven.jar.version>2.4</maven.jar.version>
+    <maven.war.version>2.2</maven.war.version>
+    <maven.release.version>2.2.2</maven.release.version>
+    <mmt.maven.version>0.2-SNAPSHOT</mmt.maven.version>
+    <maven.jetty.version>6.1.26</maven.jetty.version>
+  
+  
     <!-- Alfresco Repo disk storage folder (relative path) -->
     <alfresco.data.location>alf_data_jetty</alfresco.data.location>
 
@@ -29,12 +46,81 @@
   <repositories>
     <repository>
       <id>alfresco-public</id>
-      <url>http://maven.alfresco.com/nexus/content/groups/public</url>
+      <url>http://artifacts.alfresco.com/nexus/content/groups/public</url>
     </repository>
   </repositories>
 
   <build>
     <finalName>${webapp.name}</finalName>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.alfresco.maven.plugin</groupId>
+          <artifactId>mmt-maven-plugin</artifactId>
+          <version>${mmt.maven.version}</version>
+          <extensions>true</extensions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.version}</version>
+          <configuration>
+            <source>1.6</source>
+            <target>1.6</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven.resources.version}</version>
+          <configuration>
+            <encoding>UTF-8</encoding>
+            <nonFilteredFileExtensions>
+              <nonFilteredFileExtension>ftl</nonFilteredFileExtension>
+            </nonFilteredFileExtensions>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>${maven.war.version}</version>
+          <configuration>
+            <archiveClasses>false</archiveClasses>
+            <warSourceExcludes>tools/**</warSourceExcludes>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven.clean.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>${maven.dependency.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${maven.install.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven.release.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven.jar.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.mortbay.jetty</groupId>
+          <artifactId>maven-jetty-plugin</artifactId>
+          <version>${maven.jetty.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
 
     <plugins>
       <!-- Cleaning Alfresco Repository storage/log folders/files -->

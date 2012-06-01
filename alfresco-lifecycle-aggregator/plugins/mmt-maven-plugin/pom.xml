@@ -25,12 +25,12 @@
   <distributionManagement>
     <repository>
       <id>alfresco-releases</id>
-      <url>http://maven.alfresco.com/nexus/content/repositories/releases</url>
+      <url>http://artifacts.alfresco.com/nexus/content/repositories/releases</url>
     </repository>
     <snapshotRepository>
       <name>alfresco snapshots repository</name>
       <id>alfresco-snapshots</id>
-      <url>http://maven.alfresco.com/nexus/content/repositories/snapshots</url>
+      <url>http://artifacts.alfresco.com/nexus/content/repositories/snapshots</url>
     </snapshotRepository>
   </distributionManagement>
 
@@ -81,7 +81,7 @@
   <repositories>
     <repository>
       <id>alfresco-public</id>
-      <url>http://maven.alfresco.com/nexus/content/groups/public</url>
+      <url>http://artifacts.alfresco.com/nexus/content/groups/public</url>
     </repository>
   </repositories>
 </project>
