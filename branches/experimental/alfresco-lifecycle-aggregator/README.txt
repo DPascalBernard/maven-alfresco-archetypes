@@ -69,7 +69,7 @@ MAVEN_OPTS="-Xms256m -Xmx1G -XX:PermSize=300m" mvn clean package -Drun
 -> http://localhost:8080/alfresco and http://localhost:8080/share
 --- OR
 cd archetypes/quickstart-amp-archetype
-MAVEN_OPTS="-Xms256m -Xmx1G -XX:PermSize=300m" mvn clean package -Drunamp
+MAVEN_OPTS="-Xms256m -Xmx1G -XX:PermSize=300m" mvn clean package -Drun-amp
 -> http://localhost:8080/quickstart-amp-archetype
 ---
 
