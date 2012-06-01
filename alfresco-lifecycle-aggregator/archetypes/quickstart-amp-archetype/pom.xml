@@ -56,7 +56,7 @@
             <id>run-amp</id>
             <activation>
                 <property>
-                    <name>runamp</name>
+                    <name>run-amp</name>
                 </property>
             </activation>
 
