@@ -11,14 +11,14 @@
     <parent>
         <groupId>org.alfresco</groupId>
         <artifactId>alfresco-platform-parent</artifactId>
-        <version>4.0.d-SNAPSHOT</version>
+        <version>4.0.d</version>
     </parent>
 
     <!--
     Following dependencies are needed for compiling
     Java code in src/main/java; <scope>provided</scope>
     is inherited for each of the following; for more
-    info, please refer to alfresco-integration-parent
+    info, please refer to alfresco-platform-parent
     POM definition
     @TODO - document
     -->
@@ -43,7 +43,6 @@
             <plugin>
                 <groupId>org.alfresco.maven.plugin</groupId>
                 <artifactId>mmt-maven-plugin</artifactId>
-                <version>0.1-SNAPSHOT</version>
                 <configuration>
                     <snapshotToTimestamp>true</snapshotToTimestamp>
                     <customVersionSuffix>123456768</customVersionSuffix>
