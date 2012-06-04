@@ -13,7 +13,7 @@
     </parent>
 
     <properties>
-        <alfresco.solr.dir>${project.build.directory}/solr_home</alfresco.solr.dir>
+        <alfresco.solr.dir>${project.basedir}/solr_home</alfresco.solr.dir>
         <alfresco.solr.war.overlay>${project.build.directory}/${project.artifactId}-overlay</alfresco.solr.war.overlay>
     </properties>
     <build>
