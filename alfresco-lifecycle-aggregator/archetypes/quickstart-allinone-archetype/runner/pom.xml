@@ -22,7 +22,9 @@
                 </property>
             </activation>
             <properties>
-                <alfresco.solr.dir>${project.basedir}/../solr/target/solr_home</alfresco.solr.dir>
+                <alfresco.solr.dir>${project.basedir}/../solr/solr_home</alfresco.solr.dir>
+                <runner.host>127.0.0.1</runner.host>
+                <runner.port>8080</runner.port>
             </properties>
             <build>
                 <plugins>
