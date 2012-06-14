@@ -25,14 +25,34 @@
   <distributionManagement>
     <repository>
       <id>alfresco-releases</id>
-      <url>http://artifacts.alfresco.com/nexus/content/repositories/releases</url>
+      <url>https://artifacts.alfresco.com/nexus/content/repositories/releases</url>
     </repository>
     <snapshotRepository>
       <name>alfresco snapshots repository</name>
       <id>alfresco-snapshots</id>
-      <url>http://artifacts.alfresco.com/nexus/content/repositories/snapshots</url>
+      <url>https://artifacts.alfresco.com/nexus/content/repositories/snapshots</url>
     </snapshotRepository>
   </distributionManagement>
+  <repositories>
+    <repository>
+      <id>alfresco-public</id>
+      <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
+    </repository>
+  </repositories>
+
+  <build>
+  	<plugins>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-compiler-plugin</artifactId>
+  			<version>2.5.1</version>
+  			<configuration>
+  				<source>6</source>
+  				<target>6</target>
+  			</configuration>
+  	  </plugin>
+  	</plugins>
+  </build>
 
   <dependencies>
     <dependency>
@@ -77,11 +97,4 @@
       <classifier>asl</classifier>
     </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>alfresco-public</id>
-      <url>http://artifacts.alfresco.com/nexus/content/groups/public</url>
-    </repository>
-  </repositories>
 </project>
