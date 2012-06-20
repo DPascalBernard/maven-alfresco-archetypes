@@ -41,7 +41,7 @@ import java.util.Arrays;
  * <configuration>
  * <classesDirectory>${project.build.outputDirectory}</classesDirectory>
  * <webappDirectory>src/main/webapp</webappDirectory>
- * <configDirectory>src/main/webapp</configDirectory>
+ * <configDirectory>src/main/config</configDirectory>
  * </configuration>
  *
  * @author Maurizio Pillitu
@@ -112,7 +112,7 @@ public class AddResourcesMojo extends AbstractMojo {
         Resource configResource = new Resource();
         configResource.setDirectory(this.configDirectory);
         configResource.setFiltering(true);
-        configResource.setTargetPath(this.classesDirectory.getAbsolutePath() + "/alfresco/module/" + this.artifactId);
+        configResource.setTargetPath(this.classesDirectory.getAbsolutePath() + "/config/alfresco/module/" + this.artifactId);
 
         Resource webappResource = new Resource();
         webappResource.setDirectory(this.webappDirectory);
