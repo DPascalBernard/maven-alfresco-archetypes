@@ -5,7 +5,7 @@
   <artifactId>mmt-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>Alfresco MMT Plugin</name>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version>
 
   <developers>
     <developer>

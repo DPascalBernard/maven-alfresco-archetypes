@@ -28,6 +28,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
+import org.codehaus.plexus.archiver.jar.JarArchiver;
 
 import java.io.*;
 
@@ -97,6 +98,14 @@ public class AmpMojo extends AbstractMojo {
      * @required
      */
     protected File classesDirectory;
+
+    /**
+     * ${project.basedir}/target directory
+     *
+     * @parameter default-value="${project.build.directory}"
+     * @required
+     */
+    protected File outputDirectory;
 
     /**
      * Classifier to add to the artifact generated. If given, the artifact will be attached.
@@ -170,22 +179,38 @@ public class AmpMojo extends AbstractMojo {
      */
     protected File createArchive()
             throws MojoExecutionException {
-        File ampFile = getAmpFile(
-                this.classesDirectory.getParentFile(),
+        File jarFile = getFile(
+                new File(this.classesDirectory, "lib"),
                 this.finalName,
-                this.classifier);
+                this.classifier,
+                "jar");
 
-        MavenArchiver archiver = new MavenArchiver();
-        archiver.setArchiver(new AmpArchiver());
-        archiver.setOutputFile(ampFile);
+        File ampFile = getFile(
+                this.outputDirectory,
+                this.finalName,
+                this.classifier,
+                "amp"
+        );
+
+        MavenArchiver jarArchiver = new MavenArchiver();
+        jarArchiver.setArchiver(new JarArchiver());
+        jarArchiver.setOutputFile(jarFile);
+
+        MavenArchiver ampArchiver = new MavenArchiver();
+        ampArchiver.setArchiver(new AmpArchiver());
+        ampArchiver.setOutputFile(ampFile);
 
         try {
             if (!this.classesDirectory.exists()) {
                 getLog().warn("outputDirectory does not exists - AMP will be empty");
             } else {
-                archiver.getArchiver().addDirectory(this.classesDirectory, new String[]{}, new String[]{});
+                jarArchiver.getArchiver().addDirectory(this.classesDirectory, new String[]{}, new String[]{"*.properties", "config"});
+                jarArchiver.createArchive(this.session, this.project, this.archive);
+
+                ampArchiver.getArchiver().addDirectory(this.classesDirectory, new String[]{"lib/**", "config/**", "*.properties" , "web/**"}, new String[]{});
+                ampArchiver.createArchive(this.session, this.project, this.archive);
             }
-            archiver.createArchive(this.session, this.project, this.archive);
+
         } catch (Exception e) {
             throw new MojoExecutionException("Error creating AMP", e);
         }
@@ -226,13 +251,13 @@ public class AmpMojo extends AbstractMojo {
      * @param classifier the optional classifier of the artifact being built
      * @return a File object pointing to the target AMP package
      */
-    protected static File getAmpFile(File basedir, String finalName, String classifier) {
+    protected static File getFile(File basedir, String finalName, String classifier, String extension) {
         if (classifier == null) {
             classifier = "";
         } else if (classifier.trim().length() > 0 && !classifier.startsWith("-")) {
             classifier = "-" + classifier;
         }
-        return new File(basedir, finalName + classifier + ".amp");
+        return new File(basedir, finalName + classifier + "." + extension);
     }
 
     /**
