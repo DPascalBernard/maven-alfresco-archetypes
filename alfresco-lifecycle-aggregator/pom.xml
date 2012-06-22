@@ -10,7 +10,7 @@
 
     <modules>
         <!-- Plugins -->
-        <module>plugins/mmt-maven-plugin</module>
+        <module>plugins/alfresco-maven-plugin</module>
 
         <!-- POM files -->
         <module>poms/alfresco-developer-parent</module>
