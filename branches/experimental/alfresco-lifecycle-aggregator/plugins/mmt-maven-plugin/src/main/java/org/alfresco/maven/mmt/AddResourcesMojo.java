@@ -25,7 +25,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Adds project's files and folders as build resources, so that the AMP packaging will automatically include them into
@@ -39,9 +42,13 @@ import java.util.Arrays;
  * You can also override the default settings by overriding the following POM properties
  * <p/>
  * <configuration>
- * <classesDirectory>${project.build.outputDirectory}</classesDirectory>
- * <webappDirectory>src/main/webapp</webappDirectory>
- * <configDirectory>src/main/config</configDirectory>
+ *   <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+ *   <webappDirectory>src/main/webapp</webappDirectory>
+ *   <configDirectory>src/main/config</configDirectory>
+ *   <configIncludes></configIncludes>
+ *   <configExcludes></configExcludes>
+ *   <webappIncludes></webappIncludes>
+ *   <webappExcludes></webappExcludes>
  * </configuration>
  *
  * @author Maurizio Pillitu
@@ -95,6 +102,38 @@ public class AddResourcesMojo extends AbstractMojo {
     private MavenProject project;
 
     /**
+    * The comma separated list of tokens to include when copying the content
+    * of the configDirectory.
+    *
+    * @parameter
+    */
+    private String configIncludes;
+
+    /**
+     * The comma separated list of tokens to exclude when copying the content
+     * of the configDirectory.
+     *
+     * @parameter
+     */
+    private String configExcludes;
+
+    /**
+     * The comma separated list of tokens to include when copying the content
+     * of the webappDirectory.
+     *
+     * @parameter
+     */
+    private String webappIncludes;
+
+    /**
+     * The comma separated list of tokens to exclude when copying the content
+     * of the webappDirectory.
+     *
+     * @parameter
+     */
+    private String webappExcludes;
+
+    /**
      * Add the following resources to the project in order
      * to be filtered and copied over:
      * - module.properties
@@ -102,6 +141,24 @@ public class AddResourcesMojo extends AbstractMojo {
      */
     public void execute()
             throws MojoExecutionException {
+
+        List<String> configIncludesList = new ArrayList<String>();
+        List<String> configExcludesList = new ArrayList<String>();
+        List<String> webappIncludesList = new ArrayList<String>();
+        List<String> webappExcludesList = new ArrayList<String>();
+
+        if (this.configIncludes != null) {
+            configIncludesList = Arrays.asList(configIncludes.split(","));
+        }
+        if (this.configExcludes != null) {
+            configExcludesList = Arrays.asList(configExcludes.split(","));
+        }
+        if (this.webappIncludes != null) {
+            webappIncludesList = Arrays.asList(webappIncludes.split(","));
+        }
+        if (this.webappExcludes != null) {
+            webappExcludesList = Arrays.asList(webappExcludes.split(","));
+        }
 
         Resource modulePropertiesResource = new Resource();
         modulePropertiesResource.setDirectory(".");
@@ -112,18 +169,22 @@ public class AddResourcesMojo extends AbstractMojo {
         Resource configResource = new Resource();
         configResource.setDirectory(this.configDirectory);
         configResource.setFiltering(true);
+        configResource.setIncludes(configIncludesList);
+        configResource.setExcludes(configExcludesList);
         configResource.setTargetPath(this.classesDirectory.getAbsolutePath() + "/config/alfresco/module/" + this.artifactId);
 
         Resource webappResource = new Resource();
         webappResource.setDirectory(this.webappDirectory);
         webappResource.setFiltering(false);
+        webappResource.setIncludes(webappIncludesList);
+        webappResource.setExcludes(webappExcludesList);
         webappResource.setTargetPath(this.classesDirectory.getAbsolutePath());
 
         this.project.getBuild().getResources().add(modulePropertiesResource);
-        getLog().info("Added module.properties as filtered resource of current project");
+        getLog().info("Added module.properties as filtered resource of current project; includes ");
         this.project.getBuild().getResources().add(configResource);
-        getLog().info(String.format("Added %s as filtered resource of current project", this.configDirectory));
+        getLog().info(String.format("Added %s as filtered resource of current project; includes: %s ; excludes: %s", configDirectory,configIncludesList, configExcludesList));
         this.project.getBuild().getResources().add(webappResource);
-        getLog().info(String.format("Added %s as non filtered resource of current project", this.webappDirectory));
+        getLog().info(String.format("Added %s as non filtered resource of current project; includes: %s ; excludes: %s", webappDirectory,webappIncludesList, webappExcludesList));
     }
 }
