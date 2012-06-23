@@ -142,10 +142,10 @@ public class AddResourcesMojo extends AbstractMojo {
     public void execute()
             throws MojoExecutionException {
 
-        List<String> configIncludesList = new ArrayList<String>();
-        List<String> configExcludesList = new ArrayList<String>();
-        List<String> webappIncludesList = new ArrayList<String>();
-        List<String> webappExcludesList = new ArrayList<String>();
+        List<String> configIncludesList = null;
+        List<String> configExcludesList = null;
+        List<String> webappIncludesList = null;
+        List<String> webappExcludesList = null;
 
         if (this.configIncludes != null) {
             configIncludesList = Arrays.asList(configIncludes.split(","));
@@ -165,19 +165,27 @@ public class AddResourcesMojo extends AbstractMojo {
         modulePropertiesResource.setIncludes(Arrays.asList(new String[]{"module.properties"}));
         modulePropertiesResource.setFiltering(true);
         modulePropertiesResource.setTargetPath(this.classesDirectory.getAbsolutePath());
-
         Resource configResource = new Resource();
         configResource.setDirectory(this.configDirectory);
         configResource.setFiltering(true);
-        configResource.setIncludes(configIncludesList);
-        configResource.setExcludes(configExcludesList);
+
+        if (configIncludesList != null) {
+            configResource.setIncludes(configIncludesList);
+        }
+        if (configExcludesList != null) {
+            configResource.setExcludes(configExcludesList);
+        }
         configResource.setTargetPath(this.classesDirectory.getAbsolutePath() + "/config/alfresco/module/" + this.artifactId);
 
         Resource webappResource = new Resource();
         webappResource.setDirectory(this.webappDirectory);
         webappResource.setFiltering(false);
-        webappResource.setIncludes(webappIncludesList);
-        webappResource.setExcludes(webappExcludesList);
+        if (webappIncludesList != null) {
+            webappResource.setIncludes(webappIncludesList);
+        }
+        if (webappExcludesList != null) {
+            webappResource.setExcludes(webappExcludesList);
+        }
         webappResource.setTargetPath(this.classesDirectory.getAbsolutePath());
 
         this.project.getBuild().getResources().add(modulePropertiesResource);
