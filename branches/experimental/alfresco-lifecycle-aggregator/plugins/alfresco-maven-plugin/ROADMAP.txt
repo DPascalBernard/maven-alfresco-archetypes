@@ -1,0 +1,12 @@
+* pom.xml Review - Check dependencies that are needed (truezip, spring-surf, jug)
+* Validate module.properties : make sure all properties are there and version is correct; if not, fix it
+* Fail if module-context.xml is not present
+* Implement <alfresco.version> and <alfresco.edition> configurations; based on that, the alfresco WAR dependency will be
+included into the POM at runtime by the add-resources goal
+* Implement <jarIncludes> and <jarExcludes> configurations
+* Package/Install/Deploy JAR dependency within the AMP structure (check how it is done in the maven-war-plugin)
+* Test coverage (unit first, use mocking)
+* Test AMP install with extensions from addons.alfresco.com
+* Release alfresco-maven-plugin (on git - maven-alfresco-archetypes on Google Code)
+* Finalize documentation and publish it (wiki.alfresco.com)
+* Evaluate running JMeter Maven plugin in order to launch Alfresco test suites
