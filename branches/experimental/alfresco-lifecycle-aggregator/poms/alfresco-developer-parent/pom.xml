@@ -7,7 +7,7 @@
   <packaging>pom</packaging>
   <version>1</version>
   <groupId>org.alfresco.integration</groupId>
-  
+
   <prerequisites>
     <maven>3.0.3</maven>
   </prerequisites>
@@ -24,8 +24,8 @@
     <maven.release.version>2.2.2</maven.release.version>
     <mmt.maven.version>0.2-SNAPSHOT</mmt.maven.version>
     <maven.jetty.version>6.1.26</maven.jetty.version>
-  
-  
+
+
     <!-- Alfresco Repo disk storage folder (relative path) -->
     <alfresco.data.location>alf_data_jetty</alfresco.data.location>
 
@@ -311,12 +311,12 @@ using a WAR layout on an empty folder using mmt-maven-plugin -->
   <distributionManagement>
     <repository>
       <id>alfresco-releases</id>
-      <url>http://maven.alfresco.com/nexus/content/repositories/releases</url>
+      <url>https://artifacts.alfresco.com/nexus/content/repositories/releases</url>
     </repository>
     <snapshotRepository>
       <name>alfresco snapshots repository</name>
       <id>alfresco-snapshots</id>
-      <url>http://maven.alfresco.com/nexus/content/repositories/snapshots</url>
+      <url>https://artifacts.alfresco.com/nexus/content/repositories/snapshots</url>
     </snapshotRepository>
   </distributionManagement>
 
