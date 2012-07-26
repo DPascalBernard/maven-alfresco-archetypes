@@ -21,8 +21,6 @@
 
     <!-- Dependencies Versions -->
     <spring.version>3.0.5.RELEASE</spring.version>
-    <h2.version>1.3.158</h2.version>
-    <h2-support.version>1.2</h2-support.version>
     <servlet.api.version>2.5</servlet.api.version>
     <faces.version>1.1_02</faces.version>
     <digester.version>1.6</digester.version>
@@ -116,4 +114,15 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+    <distributionManagement>
+    <repository>
+      <id>alfresco-artifacts</id>
+      <url>https://artifacts.alfresco.com/nexus/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <name>alfresco snapshots repository</name>
+      <id>alfresco-artifacts-snapshots</id>
+      <url>https://artifacts.alfresco.com/nexus/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>

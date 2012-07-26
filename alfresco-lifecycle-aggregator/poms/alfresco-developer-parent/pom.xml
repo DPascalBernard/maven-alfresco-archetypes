@@ -22,9 +22,10 @@
     <maven.jar.version>2.4</maven.jar.version>
     <maven.war.version>2.2</maven.war.version>
     <maven.release.version>2.2.2</maven.release.version>
-    <mmt.maven.version>0.2-SNAPSHOT</mmt.maven.version>
+    <alfresco.maven.version>0.6-SNAPSHOT</alfresco.maven.version>
     <maven.jetty.version>6.1.26</maven.jetty.version>
-
+	<h2.version>1.3.158</h2.version>
+    <h2-support.version>1.2</h2-support.version>
 
     <!-- Alfresco Repo disk storage folder (relative path) -->
     <alfresco.data.location>alf_data_jetty</alfresco.data.location>
@@ -63,8 +64,8 @@
       <plugins>
         <plugin>
           <groupId>org.alfresco.maven.plugin</groupId>
-          <artifactId>mmt-maven-plugin</artifactId>
-          <version>${mmt.maven.version}</version>
+          <artifactId>alfresco-maven-plugin</artifactId>
+          <version>${alfresco.maven.version}</version>
           <extensions>true</extensions>
         </plugin>
         <plugin>
@@ -149,10 +150,10 @@
         </configuration>
       </plugin>
       <!-- All artifacts with AMP extensions are unpacked
-using a WAR layout on an empty folder using mmt-maven-plugin -->
+using a WAR layout on an empty folder using alfresco-maven-plugin -->
       <plugin>
         <groupId>org.alfresco.maven.plugin</groupId>
-        <artifactId>mmt-maven-plugin</artifactId>
+        <artifactId>alfresco-maven-plugin</artifactId>
         <executions>
           <execution>
             <id>amps-to-war-overlay</id>
@@ -292,7 +293,7 @@ using a WAR layout on an empty folder using mmt-maven-plugin -->
         <plugins>
           <plugin>
             <groupId>org.alfresco.maven.plugin</groupId>
-            <artifactId>mmt-maven-plugin</artifactId>
+            <artifactId>alfresco-maven-plugin</artifactId>
             <executions>
               <execution>
                 <id>add-resources</id>
