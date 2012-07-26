@@ -26,6 +26,13 @@
     <digester.version>1.6</digester.version>
     <log4j.version>1.2.15</log4j.version>
   </properties>
+  
+  <repositories>
+   <repository>
+      <id>alfresco-artifacts</id>
+      <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
+    </repository>
+  </repositories>
 
   <!-- Defines Alfresco platform delivered artifacts, and main dependencies.
       | NOTE: You still need to add them to your child POM as <dependency>  in order to 
@@ -114,7 +121,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-    <distributionManagement>
+  <distributionManagement>
     <repository>
       <id>alfresco-artifacts</id>
       <url>https://artifacts.alfresco.com/nexus/content/repositories/releases</url>
