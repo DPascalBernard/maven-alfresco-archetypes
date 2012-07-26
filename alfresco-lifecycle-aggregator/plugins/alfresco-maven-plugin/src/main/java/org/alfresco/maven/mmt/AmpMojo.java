@@ -204,7 +204,7 @@ public class AmpMojo extends AbstractMojo {
             if (!this.classesDirectory.exists()) {
                 getLog().warn("outputDirectory does not exists - AMP will be empty");
             } else {
-                jarArchiver.getArchiver().addDirectory(this.classesDirectory, new String[]{}, new String[]{"*.properties", "config"});
+                jarArchiver.getArchiver().addDirectory(this.classesDirectory, new String[]{"**/*.class"}, new String[]{});
                 jarArchiver.createArchive(this.session, this.project, this.archive);
 
                 ampArchiver.getArchiver().addDirectory(this.classesDirectory, new String[]{"lib/**", "config/**", "*.properties" , "web/**"}, new String[]{});

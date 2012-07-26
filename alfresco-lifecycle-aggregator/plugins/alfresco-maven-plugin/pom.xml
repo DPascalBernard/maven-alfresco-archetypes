@@ -5,7 +5,7 @@
   <artifactId>alfresco-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>Alfresco MMT Plugin</name>
-  <version>0.5-SNAPSHOT</version>
+  <version>0.6-SNAPSHOT</version>
 
   <developers>
     <developer>
@@ -47,8 +47,8 @@
   	<artifactId>maven-compiler-plugin</artifactId>
   	<version>2.5.1</version>
   	<configuration>
-  	  <source>6</source>
-  	  <target>6</target>
+  	  <source>1.6</source>
+  	  <target>1.6</target>
   	</configuration>
       </plugin>
       <plugin>
