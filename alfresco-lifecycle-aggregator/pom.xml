@@ -13,8 +13,7 @@
         <module>plugins/alfresco-maven-plugin</module>
 
         <!-- POM files -->
-        <module>poms/alfresco-developer-parent</module>
-        <module>poms/alfresco-platform-parent</module>
+        <module>poms</module>
 
         <!-- Archetypes -->
         <module>archetypes/quickstart-amp-archetype</module>

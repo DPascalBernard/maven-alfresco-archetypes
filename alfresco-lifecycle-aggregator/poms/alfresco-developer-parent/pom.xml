@@ -44,20 +44,6 @@
     <webapp.resource.build.folder>${project.build.outputDirectory}</webapp.resource.build.folder>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>alfresco-public</id>
-      <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>alfresco-public-snapshots</id>
-      <url>https://artifacts.alfresco.com/nexus/content/groups/public-snapshots</url>
-      <snapshots><enabled>true</enabled></snapshots>
-    </pluginRepository>
-  </pluginRepositories>
-
   <build>
     <finalName>${webapp.name}</finalName>
     <pluginManagement>
@@ -308,17 +294,4 @@ using a WAR layout on an empty folder using alfresco-maven-plugin -->
       </build>
     </profile>
   </profiles>
-
-  <distributionManagement>
-    <repository>
-      <id>alfresco-releases</id>
-      <url>https://artifacts.alfresco.com/nexus/content/repositories/releases</url>
-    </repository>
-    <snapshotRepository>
-      <name>alfresco snapshots repository</name>
-      <id>alfresco-snapshots</id>
-      <url>https://artifacts.alfresco.com/nexus/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
-
 </project>
