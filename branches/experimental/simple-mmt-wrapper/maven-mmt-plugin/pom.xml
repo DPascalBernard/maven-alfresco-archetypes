@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.alfresco.maven</groupId>
+    <artifactId>maven-mmt-plugin</artifactId>
+    <packaging>maven-plugin</packaging>
+    <version>0.1-SNAPSHOT</version>
+    <name>MMT AMP Installation Maven Plugin</name>
+    <description>Wraps MMT Java code for managing AMPs in a WAR file or exploded directory</description>
+    <parent>
+        <groupId>org.alfresco</groupId>
+        <artifactId>maven-alfresco-lifecycle</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>3.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-project</artifactId>
+            <version>3.0-alpha-2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugin-testing</groupId>
+            <artifactId>maven-plugin-testing-harness</artifactId>
+            <version>2.0-alpha-1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.alfresco</groupId>
+            <artifactId>alfresco-mmt</artifactId>
+            <version>4.2.a-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Workaround until alfresco-mmt pom is fixed -->
+        <dependency>
+            <groupId>org.safehaus.jug</groupId>
+            <artifactId>jug</artifactId>
+            <version>2.0.0</version>
+            <!-- the classifer is important!! -->
+            <classifier>asl</classifier>
+        </dependency>
+    </dependencies>
+
+</project>
