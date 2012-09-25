@@ -13,7 +13,7 @@ public class MmtInstallMojo extends AbstractMmtMojo
     /**
      * AMP file to be installed
      *
-     * @parameter expression="${ampFile}" default-value="example.amp"
+     * @parameter expression="${ampFile}"
      * @required
      */
     private String ampFile;
