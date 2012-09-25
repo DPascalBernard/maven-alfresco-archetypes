@@ -29,7 +29,7 @@ public abstract class AbstractMmtMojo extends AbstractMojo
     /**
      * The target WAR file or exploded directory of the installation
      *
-     * @parameter expression="${warFile}" default-value="alfresco"
+     * @parameter expression="${warFile}"
      * @required
      */
     private String warFile;
@@ -60,6 +60,16 @@ public abstract class AbstractMmtMojo extends AbstractMojo
     public void setWarFile(String warFile)
     {
         this.warFile = warFile;
+    }
+
+    public String getOutputPropertyName()
+    {
+        return outputPropertyName;
+    }
+
+    public void setOutputPropertyName(String outputPropertyName)
+    {
+        this.outputPropertyName = outputPropertyName;
     }
 
     /**
