@@ -4,7 +4,7 @@ Disclaimer
 
 This codebase is currently work in progress; the effort have been split in three directions:
 a) The definition of 2 POM files that can handle versions and common build behaviors/features
-b) The writing of an mmt-maven-plugin to enable amp-to-war overlay provided by Alfresco 
+b) The writing of an alfresco-maven-plugin to enable amp-to-war overlay provided by Alfresco
 Repository built-in features (ModuleManagementTool) and replace the maven-amp-plugin (big 
 rewriting of the maven-war-plugin)
 c) The definition of (initially 2) archetypes that show some simple project's configuration using
@@ -48,15 +48,11 @@ Build and Run
 Build
 -----
 All the steps that follow are necessary because neither POMs nor
-mmt-maven-plugin are yet available on maven.alfresco.com; as soon
+alfresco-maven-plugin are yet available on maven.alfresco.com; as soon
 as their implementation is consolidated, you will be able to skip
 this first part and just enjoy the second.
 ---
-#NOTE. First command needs to be run outside the project!
-mvn install:install-file -Dfile=alfresco-lifecycle-aggregator/plugins/mmt-maven-plugin/truezip.jar -DgroupId=de.schlichtherle.truezip -DartifactId=truezip -Dversion=5.1.2 -Dpackaging=jar
-cd alfresco-lifecycle-aggregator/plugins/mmt-maven-plugin && mvn install
-cd ../poms && mvn install
-cd .. && mvn install
+mvn clean install
 (with empty repository, Maven will download 365Mb)
 
 ---

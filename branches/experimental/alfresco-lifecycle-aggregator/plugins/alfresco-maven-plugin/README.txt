@@ -2,7 +2,7 @@
 What does it do
 ***************
 
-The mmt-maven-plugin provides the following features:
+The alfresco-maven-plugin provides the following features:
 
 * Packages an AMP starting from a simple (and configurable) Maven project folder structure
 * Performs AMP to WAR overlay by using the Alfresco Repository ModuleManagementTool and emulating the same process
@@ -25,13 +25,13 @@ module.description=${project.description}
 module.version=${project.version}
 As you can see, the file is filtered with Maven project placeholders
 
-3. Declare the mmt-maven-plugin in your POM build section
+3. Declare the alfresco-maven-plugin in your POM build section
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.alfresco.maven.plugin</groupId>
-                <artifactId>mmt-maven-plugin</artifactId>
+                <artifactId>alfresco-maven-plugin</artifactId>
                 <version>0.1-SNAPSHOT
             </plugin>
         </plugins>
@@ -56,7 +56,7 @@ As you can see, the file is filtered with Maven project placeholders
 
     <plugin>
         <groupId>org.alfresco.maven.plugin</groupId>
-        <artifactId>mmt-maven-plugin</artifactId>
+        <artifactId>alfresco-maven-plugin</artifactId>
         <version>0.1-SNAPSHOT</version>
         <executions>
             <execution>

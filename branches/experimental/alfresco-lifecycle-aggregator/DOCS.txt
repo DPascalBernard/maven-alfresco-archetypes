@@ -4,7 +4,7 @@ Disclaimer for maven-alfresco list
 
 This codebase is currently work in progress; the effort have been split in three directions:
 a) The definition of 2 POM files that can handle versions and common build behaviors/features
-b) The writing of an mmt-maven-plugin to enable amp-to-war overlay provided by Alfresco
+b) The writing of an alfresco-maven-plugin to enable amp-to-war overlay provided by Alfresco
 Repository built-in features (ModuleManagementTool) and replace the maven-amp-plugin (big
 rewriting of the maven-war-plugin)
 c) The definition of (initially 2) archetypes that show some simple project's configuration using
