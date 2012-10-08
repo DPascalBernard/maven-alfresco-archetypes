@@ -107,7 +107,7 @@
                     </plugin>
                     <plugin>
                         <groupId>org.alfresco.maven.plugin</groupId>
-                        <artifactId>mmt-maven-plugin</artifactId>
+                        <artifactId>alfresco-maven-plugin</artifactId>
                         <executions>
                             <execution>
                                 <id>unpack-amps</id>
