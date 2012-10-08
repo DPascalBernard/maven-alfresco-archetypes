@@ -38,7 +38,7 @@
         <plugins>
             <plugin>
                 <groupId>org.alfresco.maven.plugin</groupId>
-                <artifactId>mmt-maven-plugin</artifactId>
+                <artifactId>alfresco-maven-plugin</artifactId>
                 <configuration>
                     <snapshotToTimestamp>true</snapshotToTimestamp>
                     <customVersionSuffix>123456768</customVersionSuffix>
@@ -47,7 +47,18 @@
         </plugins>
     </build>
 
-    <profiles>
+  <!--
+  No more repos are needed since they will be inherited by the parent POM
+  No snapshot repo is needed because snapshot is not intended to be used and won't be deployed
+  -->
+  <repositories>
+    <repository>
+      <id>alfresco-public</id>
+      <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
+    </repository>
+  </repositories>
+
+  <profiles>
         <profile>
             <id>run-amp</id>
             <activation>
