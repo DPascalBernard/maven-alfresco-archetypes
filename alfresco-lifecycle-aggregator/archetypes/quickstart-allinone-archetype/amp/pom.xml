@@ -36,7 +36,7 @@
         <plugins>
             <plugin>
                 <groupId>org.alfresco.maven.plugin</groupId>
-                <artifactId>mmt-maven-plugin</artifactId>
+                <artifactId>alfresco-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
