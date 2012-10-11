@@ -119,6 +119,7 @@ public class InstallMojo extends AbstractMojo {
                 if (!this.ampDestinationDir.exists()) {
                     this.ampDestinationDir.mkdirs();
                 }
+
                 FileUtils.copyFileToDirectory(this.singleAmp, this.ampDestinationDir);
                 getLog().debug(String.format("Copied %s into %s", this.singleAmp, this.ampDestinationDir));
             }
@@ -132,17 +133,20 @@ public class InstallMojo extends AbstractMojo {
         /**
          * Locate the WAR file to overlay - the one produced by the current project
          */
-        String warLocation = this.outputDirectory + '/' + this.finalName + ".war";
-        File war = new File(warLocation);
-        if (
-                !war.exists() ||
-                        this.ampDestinationDir == null ||
-                        !this.ampDestinationDir.exists()) {
+        //String warLocation = this.outputDirectory + '/' + this.finalName + ".war";
+        //String warLocation = this.outputDirectory + "/war/work/org.alfresco/" + this.finalName + "/";
+        String warLocation = this.outputDirectory + '/' + this.finalName + '/';
+        File warFile = new File(warLocation);
+        if (!warFile.exists()) {
             getLog().info(
-                    "No WAR file found in " + warLocation + " - skipping overlay.");
+              "No WAR file found in " + warLocation + " - skipping overlay.");
+        } else if (this.ampDestinationDir == null ||
+          !this.ampDestinationDir.exists()) {
+          getLog().info(
+              "No ampoverlay folder found in " + this.ampDestinationDir + " - skipping overlay.");
         } else if (this.ampDestinationDir.listFiles().length == 0) {
             getLog().info(
-                    "No runtime AMP dependencies found for this build - skipping overlay.");
+              "No runtime AMP dependencies found for this build - skipping overlay.");
         } else {
             /**
              * Invoke the ModuleManagementTool to install AMP modules on the WAR file;
@@ -152,7 +156,7 @@ public class InstallMojo extends AbstractMojo {
             mmt.setVerbose(true);
             mmt.installModules(
                     this.ampDestinationDir.getAbsolutePath(),
-                    war.getAbsolutePath(),
+                    warFile.getAbsolutePath(),
                     false,  //preview
                     true,   //force install
                     false); //backup
