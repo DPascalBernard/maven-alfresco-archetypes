@@ -33,6 +33,9 @@
     <!-- Context names used by webapps -->
     <webapp.name>${project.artifactId}</webapp.name>
 
+    <!-- Values can be "alfresco" or "share" -->
+    <alfresco.client.war>alfresco</alfresco.client.war>
+
     <!--
     Built-in multi-environment property placeholding support; to enable it on your sub-module
     * create src/main/properties/${env} folder structure
@@ -256,6 +259,23 @@
     </profile>
 
     <profile>
+      <id>enable-amp</id>
+      <activation>
+        <file>
+          <exists>module.properties</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.alfresco.maven.plugin</groupId>
+            <artifactId>alfresco-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
       <id>amp-to-war</id>
       <activation>
         <file>
@@ -278,7 +298,7 @@
                   <artifactItems>
                     <artifactItem>
                       <groupId>${alfresco.groupId}</groupId>
-                      <artifactId>alfresco</artifactId>
+                      <artifactId>${alfresco.client.war}</artifactId>
                       <type>war</type>
                       <version>${alfresco.version}</version>
                     </artifactItem>
