@@ -32,43 +32,69 @@ As you can see, the file is filtered with Maven project placeholders
             <plugin>
                 <groupId>org.alfresco.maven.plugin</groupId>
                 <artifactId>alfresco-maven-plugin</artifactId>
-                <version>0.1-SNAPSHOT
+                <version>0.6-SNAPSHOT</version>
             </plugin>
         </plugins>
         ...
     </build>
 
+Always keep in mind the default project-to-AMP mapping:
+* src/main/config => /config/alfresco/module/" + artifactId
+* src/main/resources => /config
+* src/main/webapp => /web
+
+
 + In order to overlay an existing Alfresco WAR file, you'll need the following elements:
 ----
 
-1. A WAR dependency to the Alfresco webapp:
+1. Define the type of Alfresco WAR you want to overlay: share or alfresco
 
-    <dependencies>
-        <dependency>
-            <groupId>org.alfresco</groupId>
-            <artifactId>alfresco</artifactId>
-            <version>4.0.d</version>
-            <type>war</type>
-        </dependency>
-    </dependencies>
+  <properties>
+    <alfresco.client.war>share</alfresco.client.war>
+  </properties>
 
-2. An mmt-plugin configuration to run the install goal after the AMP have been packaged
+2. Define the following build behaviour
 
-    <plugin>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack-alfresco</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${alfresco.groupId}</groupId>
+                  <artifactId>alfresco</artifactId>
+                  <type>war</type>
+                  <version>${alfresco.version}</version>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- All artifacts with AMP extensions are unpacked -->
+      <!-- using a WAR layout on an empty folder using alfresco-maven-plugin -->
+      <plugin>
         <groupId>org.alfresco.maven.plugin</groupId>
         <artifactId>alfresco-maven-plugin</artifactId>
-        <version>0.1-SNAPSHOT</version>
         <executions>
-            <execution>
-                <id>unpack-amps</id>
-                <phase>package</phase>
-                <goals>
-                    <goal>install</goal>
-                </goals>
-                <configuration>
-                    <singleAmp>${project.build.directory}/${project.build.finalName}.${project.packaging}</singleAmp>
-                    <snapshotToTimestamp>true</snapshotToTimestamp>
-                </configuration>
-            </execution>
+          <execution>
+            <id>amps-to-war-overlay</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>install</goal>
+            </goals>
+          </execution>
         </executions>
-    </plugin>
+      </plugin>
+    </plugins>
+  </build>
