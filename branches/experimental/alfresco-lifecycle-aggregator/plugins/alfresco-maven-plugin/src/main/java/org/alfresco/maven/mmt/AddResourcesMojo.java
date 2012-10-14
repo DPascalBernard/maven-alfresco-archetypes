@@ -25,33 +25,31 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Adds project's files and folders as build resources, so that the AMP packaging will automatically include them into
  * the build; by default
  * <p/>
- * src/main/java is compiled and copied into the root amp target folder
- * module.properties is copied into the root amp target folder
- * src/main/webapp is copied into the root amp target folder
- * src/main/config is copied into alfresco/module/${project.artifactId}
+ * <code>src/main/java</code> is compiled and copied into a jar in lib in the amp target folder
+ * <code>src/main/amp/module.properties</code> and <code>src/main/amp/file-mapping.properties</code> are copied into the root amp target folder
+ * <code>src/main/webapp</code> is copied into the web amp target folder
+ * <code>src/main/config</code> is copied into <code>alfresco/module/${project.artifactId}<code>
  * <p/>
  * You can also override the default settings by overriding the following POM properties
  * <p/>
  * <configuration>
- *   <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+ *   <ampBuildDirectory>${project.build.directory}/amp</ampBuildDirectory>
  *   <webappDirectory>src/main/webapp</webappDirectory>
  *   <configDirectory>src/main/config</configDirectory>
- *   <resourceDirectory>src/main/config</resourceDirectory>
+ *   <modulePropertiesFile>${project.basedir}/module.properties</modulePropertiesFile>
+ *   <fileMappingPropertiesFile>${project.basedir}/file-mapping.properties</fileMappingPropertiesFile>
+ *   <mapConfigToModuleTargetPath>true</mapConfigToModuleTargetPath>
  *   <configIncludes></configIncludes>
  *   <configExcludes></configExcludes>
  *   <webappIncludes></webappIncludes>
  *   <webappExcludes></webappExcludes>
- *   <resourceIncludes></resourcesIncludes>
- *   <resourceExcludes></resourcesExcludes>
  * </configuration>
  *
  * @author Maurizio Pillitu
@@ -73,11 +71,15 @@ public class AddResourcesMojo extends AbstractMojo {
 
     /**
      * Directory containing the classes and resource files that should be packaged into the JAR.
+     * 
+     * Note that using ${project.build.directory}/amp results in files with an absolute path being
+     * copied into target/classes as {@link Resource#setTargetPath(String)} expects a relative path within
+     * target/classes.
      *
-     * @parameter default-value="${project.build.outputDirectory}"
+     * @parameter default-value="../amp"
      * @required
      */
-    private File classesDirectory;
+    private String ampBuildDirectory;
 
     /**
      * Directory containing the web-root files
@@ -96,13 +98,28 @@ public class AddResourcesMojo extends AbstractMojo {
     private String configDirectory;
     
     /**
-     * Directory containing addition resources to be added to classpath (e.g. Alfresco well known resources) 
+     * Whether or not to map the source configDirectory.
+     * If true, /config -> amp/config/alfresco/module/*artifactId*
+     * else,    /config -> amp/config
      *
-     * @parameter default-value="src/main/resources"
-     * @required
+     * @parameter default-value="true"
      */
-    private String resourceDirectory;
-
+    private boolean mapConfigToModuleTargetPath;
+    
+    /**
+     * The path to the module.properties file
+     *
+     * @parameter expression="${amp.modulePropertiesFile}" default-value="src/main/amp/module.properties"
+     */
+    private File modulePropertiesFile;
+    
+    /**
+     * The path to the file-mapping.properties file
+     *
+     * @parameter expression="${amp.fileMappingPropertiesFile}" default-value="src/main/amp/file-mapping.properties"
+     */
+    private File fileMappingPropertiesFile;
+    
     /**
      * The Maven project.
      *
@@ -145,23 +162,6 @@ public class AddResourcesMojo extends AbstractMojo {
     private String webappExcludes;
     
     /**
-     * The comma separated list of tokens to include when copying the content
-     * of the configDirectory/ well known locations. Only alfresco/extension and alfresco/web-extension 
-     * are added here
-     *
-     * @parameter default-value="alfresco/extension/*,alfresco/web-extension/*"
-     */
-    private String resourceIncludes;
-
-    /**
-     * The comma separated list of tokens to exclude when copying the content
-     * of the webappDirectory.
-     *
-     * @parameter
-     */
-    private String resourceExcludes;
-
-    /**
      * Add the following resources to the project in order
      * to be filtered and copied over:
      * - module.properties
@@ -176,8 +176,6 @@ public class AddResourcesMojo extends AbstractMojo {
         List<String> configExcludesList = null;
         List<String> webappIncludesList = null;
         List<String> webappExcludesList = null;
-        List<String> resourceIncludesList = null;
-        List<String> resourceExcludesList = null;
         
         if (this.configIncludes != null) {
             configIncludesList = Arrays.asList(configIncludes.split(","));
@@ -192,19 +190,22 @@ public class AddResourcesMojo extends AbstractMojo {
             webappExcludesList = Arrays.asList(webappExcludes.split(","));
         }
         
-        if (this.resourceIncludes != null) {
-            resourceIncludesList = Arrays.asList(resourceIncludes.split(","));
-        }
-        if (this.resourceExcludes != null) {
-            resourceExcludesList = Arrays.asList(resourceExcludes.split(","));
-        }
-        // module.properties
-        // TODO: Add file-mapping.properties (override generated one in case)
+        // module.properties may be defined outside of ampSourceDirectory
+        String modulePropertiesParent = modulePropertiesFile.getPath().replaceAll("\\/module\\.properties", "");
         Resource modulePropertiesResource = new Resource();
-        modulePropertiesResource.setDirectory(".");
+        modulePropertiesResource.setDirectory(modulePropertiesParent);
         modulePropertiesResource.setIncludes(Arrays.asList(new String[]{"module.properties"}));
         modulePropertiesResource.setFiltering(true);
-        modulePropertiesResource.setTargetPath(this.classesDirectory.getAbsolutePath());
+        modulePropertiesResource.setTargetPath(this.ampBuildDirectory);
+        
+        // file-mapping.properties may be defined outside of ampSourceDirectory
+        // TODO: Synthesize file-mapping.properties if it does not exist
+        String fileMappingPropertiesParent = fileMappingPropertiesFile.getPath().replaceAll("\\/file-mapping\\.properties", "");
+        Resource fileMappingPropertiesResource = new Resource();
+        fileMappingPropertiesResource.setDirectory(fileMappingPropertiesParent);
+        fileMappingPropertiesResource.setIncludes(Arrays.asList(new String[]{"file-mapping.properties"}));
+        fileMappingPropertiesResource.setFiltering(true);
+        fileMappingPropertiesResource.setTargetPath(this.ampBuildDirectory);
         
         // Alfresco module config
         Resource configResource = new Resource();
@@ -217,20 +218,11 @@ public class AddResourcesMojo extends AbstractMojo {
         if (configExcludesList != null) {
             configResource.setExcludes(configExcludesList);
         }
-        configResource.setTargetPath(this.classesDirectory.getAbsolutePath() + "/config/alfresco/module/" + this.artifactId);
-
-        // Alfresco well known resources locations
-        Resource resourceResource = new Resource();
-        resourceResource.setDirectory(this.resourceDirectory);
-        resourceResource.setFiltering(true);
-
-        if (configIncludesList != null) {
-            resourceResource.setIncludes(resourceIncludesList);
+        if (mapConfigToModuleTargetPath) {
+            configResource.setTargetPath(this.ampBuildDirectory + "/config/alfresco/module/" + this.artifactId);
+        } else {
+            configResource.setTargetPath(this.ampBuildDirectory + "/config");
         }
-        if (configExcludesList != null) {
-            resourceResource.setExcludes(resourceExcludesList);
-        }
-        resourceResource.setTargetPath(this.classesDirectory.getAbsolutePath() + "/config");
 
         // Alfresco web resources
         Resource webappResource = new Resource();
@@ -242,15 +234,15 @@ public class AddResourcesMojo extends AbstractMojo {
         if (webappExcludesList != null) {
             webappResource.setExcludes(webappExcludesList);
         }
-        webappResource.setTargetPath(this.classesDirectory.getAbsolutePath() + "/web");
+        webappResource.setTargetPath(this.ampBuildDirectory + "/web");
 
         this.project.getBuild().getResources().add(modulePropertiesResource);
-        getLog().info("Added module.properties as filtered resource of current project; includes ");
+        getLog().info(String.format("Added Resource to current project: %s", modulePropertiesResource));
+        this.project.getBuild().getResources().add(fileMappingPropertiesResource);
+        getLog().info(String.format("Added Resource to current project: %s", fileMappingPropertiesResource));
         this.project.getBuild().getResources().add(configResource);
-        getLog().info(String.format("Added %s as filtered resource of current project; includes: %s ; excludes: %s", configDirectory,configIncludesList, configExcludesList));
+        getLog().info(String.format("Added Resource to current project: %s", configResource));
         this.project.getBuild().getResources().add(webappResource);
-        getLog().info(String.format("Added %s as non filtered resource of current project; includes: %s ; excludes: %s", webappDirectory,webappIncludesList, webappExcludesList));
-        this.project.getBuild().getResources().add(resourceResource);
-        getLog().info(String.format("Added %s as filtered resource of current project; includes: %s ; excludes: %s", resourceDirectory,resourceIncludesList, resourceExcludesList));
+        getLog().info(String.format("Added Resource to current project: %s", webappResource));
     }
 }

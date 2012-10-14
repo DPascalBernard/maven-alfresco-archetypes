@@ -100,6 +100,14 @@ public class AmpMojo extends AbstractMojo {
     protected File classesDirectory;
 
     /**
+     * Directory to build the AMP in 
+     *
+     * @parameter default-value="${project.build.directory}/amp"
+     * @required
+     */
+    protected File ampBuildDirectory;
+
+    /**
      * ${project.basedir}/target directory
      *
      * @parameter default-value="${project.build.directory}"
@@ -150,8 +158,8 @@ public class AmpMojo extends AbstractMojo {
 
         String normalizedVersion = getNormalizedVersion();
         if (normalizedVersion != this.version) {
-            File moduleFile = new File(this.classesDirectory, "module.properties");
-            File bckModuleFile = new File(this.classesDirectory, "module.properties.bck");
+        	File moduleFile = new File(this.ampBuildDirectory, "module.properties");
+            File bckModuleFile = new File(this.ampBuildDirectory, "module.properties.bck");
             replace(
                     this.version,
                     normalizedVersion,
@@ -180,7 +188,7 @@ public class AmpMojo extends AbstractMojo {
     protected File createArchive()
             throws MojoExecutionException {
         File jarFile = getFile(
-                new File(this.classesDirectory, "lib"),
+                new File(this.ampBuildDirectory, "lib"),
                 this.finalName,
                 this.classifier,
                 "jar");
@@ -201,13 +209,13 @@ public class AmpMojo extends AbstractMojo {
         ampArchiver.setOutputFile(ampFile);
 
         try {
-            if (!this.classesDirectory.exists()) {
-                getLog().warn("outputDirectory does not exists - AMP will be empty");
+            if (!this.ampBuildDirectory.exists()) {
+                getLog().warn("outputDirectory does not exist - AMP will be empty");
             } else {
-                jarArchiver.getArchiver().addDirectory(this.classesDirectory, new String[]{"**/*.class"}, new String[]{});
+                jarArchiver.getArchiver().addDirectory(this.classesDirectory, new String[]{}, new String[]{});
                 jarArchiver.createArchive(this.session, this.project, this.archive);
 
-                ampArchiver.getArchiver().addDirectory(this.classesDirectory, new String[]{"lib/**", "config/**", "*.properties" , "web/**"}, new String[]{});
+                ampArchiver.getArchiver().addDirectory(this.ampBuildDirectory, new String[]{"lib/**", "config/**", "*.properties" , "web/**"}, new String[]{});
                 ampArchiver.createArchive(this.session, this.project, this.archive);
             }
 
@@ -288,9 +296,9 @@ public class AmpMojo extends AbstractMojo {
             FileUtils.copyFile(out, in);
             out.delete();
         } catch (FileNotFoundException e) {
-            throw new MojoExecutionException("Cannot find module.properties");
+            throw new MojoExecutionException("Cannot find file: " + in.getPath());
         } catch (IOException e) {
-            throw new MojoExecutionException("Error writing to module.properties");
+            throw new MojoExecutionException("Error writing to file: " + out.getPath());
         }
     }
 }
