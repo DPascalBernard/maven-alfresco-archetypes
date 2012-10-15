@@ -43,8 +43,9 @@ import java.util.List;
  *   <ampBuildDirectory>${project.build.directory}/amp</ampBuildDirectory>
  *   <webappDirectory>src/main/webapp</webappDirectory>
  *   <configDirectory>src/main/config</configDirectory>
- *   <modulePropertiesFile>${project.basedir}/module.properties</modulePropertiesFile>
- *   <fileMappingPropertiesFile>${project.basedir}/file-mapping.properties</fileMappingPropertiesFile>
+ *   <modulePropertiesFile>src/main/amp/module.properties</modulePropertiesFile>
+ *   <fileMappingPropertiesFile>src/main/amp/file-mapping.properties</fileMappingPropertiesFile>
+ *   <licensesDirectory>src/main/amp/licenses</licensesDirectory>
  *   <mapConfigToModuleTargetPath>true</mapConfigToModuleTargetPath>
  *   <configIncludes></configIncludes>
  *   <configExcludes></configExcludes>
@@ -96,6 +97,15 @@ public class AddResourcesMojo extends AbstractMojo {
      * @required
      */
     private String configDirectory;
+    
+
+    /**
+     * Directory containing the AMP license files
+     *
+     * @parameter default-value="src/main/amp/licenses"
+     * @required
+     */
+    private String licensesDirectory;
     
     /**
      * Whether or not to map the source configDirectory.
@@ -207,6 +217,10 @@ public class AddResourcesMojo extends AbstractMojo {
         fileMappingPropertiesResource.setFiltering(true);
         fileMappingPropertiesResource.setTargetPath(this.ampBuildDirectory);
         
+        Resource licensesResource = new Resource();
+        licensesResource.setDirectory(this.licensesDirectory);
+        licensesResource.setTargetPath(this.ampBuildDirectory + "/licenses");
+        
         // Alfresco module config
         Resource configResource = new Resource();
         configResource.setDirectory(this.configDirectory);
@@ -240,6 +254,8 @@ public class AddResourcesMojo extends AbstractMojo {
         getLog().info(String.format("Added Resource to current project: %s", modulePropertiesResource));
         this.project.getBuild().getResources().add(fileMappingPropertiesResource);
         getLog().info(String.format("Added Resource to current project: %s", fileMappingPropertiesResource));
+        this.project.getBuild().getResources().add(licensesResource);
+        getLog().info(String.format("Added Resource to current project: %s", licensesResource));
         this.project.getBuild().getResources().add(configResource);
         getLog().info(String.format("Added Resource to current project: %s", configResource));
         this.project.getBuild().getResources().add(webappResource);
