@@ -215,7 +215,7 @@ public class AmpMojo extends AbstractMojo {
                 jarArchiver.getArchiver().addDirectory(this.classesDirectory, new String[]{}, new String[]{});
                 jarArchiver.createArchive(this.session, this.project, this.archive);
 
-                ampArchiver.getArchiver().addDirectory(this.ampBuildDirectory, new String[]{"lib/**", "config/**", "*.properties" , "web/**"}, new String[]{});
+                ampArchiver.getArchiver().addDirectory(this.ampBuildDirectory, new String[]{"lib/**", "config/**", "*.properties" , "web/**", "licenses/**"}, new String[]{});
                 ampArchiver.createArchive(this.session, this.project, this.archive);
             }
 
