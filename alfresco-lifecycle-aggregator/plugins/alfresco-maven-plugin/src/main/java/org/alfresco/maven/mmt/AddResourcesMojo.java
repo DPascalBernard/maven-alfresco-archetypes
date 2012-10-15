@@ -24,7 +24,6 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +32,7 @@ import java.util.List;
  * the build; by default
  * <p/>
  * <code>src/main/java</code> is compiled and copied into a jar in lib in the amp target folder
- * <code>src/main/amp/module.properties</code> and <code>src/main/amp/file-mapping.properties</code> are copied into the root amp target folder
+ * <code>src/main/amp</code> is copied into the root amp target folder
  * <code>src/main/webapp</code> is copied into the web amp target folder
  * <code>src/main/config</code> is copied into <code>alfresco/module/${project.artifactId}<code>
  * <p/>
@@ -41,12 +40,9 @@ import java.util.List;
  * <p/>
  * <configuration>
  *   <ampBuildDirectory>${project.build.directory}/amp</ampBuildDirectory>
+ *   <ampSourceDirectory>src/main/amp</ampSourceDirectory>
  *   <webappDirectory>src/main/webapp</webappDirectory>
  *   <configDirectory>src/main/config</configDirectory>
- *   <modulePropertiesFile>src/main/amp/module.properties</modulePropertiesFile>
- *   <fileMappingPropertiesFile>src/main/amp/file-mapping.properties</fileMappingPropertiesFile>
- *   <licensesDirectory>src/main/amp/licenses</licensesDirectory>
- *   <mapConfigToModuleTargetPath>true</mapConfigToModuleTargetPath>
  *   <configIncludes></configIncludes>
  *   <configExcludes></configExcludes>
  *   <webappIncludes></webappIncludes>
@@ -83,6 +79,15 @@ public class AddResourcesMojo extends AbstractMojo {
     private String ampBuildDirectory;
 
     /**
+     * Directory containing module.properties, file-mapping.properties, licenses
+     * and any other files and directories you want mapped directly to ampBuildDirectory's root
+     *
+     * @parameter default-value="src/main/amp"
+     * @required
+     */
+    private String ampSourceDirectory;
+    
+    /**
      * Directory containing the web-root files
      *
      * @parameter default-value="src/main/webapp"
@@ -97,38 +102,6 @@ public class AddResourcesMojo extends AbstractMojo {
      * @required
      */
     private String configDirectory;
-    
-
-    /**
-     * Directory containing the AMP license files
-     *
-     * @parameter default-value="src/main/amp/licenses"
-     * @required
-     */
-    private String licensesDirectory;
-    
-    /**
-     * Whether or not to map the source configDirectory.
-     * If true, /config -> amp/config/alfresco/module/*artifactId*
-     * else,    /config -> amp/config
-     *
-     * @parameter default-value="true"
-     */
-    private boolean mapConfigToModuleTargetPath;
-    
-    /**
-     * The path to the module.properties file
-     *
-     * @parameter expression="${amp.modulePropertiesFile}" default-value="src/main/amp/module.properties"
-     */
-    private File modulePropertiesFile;
-    
-    /**
-     * The path to the file-mapping.properties file
-     *
-     * @parameter expression="${amp.fileMappingPropertiesFile}" default-value="src/main/amp/file-mapping.properties"
-     */
-    private File fileMappingPropertiesFile;
     
     /**
      * The Maven project.
@@ -172,6 +145,32 @@ public class AddResourcesMojo extends AbstractMojo {
     private String webappExcludes;
     
     /**
+     * The comma separated list of tokens to apply property expansion filtering to 
+     * when copying the content of the ampSourceDirectory.
+     * 
+     * Note that this will also be add to the exclude for unfiltered resources.
+     *
+     * @parameter default-value="module.properties,file-mapping.properties"
+     */
+    private String ampSourceFilteredIncludes;
+    
+    /**
+     * The comma separated list of tokens to include without filtering
+     * when copying the content of the ampSourceDirectory.
+     *
+     * @parameter
+     */
+    private String ampSourceUnfilteredIncludes;
+    
+    /**
+     * The comma separated list of tokens to exclude
+     * when copying the content of the ampSourceDirectory.
+     *
+     * @parameter
+     */
+    private String ampSourceExcludes;
+    
+    /**
      * Add the following resources to the project in order
      * to be filtered and copied over:
      * - module.properties
@@ -186,6 +185,9 @@ public class AddResourcesMojo extends AbstractMojo {
         List<String> configExcludesList = null;
         List<String> webappIncludesList = null;
         List<String> webappExcludesList = null;
+        List<String> ampSourceFilteredIncludesList = null;
+        List<String> ampSourceUnfilteredIncludesList = null;
+        List<String> ampSourceExcludesList = null;
         
         if (this.configIncludes != null) {
             configIncludesList = Arrays.asList(configIncludes.split(","));
@@ -199,27 +201,41 @@ public class AddResourcesMojo extends AbstractMojo {
         if (this.webappExcludes != null) {
             webappExcludesList = Arrays.asList(webappExcludes.split(","));
         }
+        if (this.ampSourceFilteredIncludes != null) {
+            ampSourceFilteredIncludesList = Arrays.asList(ampSourceFilteredIncludes.split(","));
+        }
+        if (this.ampSourceUnfilteredIncludes != null) {
+            ampSourceUnfilteredIncludesList = Arrays.asList(ampSourceUnfilteredIncludes.split(","));
+        }
+        if (this.ampSourceExcludes != null) {
+            ampSourceExcludesList = Arrays.asList(ampSourceExcludes.split(","));
+        }
         
-        // module.properties may be defined outside of ampSourceDirectory
-        String modulePropertiesParent = modulePropertiesFile.getPath().replaceAll("\\/module\\.properties", "");
-        Resource modulePropertiesResource = new Resource();
-        modulePropertiesResource.setDirectory(modulePropertiesParent);
-        modulePropertiesResource.setIncludes(Arrays.asList(new String[]{"module.properties"}));
-        modulePropertiesResource.setFiltering(true);
-        modulePropertiesResource.setTargetPath(this.ampBuildDirectory);
+        Resource filteredAmpSourceResource = new Resource();
+        filteredAmpSourceResource.setDirectory(this.ampSourceDirectory);
+        if (ampSourceFilteredIncludesList != null) {
+            filteredAmpSourceResource.setIncludes(ampSourceFilteredIncludesList);
+        }
+        if (ampSourceExcludesList != null) {
+            filteredAmpSourceResource.setExcludes(ampSourceExcludesList);
+        }
+        filteredAmpSourceResource.setFiltering(true);
+        filteredAmpSourceResource.setTargetPath(this.ampBuildDirectory);
         
-        // file-mapping.properties may be defined outside of ampSourceDirectory
-        // TODO: Synthesize file-mapping.properties if it does not exist
-        String fileMappingPropertiesParent = fileMappingPropertiesFile.getPath().replaceAll("\\/file-mapping\\.properties", "");
-        Resource fileMappingPropertiesResource = new Resource();
-        fileMappingPropertiesResource.setDirectory(fileMappingPropertiesParent);
-        fileMappingPropertiesResource.setIncludes(Arrays.asList(new String[]{"file-mapping.properties"}));
-        fileMappingPropertiesResource.setFiltering(true);
-        fileMappingPropertiesResource.setTargetPath(this.ampBuildDirectory);
-        
-        Resource licensesResource = new Resource();
-        licensesResource.setDirectory(this.licensesDirectory);
-        licensesResource.setTargetPath(this.ampBuildDirectory + "/licenses");
+        List<String> ampSourceUnfilteredExcludesList = ampSourceFilteredIncludesList;
+        if (ampSourceUnfilteredExcludesList != null && ampSourceExcludesList != null) {
+            ampSourceUnfilteredExcludesList.addAll(ampSourceExcludesList);
+        }
+        Resource unfilteredAmpSourceResource = new Resource();
+        unfilteredAmpSourceResource.setDirectory(this.ampSourceDirectory);
+        if (ampSourceUnfilteredIncludesList != null) {
+            unfilteredAmpSourceResource.setIncludes(ampSourceUnfilteredIncludesList);
+        }
+        if (ampSourceUnfilteredExcludesList != null) {
+            unfilteredAmpSourceResource.setExcludes(ampSourceUnfilteredExcludesList);
+        }
+        unfilteredAmpSourceResource.setFiltering(false);
+        unfilteredAmpSourceResource.setTargetPath(this.ampBuildDirectory);
         
         // Alfresco module config
         Resource configResource = new Resource();
@@ -232,11 +248,7 @@ public class AddResourcesMojo extends AbstractMojo {
         if (configExcludesList != null) {
             configResource.setExcludes(configExcludesList);
         }
-        if (mapConfigToModuleTargetPath) {
-            configResource.setTargetPath(this.ampBuildDirectory + "/config/alfresco/module/" + this.artifactId);
-        } else {
-            configResource.setTargetPath(this.ampBuildDirectory + "/config");
-        }
+        configResource.setTargetPath(this.ampBuildDirectory + "/config/alfresco/module/" + this.artifactId);
 
         // Alfresco web resources
         Resource webappResource = new Resource();
@@ -250,12 +262,10 @@ public class AddResourcesMojo extends AbstractMojo {
         }
         webappResource.setTargetPath(this.ampBuildDirectory + "/web");
 
-        this.project.getBuild().getResources().add(modulePropertiesResource);
-        getLog().info(String.format("Added Resource to current project: %s", modulePropertiesResource));
-        this.project.getBuild().getResources().add(fileMappingPropertiesResource);
-        getLog().info(String.format("Added Resource to current project: %s", fileMappingPropertiesResource));
-        this.project.getBuild().getResources().add(licensesResource);
-        getLog().info(String.format("Added Resource to current project: %s", licensesResource));
+        this.project.getBuild().getResources().add(filteredAmpSourceResource);
+        getLog().info(String.format("Added Resource to current project: %s", filteredAmpSourceResource));
+        this.project.getBuild().getResources().add(unfilteredAmpSourceResource);
+        getLog().info(String.format("Added Resource to current project: %s", unfilteredAmpSourceResource));
         this.project.getBuild().getResources().add(configResource);
         getLog().info(String.format("Added Resource to current project: %s", configResource));
         this.project.getBuild().getResources().add(webappResource);
