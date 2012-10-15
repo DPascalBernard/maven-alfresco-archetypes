@@ -74,6 +74,7 @@
             <encoding>UTF-8</encoding>
             <nonFilteredFileExtensions>
               <nonFilteredFileExtension>ftl</nonFilteredFileExtension>
+              <nonFilteredFileExtension>acp</nonFilteredFileExtension>
             </nonFilteredFileExtensions>
           </configuration>
         </plugin>
