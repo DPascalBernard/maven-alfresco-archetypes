@@ -11,7 +11,8 @@
   <parent>
     <groupId>org.alfresco.integration</groupId>
     <artifactId>alfresco-developer-parent</artifactId>
-    <version>1</version>
+    <version>1-SNAPSHOT</version>
+    <relativePath>../alfresco-developer-parent</relativePath>
   </parent>
 
   <properties>
