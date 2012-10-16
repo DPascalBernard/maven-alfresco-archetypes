@@ -23,6 +23,8 @@ import org.alfresco.maven.mmt.archiver.AmpArchiver;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.archiver.MavenArchiver;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -31,6 +33,8 @@ import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 
 import java.io.*;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Build a AMP from the current project delegating the File creation to AmpArchiver;
@@ -46,7 +50,13 @@ import java.io.*;
  * @requiresDependencyResolution runtime
  */
 public class AmpMojo extends AbstractMojo {
-    /**
+	
+    private static final String AMP_LIB_FOLDER = "lib";
+    private static final String AMP_CONFIG_FOLDER = "config";
+	private static final String AMP_WEB_FOLDER = "web";
+	private static final String AMP_LICENSES_FOLDER = "web";
+
+	/**
      * Name of the generated JAR.
      *
      * @parameter alias="ampName" expression="${amp.finalName}" default-value="${project.build.finalName}"
@@ -123,6 +133,17 @@ public class AmpMojo extends AbstractMojo {
      * @parameter
      */
     protected String classifier;
+    
+
+    /**
+     * Whether (runtime scoped) JAR dependencies (including transitive) should be added or not to the generated AMP /lib folder. 
+     * By default it's true so all direct and transitive dependencies will be added
+     * 
+     * @parameter default-value="true"
+     * @required
+     */
+    protected boolean includeDependencies;
+
 
     /**
      * The Maven project.
@@ -167,7 +188,10 @@ public class AmpMojo extends AbstractMojo {
                     bckModuleFile);
             getLog().info("module.properties successfully patched; replaced " + this.version + " with " + normalizedVersion);
         }
-
+        
+        if(includeDependencies)
+        	gatherDependencies();
+        
         /**
          * Create the archive
          */
@@ -188,7 +212,7 @@ public class AmpMojo extends AbstractMojo {
     protected File createArchive()
             throws MojoExecutionException {
         File jarFile = getFile(
-                new File(this.ampBuildDirectory, "lib"),
+                new File(this.ampBuildDirectory, AMP_LIB_FOLDER),
                 this.finalName,
                 this.classifier,
                 "jar");
@@ -208,19 +232,22 @@ public class AmpMojo extends AbstractMojo {
         ampArchiver.setArchiver(new AmpArchiver());
         ampArchiver.setOutputFile(ampFile);
 
+        if (!this.ampBuildDirectory.exists()) {
+            getLog().warn("outputDirectory does not exist - AMP will be empty");
+        } else {
         try {
-            if (!this.ampBuildDirectory.exists()) {
-                getLog().warn("outputDirectory does not exist - AMP will be empty");
-            } else {
-                jarArchiver.getArchiver().addDirectory(this.classesDirectory, new String[]{}, new String[]{});
-                jarArchiver.createArchive(this.session, this.project, this.archive);
-
-                ampArchiver.getArchiver().addDirectory(this.ampBuildDirectory, new String[]{"lib/**", "config/**", "*.properties" , "web/**", "licenses/**"}, new String[]{});
-                ampArchiver.createArchive(this.session, this.project, this.archive);
+            jarArchiver.getArchiver().addDirectory(this.classesDirectory, new String[]{}, new String[]{});
+            jarArchiver.createArchive(this.session, this.project, this.archive);
+        	} catch (Exception e) {
+                throw new MojoExecutionException("Error creating JAR", e);
+        	}
+            try {                        
+            	ampArchiver.getArchiver().addDirectory(this.ampBuildDirectory, new String[]{AMP_LIB_FOLDER + "/**", AMP_CONFIG_FOLDER + "/**", "*.properties" , AMP_WEB_FOLDER + "/**", AMP_LICENSES_FOLDER + "/**"}, new String[]{});
+            	ampArchiver.createArchive(this.session, this.project, this.archive);
             }
-
-        } catch (Exception e) {
-            throw new MojoExecutionException("Error creating AMP", e);
+            catch (Exception e) {
+                throw new MojoExecutionException("Error creating AMP", e);
+        	}
         }
         return ampFile;
     }
@@ -300,5 +327,38 @@ public class AmpMojo extends AbstractMojo {
         } catch (IOException e) {
             throw new MojoExecutionException("Error writing to file: " + out.getPath());
         }
+    }
+    /**
+     * Copies all runtime dependencies to AMP lib. By default transitive runtime dependencies are retrieved.
+     * This behavior can be configured via the transitive parameter
+     * @param transitive
+     * @throws MojoExecutionException
+     */
+    protected void gatherDependencies() throws MojoExecutionException
+    {
+    	Set<Artifact> dependencies = null;
+    	// Whether transitive deps should be gathered or not
+    	dependencies = project.getArtifacts();
+    	
+    	ScopeArtifactFilter filter = new ScopeArtifactFilter( Artifact.SCOPE_RUNTIME );
+    	
+    	for (Artifact artifact : dependencies) {
+    		if ( !artifact.isOptional() && filter.include( artifact ) )
+    		{
+    			String type = artifact.getType();
+    			if ( "jar".equals( type ) || "ejb".equals( type ) || "ejb-client".equals( type ) || "test-jar".equals( type ) )
+                {
+    				File targetFile = new File(ampBuildDirectory + File.separator + AMP_LIB_FOLDER + File.separator + artifact.getFile().getName());
+    				String targetFilePath = targetFile.getPath();
+    				try {
+						FileUtils.copyFile(artifact.getFile(), targetFile);
+					} catch (IOException e) {
+						throw new MojoExecutionException("Error copying transitive dependency " + artifact.getId() + " to file: " + targetFilePath);
+					}
+                }
+    		}
+		}
+    	
+    	
     }
 }
