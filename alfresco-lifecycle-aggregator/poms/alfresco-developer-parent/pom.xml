@@ -263,7 +263,7 @@
       <id>enable-amp</id>
       <activation>
         <file>
-          <exists>module.properties</exists>
+          <exists>src/main/amp/module.properties</exists>
         </file>
       </activation>
       <build>
@@ -280,7 +280,7 @@
       <id>amp-to-war</id>
       <activation>
         <file>
-          <exists>module.properties</exists>
+          <exists>src/main/amp/module.properties</exists>
         </file>
       </activation>
       <build>
