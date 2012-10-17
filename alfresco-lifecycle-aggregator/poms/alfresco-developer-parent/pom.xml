@@ -82,6 +82,14 @@
             <nonFilteredFileExtensions>
               <nonFilteredFileExtension>ftl</nonFilteredFileExtension>
               <nonFilteredFileExtension>acp</nonFilteredFileExtension>
+              <nonFilteredFileExtension>jpg</nonFilteredFileExtension>
+              <nonFilteredFileExtension>png</nonFilteredFileExtension>
+              <nonFilteredFileExtension>gif</nonFilteredFileExtension>
+              <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+              <nonFilteredFileExtension>doc</nonFilteredFileExtension>
+              <nonFilteredFileExtension>xls</nonFilteredFileExtension>
+              <nonFilteredFileExtension>ppt</nonFilteredFileExtension>
+              <nonFilteredFileExtension>bin</nonFilteredFileExtension>
             </nonFilteredFileExtensions>
           </configuration>
         </plugin>
