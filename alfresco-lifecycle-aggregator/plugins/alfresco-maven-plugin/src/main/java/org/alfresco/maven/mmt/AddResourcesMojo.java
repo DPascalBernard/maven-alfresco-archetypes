@@ -142,13 +142,13 @@ public class AddResourcesMojo extends AbstractMojo {
         Resource ampSourceResource = new Resource();
         ampSourceResource.setDirectory(this.ampSourceDirectory);
         ampSourceResource.setFiltering(filtering);
+        
         if (ampSourceIncludesList != null) {
             ampSourceResource.setIncludes(ampSourceIncludesList);
         }
         if (ampSourceExcludesList != null) {
             ampSourceResource.setExcludes(ampSourceExcludesList);
         }
-        ampSourceResource.setFiltering(true);
         ampSourceResource.setTargetPath(this.ampBuildDirectory);
         
         this.project.getBuild().getResources().add(ampSourceResource);
