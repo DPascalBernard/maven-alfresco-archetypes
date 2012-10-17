@@ -31,7 +31,7 @@
     <maven.release.version>2.2.2</maven.release.version>
     <alfresco.maven.version>0.7-SNAPSHOT</alfresco.maven.version>
     <maven.jetty.version>6.1.26</maven.jetty.version>
-	  <h2.version>1.3.158</h2.version>
+    <h2.version>1.3.158</h2.version>
     <h2-support.version>1.2</h2-support.version>
 
     <!-- Alfresco Repo disk storage folder (relative path) -->
