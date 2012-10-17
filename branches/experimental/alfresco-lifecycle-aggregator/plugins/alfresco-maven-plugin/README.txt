@@ -18,7 +18,7 @@ Usage
 
 1. Define your POM as <packaging>amp</packaging>
 
-2. Specify a module.properties file in the project's root folder, containing the following properties:
+2. Specify a module.properties file in the src/main/amp folder, containing the following properties:
 module.id=${project.artifactId}
 module.title=${project.name}
 module.description=${project.description}
@@ -32,16 +32,16 @@ As you can see, the file is filtered with Maven project placeholders
             <plugin>
                 <groupId>org.alfresco.maven.plugin</groupId>
                 <artifactId>alfresco-maven-plugin</artifactId>
-                <version>0.6-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </plugin>
         </plugins>
         ...
     </build>
 
 Always keep in mind the default project-to-AMP mapping:
-* src/main/config => /config/alfresco/module/" + artifactId
-* src/main/resources => /config
-* src/main/webapp => /web
+* src/main/amp => /
+* src/main/resources => /lib/amp-classes.jar
+* src/main/java      => /lib/amp-classes.kar
 
 
 + In order to overlay an existing Alfresco WAR file, you'll need the following elements:
