@@ -95,30 +95,28 @@ public class AddResourcesMojo extends AbstractMojo {
     private MavenProject project;
 
     /**
-     * The comma separated list of tokens to apply property expansion filtering to 
+     * The comma separated list of tokens to include property expansion filtering to 
      * when copying the content of the ampSourceDirectory.
      * 
-     * Note that this will also be add to the exclude for unfiltered resources.
-     *
-     * @parameter default-value="module.properties,file-mapping.properties,config/alfresco/module/${project.artifactId}/module-context.xml,config/alfresco/module/${project.artifactId}/context/*-context.xml"
+     * @parameter default-value="**"
      */
-    private String ampSourceFilteredIncludes;
+    private String ampSourceIncludes;
     
-    /**
-     * The comma separated list of tokens to include without filtering
-     * when copying the content of the ampSourceDirectory.
-     *
-     * @parameter
-     */
-    private String ampSourceUnfilteredIncludes;
     
     /**
      * The comma separated list of tokens to exclude
      * when copying the content of the ampSourceDirectory.
      *
-     * @parameter
+     * @parameter default-value=""
      */
     private String ampSourceExcludes;
+    
+    /**
+     * Whether AMP sources (from ${ampSourceDirectory}) should be filtered. By default filtering is enabled.
+     *
+     * @parameter default-value="true"
+     */
+    private boolean filtering;
     
     /**
      * Add the following resources to the project in order
@@ -130,53 +128,31 @@ public class AddResourcesMojo extends AbstractMojo {
     public void execute()
             throws MojoExecutionException {
 
-        List<String> ampSourceFilteredIncludesList = null;
-        List<String> ampSourceUnfilteredIncludesList = null;
+        List<String> ampSourceIncludesList = null;
         List<String> ampSourceExcludesList = null;
         
-        if (this.ampSourceFilteredIncludes != null) {
-            ampSourceFilteredIncludesList = Arrays.asList(ampSourceFilteredIncludes.split(","));
+        if (this.ampSourceIncludes != null) {
+            ampSourceIncludesList = Arrays.asList(ampSourceIncludes.split(","));
         }
-        if (this.ampSourceUnfilteredIncludes != null) {
-            ampSourceUnfilteredIncludesList = Arrays.asList(ampSourceUnfilteredIncludes.split(","));
-        }
+
         if (this.ampSourceExcludes != null) {
             ampSourceExcludesList = Arrays.asList(ampSourceExcludes.split(","));
         }
         
-        Resource filteredAmpSourceResource = new Resource();
-        filteredAmpSourceResource.setDirectory(this.ampSourceDirectory);
-        if (ampSourceFilteredIncludesList != null) {
-            filteredAmpSourceResource.setIncludes(ampSourceFilteredIncludesList);
+        Resource ampSourceResource = new Resource();
+        ampSourceResource.setDirectory(this.ampSourceDirectory);
+        ampSourceResource.setFiltering(filtering);
+        if (ampSourceIncludesList != null) {
+            ampSourceResource.setIncludes(ampSourceIncludesList);
         }
         if (ampSourceExcludesList != null) {
-            filteredAmpSourceResource.setExcludes(ampSourceExcludesList);
+            ampSourceResource.setExcludes(ampSourceExcludesList);
         }
-        filteredAmpSourceResource.setFiltering(true);
-        filteredAmpSourceResource.setTargetPath(this.ampBuildDirectory);
+        ampSourceResource.setFiltering(true);
+        ampSourceResource.setTargetPath(this.ampBuildDirectory);
         
-        // The files which are by default filtered are removed from the unfiltered copy 
-        List<String> ampSourceUnfilteredExcludesList = ampSourceFilteredIncludesList;
-        if (ampSourceUnfilteredExcludesList != null && ampSourceExcludesList != null) {
-            ampSourceUnfilteredExcludesList.addAll(ampSourceExcludesList);
-        }
+        this.project.getBuild().getResources().add(ampSourceResource);
+        getLog().info(String.format("Added Resource to current project: %s", ampSourceResource));
         
-        Resource unfilteredAmpSourceResource = new Resource();
-        unfilteredAmpSourceResource.setDirectory(this.ampSourceDirectory);
-        if (ampSourceUnfilteredIncludesList != null) {
-            unfilteredAmpSourceResource.setIncludes(ampSourceUnfilteredIncludesList);
-        }
-        if (ampSourceUnfilteredExcludesList != null) {
-            unfilteredAmpSourceResource.setExcludes(ampSourceUnfilteredExcludesList);
-        }
-        
-        unfilteredAmpSourceResource.setFiltering(false);
-        unfilteredAmpSourceResource.setTargetPath(this.ampBuildDirectory);
-        
-        this.project.getBuild().getResources().add(filteredAmpSourceResource);
-        getLog().info(String.format("Added Resource to current project: %s", filteredAmpSourceResource));
-        
-        this.project.getBuild().getResources().add(unfilteredAmpSourceResource);
-        getLog().info(String.format("Added Resource to current project: %s", unfilteredAmpSourceResource));
     }
 }
