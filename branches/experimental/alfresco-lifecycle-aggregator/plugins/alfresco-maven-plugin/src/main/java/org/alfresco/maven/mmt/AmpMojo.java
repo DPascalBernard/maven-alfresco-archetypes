@@ -19,6 +19,15 @@ package org.alfresco.maven.mmt;
  * under the License.
  */
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Set;
+
 import org.alfresco.maven.mmt.archiver.AmpArchiver;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.archiver.MavenArchiveConfiguration;
@@ -31,10 +40,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
-
-import java.io.*;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Build a AMP from the current project delegating the File creation to AmpArchiver;
