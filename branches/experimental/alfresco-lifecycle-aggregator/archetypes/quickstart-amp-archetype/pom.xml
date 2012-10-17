@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.alfresco</groupId>
         <artifactId>alfresco-platform-parent</artifactId>
-        <version>4.0.d</version>
+        <version>4.0.d-SNAPSHOT</version>
     </parent>
 
     <!--
@@ -33,20 +33,6 @@
         </dependency>
     </dependencies>
 
-    <!-- Provides lifecycle for amp extension and related packaging -->
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.alfresco.maven.plugin</groupId>
-                <artifactId>alfresco-maven-plugin</artifactId>
-                <configuration>
-                    <snapshotToTimestamp>true</snapshotToTimestamp>
-                    <customVersionSuffix>123456768</customVersionSuffix>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
   <!--
   No more repos are needed since they will be inherited by the parent POM
   No snapshot repo is needed because snapshot is not intended to be used and won't be deployed
@@ -60,15 +46,9 @@
 
   <profiles>
         <profile>
-            <id>run-amp</id>
-            <activation>
-                <property>
-                    <name>run-amp</name>
-                </property>
-            </activation>
-
+            <id>amp-to-war</id>
+            
             <properties>
-                <!-- Alfresco Repo configuration for embedded Jetty -->
                 <alfresco.db.name>alf_jetty</alfresco.db.name>
                 <alfresco.db.username>alfresco</alfresco.db.username>
                 <alfresco.db.password>alfresco</alfresco.db.password>
@@ -76,68 +56,6 @@
                 <alfresco.db.url>jdbc:h2:./${alfresco.data.location}/h2_data/${alfresco.db.name};${alfresco.db.params}</alfresco.db.url>
                 <alfresco.db.datasource.class>org.h2.jdbcx.JdbcDataSource</alfresco.db.datasource.class>
             </properties>
-
-            <dependencies>
-                <dependency>
-                    <groupId>${alfresco.groupId}</groupId>
-                    <artifactId>alfresco</artifactId>
-                    <type>war</type>
-                </dependency>
-            </dependencies>
-
-            <build>
-                <finalName>${project.artifactId}</finalName>
-                <resources>
-                    <resource>
-                        <directory>src/test/resources</directory>
-                        <filtering>true</filtering>
-                    </resource>
-                </resources>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>create-war</id>
-                                <phase>package</phase>
-                                <goals><goal>war</goal></goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.alfresco.maven.plugin</groupId>
-                        <artifactId>alfresco-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>unpack-amps</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>install</goal>
-                                </goals>
-                                <configuration>
-                                    <singleAmp>${project.build.directory}/${project.build.finalName}.${project.packaging}</singleAmp>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.mortbay.jetty</groupId>
-                        <artifactId>maven-jetty-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>run</id>
-                                <goals><goal>run-war</goal></goals>
-                                <phase>package</phase>
-                                <configuration>
-                                    <webapp>${project.basedir}/target/${project.build.finalName}.war</webapp>
-                                    <contextPath>/${project.build.finalName}</contextPath>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
 </project>
