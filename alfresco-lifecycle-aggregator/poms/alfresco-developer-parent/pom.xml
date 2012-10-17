@@ -11,6 +11,13 @@
   <prerequisites>
     <maven>3.0.3</maven>
   </prerequisites>
+  
+  <parent>
+    <groupId>org.alfresco.maven.integration</groupId>
+    <artifactId>alfresco-poms</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../</relativePath>
+  </parent>
 
   <properties>
     <!-- Maven Plugins Versions -->
@@ -278,11 +285,6 @@
 
     <profile>
       <id>amp-to-war</id>
-      <activation>
-        <file>
-          <exists>src/main/amp/module.properties</exists>
-        </file>
-      </activation>
       <build>
         <plugins>
           <!-- Fetch and unpack Alfresco Repository in the target/ folder -->
@@ -350,6 +352,20 @@
             <configuration>
               <singleAmp>${project.build.directory}/${project.build.finalName}.amp</singleAmp>
             </configuration>
+          </plugin>
+          <!-- If the integration-test phase is called, the integrated WAR + AMP is actually ran in Jetty -->
+          <plugin>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>maven-jetty-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>run-amp-to-war</id>
+                    <goals>
+                        <goal>run-exploded</goal>
+                    </goals>
+                    <phase>pre-integration-test</phase>
+                </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
