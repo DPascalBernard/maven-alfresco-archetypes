@@ -20,11 +20,11 @@
 <beans>
     
     <!-- A simple class that is initialized by Spring -->
-    <bean id="${groupId}.${artifactId}.exampleBean" class="org.alfresco.demoamp.Demo" init-method="init" />
+    <bean id="${project.artifactId}.exampleBean" class="org.alfresco.demoamp.Demo" init-method="init" />
     
     <!-- A simple module component that will be executed once -->
     <bean id="${artifactId}.exampleComponent" class="org.alfresco.demoamp.DemoComponent" parent="module.baseComponent" >
-        <property name="moduleId" value="${pom.artifactId}" />  <!-- See module.properties -->
+        <property name="moduleId" value="${project.artifactId}" />  <!-- See module.properties -->
         <property name="name" value="exampleComponent" />
         <property name="description" value="A demonstration component" />
         <property name="sinceVersion" value="2.0" />
