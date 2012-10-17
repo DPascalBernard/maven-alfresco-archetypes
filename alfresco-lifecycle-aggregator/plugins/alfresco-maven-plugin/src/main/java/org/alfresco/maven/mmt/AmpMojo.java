@@ -51,12 +51,7 @@ import java.util.Set;
  */
 public class AmpMojo extends AbstractMojo {
 	
-    private static final String AMP_LIB_FOLDER = "lib";
-    private static final String AMP_CONFIG_FOLDER = "config";
-	private static final String AMP_WEB_FOLDER = "web";
-	private static final String AMP_LICENSES_FOLDER = "web";
-
-	/**
+    /**
      * Name of the generated JAR.
      *
      * @parameter alias="ampName" expression="${amp.finalName}" default-value="${project.build.finalName}"
@@ -212,7 +207,7 @@ public class AmpMojo extends AbstractMojo {
     protected File createArchive()
             throws MojoExecutionException {
         File jarFile = getFile(
-                new File(this.ampBuildDirectory, AMP_LIB_FOLDER),
+                new File(this.ampBuildDirectory, AmpModel.AMP_FOLDER_LIB),
                 this.finalName,
                 this.classifier,
                 "jar");
@@ -242,7 +237,7 @@ public class AmpMojo extends AbstractMojo {
                 throw new MojoExecutionException("Error creating JAR", e);
         	}
             try {                        
-            	ampArchiver.getArchiver().addDirectory(this.ampBuildDirectory, new String[]{AMP_LIB_FOLDER + "/**", AMP_CONFIG_FOLDER + "/**", "*.properties" , AMP_WEB_FOLDER + "/**", AMP_LICENSES_FOLDER + "/**"}, new String[]{});
+            	ampArchiver.getArchiver().addDirectory(this.ampBuildDirectory, new String[]{"**"}, new String[]{});
             	ampArchiver.createArchive(this.session, this.project, this.archive);
             }
             catch (Exception e) {
@@ -328,6 +323,7 @@ public class AmpMojo extends AbstractMojo {
             throw new MojoExecutionException("Error writing to file: " + out.getPath());
         }
     }
+    
     /**
      * Copies all runtime dependencies to AMP lib. By default transitive runtime dependencies are retrieved.
      * This behavior can be configured via the transitive parameter
@@ -336,29 +332,27 @@ public class AmpMojo extends AbstractMojo {
      */
     protected void gatherDependencies() throws MojoExecutionException
     {
-    	Set<Artifact> dependencies = null;
-    	// Whether transitive deps should be gathered or not
-    	dependencies = project.getArtifacts();
-    	
-    	ScopeArtifactFilter filter = new ScopeArtifactFilter( Artifact.SCOPE_RUNTIME );
-    	
-    	for (Artifact artifact : dependencies) {
-    		if ( !artifact.isOptional() && filter.include( artifact ) )
-    		{
-    			String type = artifact.getType();
-    			if ( "jar".equals( type ) || "ejb".equals( type ) || "ejb-client".equals( type ) || "test-jar".equals( type ) )
+        Set<Artifact> dependencies = null;
+        // Whether transitive deps should be gathered or not
+        dependencies = project.getArtifacts();
+
+        ScopeArtifactFilter filter = new ScopeArtifactFilter( Artifact.SCOPE_RUNTIME );
+        
+        for (Artifact artifact : dependencies) {
+            if ( !artifact.isOptional() && filter.include( artifact ) )
+            {
+                String type = artifact.getType();
+                if ( "jar".equals( type ) || "ejb".equals( type ) || "ejb-client".equals( type ) || "test-jar".equals( type ) )
                 {
-    				File targetFile = new File(ampBuildDirectory + File.separator + AMP_LIB_FOLDER + File.separator + artifact.getFile().getName());
-    				String targetFilePath = targetFile.getPath();
-    				try {
-						FileUtils.copyFile(artifact.getFile(), targetFile);
-					} catch (IOException e) {
-						throw new MojoExecutionException("Error copying transitive dependency " + artifact.getId() + " to file: " + targetFilePath);
-					}
+                    File targetFile = new File(ampBuildDirectory + File.separator + AmpModel.AMP_FOLDER_LIB + File.separator + artifact.getFile().getName());
+                    String targetFilePath = targetFile.getPath();
+                    try {
+                        FileUtils.copyFile(artifact.getFile(), targetFile);
+                    } catch (IOException e) {
+                        throw new MojoExecutionException("Error copying transitive dependency " + artifact.getId() + " to file: " + targetFilePath);
+                    }
                 }
-    		}
-		}
-    	
-    	
+            }
+        }
     }
 }
