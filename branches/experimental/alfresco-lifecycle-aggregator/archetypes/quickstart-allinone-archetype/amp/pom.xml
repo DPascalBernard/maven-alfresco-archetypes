@@ -30,14 +30,5 @@
             <artifactId>spring-beans</artifactId>
         </dependency>
     </dependencies>
-
-    <!-- Provides lifecycle for amp extension and related packaging -->
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.alfresco.maven.plugin</groupId>
-                <artifactId>alfresco-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+    
 </project>
