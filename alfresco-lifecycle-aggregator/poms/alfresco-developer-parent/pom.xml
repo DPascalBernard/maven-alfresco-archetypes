@@ -329,6 +329,7 @@
                     <resource>
                       <directory>src/test/resources</directory>
                       <targetPath>WEB-INF/classes</targetPath>
+                      <filtering>true</filtering>
                     </resource>
                   </resources>
                 </configuration>
