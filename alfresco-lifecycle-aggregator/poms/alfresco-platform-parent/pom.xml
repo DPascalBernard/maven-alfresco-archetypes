@@ -11,7 +11,7 @@
 
   <properties>
     <!-- Alfresco version/edition selection -->
-    <alfresco.version>4.2.b</alfresco.version>
+    <alfresco.version>4.2.b-SNAPSHOT</alfresco.version>
     <alfresco.groupId>org.alfresco</alfresco.groupId>
   </properties>
   
