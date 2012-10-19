@@ -13,7 +13,21 @@
   </prerequisites>
 
   <properties>
-    <!-- Maven Plugins Versions -->
+    <!-- Default Alfresco version this SDK version has been tested with:  -->
+    <!--
+        | alfresco.groupId can be
+        | org.alfresco ==> Alfresco community 
+        | org.alfresco.enterprise ==> Alfresco Enterprise
+        |
+        | NOTE: You can / should override these properties in you POM to select the proper version
+         -->
+    <alfresco.groupId>org.alfresco</alfresco.groupId>
+    <alfresco.version>4.2.b-SNAPSHOT</alfresco.version>
+    
+    <!-- Values can be "alfresco" or "share". Default value is 'alfresco' assuming you are developing a repository AMP, change to share for share AMPs  -->
+    <alfresco.client.war>alfresco</alfresco.client.war>
+    
+    <!-- Maven Plugins Versions used by the SDK -->
     <maven.compiler.version>2.3.2</maven.compiler.version>
     <maven.clean.version>2.4.1</maven.clean.version>
     <maven.dependency.version>2.4</maven.dependency.version>
@@ -28,13 +42,10 @@
     <h2-support.version>1.2</h2-support.version>
 
     <!-- Alfresco Repo disk storage folder (relative path) -->
-    <alfresco.data.location>alf_data_jetty</alfresco.data.location>
+    <alfresco.data.location>alf_data_dev</alfresco.data.location>
 
     <!-- Context names used by webapps -->
     <webapp.name>${project.artifactId}</webapp.name>
-
-    <!-- Values can be "alfresco" or "share" -->
-    <alfresco.client.war>alfresco</alfresco.client.war>
 
     <!--
     Built-in multi-environment property placeholding support; to enable it on your sub-module
@@ -46,7 +57,39 @@
     <webapp.resource.filter>alfresco-global.properties</webapp.resource.filter>
     <webapp.resource.build.folder>${project.build.outputDirectory}</webapp.resource.build.folder>
   </properties>
+  
+  <repositories>
+      <repository>
+          <id>alfresco-public</id>
+          <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
+      </repository>
+      <repository>
+          <id>alfresco-public-snapshots</id>
+          <url>https://artifacts.alfresco.com/nexus/content/groups/public-snapshots</url>
+          <snapshots>
+              <enabled>true</enabled>
+              <updatePolicy>always</updatePolicy>
+          </snapshots>
+      </repository>
+  </repositories>
 
+  <!-- Here we realize the connection with the Alfresco selected platform (e.g.version and edition) -->
+  <dependencyManagement>
+     <dependencies>
+          <!-- This will import the dependencyManagement for all artifacts in the selected Alfresco plaftorm
+               (see http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies)
+               NOTE: You still need to define dependencies in your POM, but you can omit version as it's enforced by this dependencyManagement.
+               NOTE: It defaults to the latest version this SDK pom has been tested with, but alfresco version can/should be overridden in your project's pom   
+           -->
+          <dependency>
+              <groupId>${alfresco.groupId}</groupId>
+              <artifactId>alfresco-platform</artifactId>
+              <version>${alfresco.version}</version>
+              <type>pom</type>
+              <scope>import</scope>
+          </dependency>     
+     </dependencies>
+  </dependencyManagement>
   <build>
     <finalName>${webapp.name}</finalName>
     <pluginManagement>
@@ -288,7 +331,7 @@
       <id>amp-to-war</id>
       <build>
         <plugins>
-          <!-- Fetch and unpack Alfresco Repository in the target/ folder -->
+          <!-- Fetch and unpack Alfresco Repository / Share in the target / folder -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
