@@ -4,28 +4,15 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>alfresco-platform-parent</artifactId>
   <groupId>org.alfresco</groupId>
-  <version>4.0.d-SNAPSHOT</version>
+  <version>4.2.b-SNAPSHOT</version>
   <name>Alfresco Platform Parent</name>
+  <description>This POM describes the Alfresco Distribution in terms of artifacts groupId, artifactId, version</description>
   <packaging>pom</packaging>
-
-  <parent>
-    <groupId>org.alfresco.integration</groupId>
-    <artifactId>alfresco-developer-parent</artifactId>
-    <version>1-SNAPSHOT</version>
-    <relativePath>../alfresco-developer-parent</relativePath>
-  </parent>
 
   <properties>
     <!-- Alfresco version/edition selection -->
-    <alfresco.version>4.0.d</alfresco.version>
+    <alfresco.version>4.2.b</alfresco.version>
     <alfresco.groupId>org.alfresco</alfresco.groupId>
-
-    <!-- Dependencies Versions -->
-    <spring.version>3.0.5.RELEASE</spring.version>
-    <servlet.api.version>2.5</servlet.api.version>
-    <faces.version>1.1_02</faces.version>
-    <digester.version>1.6</digester.version>
-    <log4j.version>1.2.15</log4j.version>
   </properties>
   
   <!-- Defines Alfresco platform delivered artifacts, and main dependencies.
@@ -35,30 +22,49 @@
       --> 
   <dependencyManagement>
     <dependencies>
+      <!-- == Repository JARs / WAR == -->
       <dependency>
         <groupId>${alfresco.groupId}</groupId>
         <artifactId>alfresco</artifactId>
         <version>${alfresco.version}</version>
         <type>war</type>
       </dependency>
-      <dependency>
-        <groupId>${alfresco.groupId}</groupId>
-        <artifactId>share</artifactId>
-        <version>${alfresco.version}</version>
-        <type>war</type>
-      </dependency>
+      <!-- Core -->
       <dependency>
         <groupId>${alfresco.groupId}</groupId>
         <artifactId>alfresco-core</artifactId>
         <version>${alfresco.version}</version>
         <scope>provided</scope>
       </dependency>
+      <!-- Data model (JAR + Config) -->
       <dependency>
         <groupId>${alfresco.groupId}</groupId>
-        <artifactId>alfresco-datamodel</artifactId>
+        <artifactId>alfresco-data-model</artifactId>
         <version>${alfresco.version}</version>
         <scope>provided</scope>
       </dependency>
+      <dependency>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-data-model</artifactId>
+        <version>${alfresco.version}</version>
+        <classifier>config</classifier>
+        <scope>provided</scope>
+      </dependency>
+      <!-- JLAN Embed -->
+      <dependency>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-jlan-embed</artifactId>
+        <version>${alfresco.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <!-- MBeans -->
+      <dependency>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-mbeans</artifactId>
+        <version>${alfresco.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <!-- Remote API (JAR + Config) -->
       <dependency>
         <groupId>${alfresco.groupId}</groupId>
         <artifactId>alfresco-remote-api</artifactId>
@@ -67,50 +73,104 @@
       </dependency>
       <dependency>
         <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-remote-api</artifactId>
+        <version>${alfresco.version}</version>
+        <classifier>config</classifier>
+        <scope>provided</scope>
+      </dependency>
+      <!-- Remote API (JAR + Config) -->
+      <dependency>
+        <groupId>${alfresco.groupId}</groupId>
         <artifactId>alfresco-repository</artifactId>
         <version>${alfresco.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-repository</artifactId>
+        <version>${alfresco.version}</version>
+        <classifier>config</classifier>
+        <scope>provided</scope>
+      </dependency>
+      <!-- Web Client-->
+      <dependency>
+        <groupId>${alfresco.groupId}</groupId>
         <artifactId>alfresco-web-client</artifactId>
         <version>${alfresco.version}</version>
         <scope>provided</scope>
       </dependency>
+      <!-- Web Framework Commons-->
       <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-beans</artifactId>
-        <version>${spring.version}</version>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-web-framework-commons</artifactId>
+        <version>${alfresco.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <!-- == Share JARs/WAR  == -->
+      <dependency>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>share</artifactId>
+        <version>${alfresco.version}</version>
+        <type>war</type>
+      </dependency>
+      <!-- Share -->
+      <dependency>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-share</artifactId>
+        <version>${alfresco.version}</version>
+        <classifier>config</classifier>
+        <scope>provided</scope>
+      </dependency>
+      <!-- FDK Client -->
+      <dependency>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-fdk-client</artifactId>
+        <version>${alfresco.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <!-- == Solr JARs/WAR -->
+      <dependency>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-solr</artifactId>
+        <version>${alfresco.version}</version>
+        <type>war</type>
+      </dependency>
+      <dependency>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-solr-integration</artifactId>
+        <version>${alfresco.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <!-- == Extra platform JARs/WARs -->
+      <dependency>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-wcm-quickstart</artifactId>
+        <version>${alfresco.version}</version>
+        <type>war</type>
         <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>servlet-api</artifactId>
-        <version>${servlet.api.version}</version>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-web-service-client</artifactId>
+        <version>${alfresco.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>javax.faces</groupId>
-        <artifactId>jsf-api</artifactId>
-        <version>${faces.version}</version>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-webeditor</artifactId>
+        <version>${alfresco.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>javax.faces</groupId>
-        <artifactId>jsf-impl</artifactId>
-        <version>${faces.version}</version>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-webeditor-taglib</artifactId>
+        <version>${alfresco.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>commons-digester</groupId>
-        <artifactId>commons-digester</artifactId>
-        <version>${digester.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
-        <version>${log4j.version}</version>
+        <groupId>${alfresco.groupId}</groupId>
+        <artifactId>alfresco-webeditor-plugin</artifactId>
+        <version>${alfresco.version}</version>
         <scope>provided</scope>
       </dependency>
     </dependencies>
