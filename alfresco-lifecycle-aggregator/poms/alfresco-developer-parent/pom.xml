@@ -11,13 +11,6 @@
   <prerequisites>
     <maven>3.0.3</maven>
   </prerequisites>
-  
-  <parent>
-    <groupId>org.alfresco.maven.integration</groupId>
-    <artifactId>alfresco-poms</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <relativePath>../</relativePath>
-  </parent>
 
   <properties>
     <!-- Maven Plugins Versions -->
