@@ -20,13 +20,13 @@
         | org.alfresco.enterprise ==> Alfresco Enterprise
         |
         | NOTE: You can / should override these properties in you POM to select the proper version
-         -->
+        -->
     <alfresco.groupId>org.alfresco</alfresco.groupId>
     <alfresco.version>4.2.b-SNAPSHOT</alfresco.version>
-    
+
     <!-- Values can be "alfresco" or "share". Default value is 'alfresco' assuming you are developing a repository AMP, change to share for share AMPs  -->
     <alfresco.client.war>alfresco</alfresco.client.war>
-    
+
     <!-- Maven Plugins Versions used by the SDK -->
     <maven.compiler.version>2.3.2</maven.compiler.version>
     <maven.clean.version>2.4.1</maven.clean.version>
@@ -39,7 +39,7 @@
     <alfresco.maven.version>0.7-SNAPSHOT</alfresco.maven.version>
     <maven.jetty.version>6.1.26</maven.jetty.version>
     <h2.version>1.3.158</h2.version>
-    <h2-support.version>1.2</h2-support.version>
+    <h2-support.version>1.5</h2-support.version>
 
     <!-- Alfresco Repo disk storage folder (relative path) -->
     <alfresco.data.location>alf_data_dev</alfresco.data.location>
@@ -56,6 +56,17 @@
     <env>local</env>
     <webapp.resource.filter>alfresco-global.properties</webapp.resource.filter>
     <webapp.resource.build.folder>${project.build.outputDirectory}</webapp.resource.build.folder>
+    
+    <!-- Alfresco Repo configuration with embedded DB -->
+    <alfresco.db.name>alf_jetty</alfresco.db.name>
+    <alfresco.db.username>alfresco</alfresco.db.username>
+    <alfresco.db.password>alfresco</alfresco.db.password>
+    <alfresco.db.params>MODE=PostgreSQL;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=10000;MVCC=TRUE</alfresco.db.params>
+    <alfresco.db.url>jdbc:h2:./${alfresco.data.location}/h2_data/${alfresco.db.name};${alfresco.db.params}</alfresco.db.url>
+    <alfresco.db.datasource.class>org.h2.jdbcx.JdbcDataSource</alfresco.db.datasource.class>
+    <!-- Share configuration -->
+    <share.log.level>info</share.log.level>
+    <surf.wiring.mode>development</surf.wiring.mode><!-- "production" is the other allowed value -->
   </properties>
   
   <repositories>
@@ -68,7 +79,7 @@
           <url>https://artifacts.alfresco.com/nexus/content/groups/public-snapshots</url>
           <snapshots>
               <enabled>true</enabled>
-              <updatePolicy>always</updatePolicy>
+              <updatePolicy>daily</updatePolicy>
           </snapshots>
       </repository>
   </repositories>
@@ -87,7 +98,7 @@
               <version>${alfresco.version}</version>
               <type>pom</type>
               <scope>import</scope>
-          </dependency>     
+          </dependency>
      </dependencies>
   </dependencyManagement>
   <build>
