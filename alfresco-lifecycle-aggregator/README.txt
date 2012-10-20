@@ -78,13 +78,14 @@ Archetypes
 ---------------------------
 ALFRESCO ALLINONE ARCHETYPE
 ---------------------------
-TBD
+- run mvn clean install to package all apps
+- run mvn clean install -Prun to run the full platform embedded in Jetty/H2
 ---
 
 ---
 ALFRESCO AMP ARCHETYPE
 ---
-TBD
+
 ---
 
 --- oOo ---
@@ -94,26 +95,11 @@ POM files
 *********
 
 -------------------------------
-ALFRESCO PLATFORM PARENT POM
+ALFRESCO PLATFORM POM
 -------------------------------
-* DependencyManagement for all Alfresco commonly used and WAR artifacts.
-* PluginManagement for all Maven plugin commonly used
-* Inherits alfresco-developer-parent POM
----
-Properties
----
-<maven.compiler.version>2.3.2</maven.compiler.version>
-<maven.clean.version>2.4.1</maven.clean.version>
-<maven.dependency.version>2.4</maven.dependency.version>
-<maven.resources.version>2.5</maven.resources.version>
-<maven.install.version>2.3.1</maven.install.version>
-<maven.jar.version>2.4</maven.jar.version>
-<maven.war.version>2.2</maven.war.version>
-<maven.release.version>2.2.2</maven.release.version>
-<mmt.maven.version>1.0-SNAPSHOT</mmt.maven.version>
-<maven.jetty.version>6.1.26</maven.jetty.version>
----
-
+* Describes the Alfresco platform. Lives in the Alfresco SVN and gets deployed at every release.
+* DependencyManagement for all Alfresco commonly used JAR/WAR/AMP artifacts
+* IInherits alfresco-developer-parent POM
 
 ---
 ALFRESCO DEVELOPER PARENT POM
@@ -130,7 +116,7 @@ filesets inherited from alfresco-developer-parent:
 ---
 Properties
 ---
-<alfresco.data.location>alf_data_jetty</alfresco.data.location>
+<alfresco.data.location>alf_data_dev</alfresco.data.location>
 ---
 
 ---

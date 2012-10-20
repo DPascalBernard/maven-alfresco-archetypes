@@ -83,9 +83,9 @@
       <description>Do not try to resolve web app root as file</description>
    </context-param>
 
-	<!--  These were previously init params for the WebDAV servlet,
-	      but since they are also needed to MT-enable the 
-	      ExternalAccess servlet, I have made them context wide. -->
+    <!--  These were previously init params for the WebDAV servlet,
+          but since they are also needed to MT-enable the 
+          ExternalAccess servlet, I have made them context wide. -->
    <context-param>
          <param-name>store</param-name>
          <param-value>workspace://SpacesStore</param-value>
@@ -100,8 +100,14 @@
       <param-value>false</param-value>
    </context-param>
    
-   <context-param><param-name>productionMode</param-name><param-value>true</param-value><description>Vaadin production mode</description></context-param>
+   <!-- Activiti context param placeholder -->
 
+   <context-param> 
+      <param-name>com.ibm.ws.jsf.loadExternalDtd</param-name> 
+      <param-value>false</param-value> 
+      <description>Sets "http://apache.org/xml/features/nonvalidating/load-external-dtd" feature on the SAXParser to false if this parameter is false</description> 
+   </context-param>
+   
    <filter>
       <filter-name>Authentication Filter</filter-name>
       <description>Authentication filter mapped only to faces URLs. Other URLs generally use proprietary means to talk to the AuthenticationComponent</description>
@@ -328,12 +334,18 @@
       <listener-class>org.alfresco.web.app.ContextListener</listener-class>
    </listener>
 
+   <!-- WebDAV session listener - ensures that no locked resources is left after session expires -->
+   <listener>
+      <listener-class>org.alfresco.repo.webdav.WebDAVSessionListener</listener-class>
+   </listener>
+
    <!-- Web Services context listener for OpenCMIS -->
    <listener>
       <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
    </listener>
    
-   <listener><listener-class>org.springframework.web.context.request.RequestContextListener</listener-class></listener>
+   <!-- Activiti listener placeholder -->
+
 
    <!-- Faces Servlet -->
    <servlet>
@@ -555,10 +567,9 @@
       <servlet-name>authenticatorServlet</servlet-name>
       <servlet-class>org.alfresco.repo.web.scripts.servlet.AuthenticatorServlet</servlet-class>
    </servlet>
-
-   <!-- Enterprise only -->
-   <!--<servlet><servlet-name>Vaadin Application Servlet</servlet-name><servlet-class>org.activiti.explorer.servlet.ExplorerApplicationServlet</servlet-class></servlet>-->
-	
+   
+   <!-- Activiti servlet placeholder -->
+    
    <servlet-mapping>
       <servlet-name>Faces Servlet</servlet-name>
       <url-pattern>/faces/*</url-pattern>
@@ -751,10 +762,8 @@
       <url-pattern>/cmistck</url-pattern>
    </servlet-mapping>
    CMISTCK -->
-
-   <!-- Enterprise only -->
-   <!--<servlet-mapping><servlet-name>Vaadin Application Servlet</servlet-name><url-pattern>/activiti-admin/*</url-pattern></servlet-mapping>-->
-   <!--<servlet-mapping><servlet-name>Vaadin Application Servlet</servlet-name><url-pattern>/VAADIN/*</url-pattern></servlet-mapping>-->
+   
+   <!-- Activiti servlet mapping placeholder -->
 
    <session-config>
       <session-timeout>60</session-timeout>
@@ -776,81 +785,82 @@
       <res-auth>Container</res-auth>
       <res-sharing-scope>Unshareable</res-sharing-scope>
    </resource-ref>
-
+   
    <!--
-   Currently disabled for an HTTP-based Solr deployment;
-   use for development purposes only
+       Security constraints are urrently disabled for an HTTP-based Solr deployment;
+       use for development purposes only
     -->
+   <!-- 
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>SOLR</web-resource-name>
+         <url-pattern>/service/api/solr/*</url-pattern>
+      </web-resource-collection>
 
-   <!--<security-constraint>-->
-      <!--<web-resource-collection>-->
-         <!--<web-resource-name>SOLR</web-resource-name>-->
-         <!--<url-pattern>/service/api/solr/*</url-pattern>-->
-      <!--</web-resource-collection>-->
+      <auth-constraint>
+         <role-name>repoclient</role-name>
+      </auth-constraint>
 
-      <!--<auth-constraint>-->
-         <!--<role-name>repoclient</role-name>-->
-      <!--</auth-constraint>-->
+      <user-data-constraint>
+         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      </user-data-constraint>
+   </security-constraint>
 
-      <!--<user-data-constraint>-->
-         <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
-      <!--</user-data-constraint>-->
-   <!--</security-constraint>-->
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>SOLR</web-resource-name>
+         <url-pattern>/s/api/solr/*</url-pattern>
+      </web-resource-collection>
 
-   <!--<security-constraint>-->
-      <!--<web-resource-collection>-->
-         <!--<web-resource-name>SOLR</web-resource-name>-->
-         <!--<url-pattern>/s/api/solr/*</url-pattern>-->
-      <!--</web-resource-collection>-->
+      <auth-constraint>
+         <role-name>repoclient</role-name>
+      </auth-constraint>
 
-      <!--<auth-constraint>-->
-         <!--<role-name>repoclient</role-name>-->
-      <!--</auth-constraint>-->
+      <user-data-constraint>
+         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      </user-data-constraint>
+   </security-constraint>
+   
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>SOLR</web-resource-name>
+         <url-pattern>/wcservice/api/solr/*</url-pattern>
+      </web-resource-collection>
 
-      <!--<user-data-constraint>-->
-         <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
-      <!--</user-data-constraint>-->
-   <!--</security-constraint>-->
-   <!---->
-   <!--<security-constraint>-->
-      <!--<web-resource-collection>-->
-         <!--<web-resource-name>SOLR</web-resource-name>-->
-         <!--<url-pattern>/wcservice/api/solr/*</url-pattern>-->
-      <!--</web-resource-collection>-->
+      <auth-constraint>
+         <role-name>repoclient</role-name>
+      </auth-constraint>
 
-      <!--<auth-constraint>-->
-         <!--<role-name>repoclient</role-name>-->
-      <!--</auth-constraint>-->
+      <user-data-constraint>
+         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      </user-data-constraint>
+   </security-constraint>
+   
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>SOLR</web-resource-name>
+         <url-pattern>/wcs/api/solr/*</url-pattern>
+      </web-resource-collection>
 
-      <!--<user-data-constraint>-->
-         <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
-      <!--</user-data-constraint>-->
-   <!--</security-constraint>-->
-   <!---->
-   <!--<security-constraint>-->
-      <!--<web-resource-collection>-->
-         <!--<web-resource-name>SOLR</web-resource-name>-->
-         <!--<url-pattern>/wcs/api/solr/*</url-pattern>-->
-      <!--</web-resource-collection>-->
+      <auth-constraint>
+         <role-name>repoclient</role-name>
+      </auth-constraint>
 
-      <!--<auth-constraint>-->
-         <!--<role-name>repoclient</role-name>-->
-      <!--</auth-constraint>-->
+      <user-data-constraint>
+         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      </user-data-constraint>
+   </security-constraint>
+   
+   <login-config>
+      <auth-method>CLIENT-CERT</auth-method>
+      <realm-name>Repository</realm-name>
+   </login-config>
 
-      <!--<user-data-constraint>-->
-         <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
-      <!--</user-data-constraint>-->
-   <!--</security-constraint>-->
-   <!---->
-   <!--<login-config>-->
-      <!--<auth-method>CLIENT-CERT</auth-method>-->
-      <!--<realm-name>Repository</realm-name>-->
-   <!--</login-config>-->
-
-   <!--<security-role>-->
-     <!--<role-name>repoclient</role-name>-->
-   <!--</security-role>-->
-
+   <security-role>
+     <role-name>repoclient</role-name>
+   </security-role>
+   -->
+   
    <env-entry>
       <description>A flag that globally enables or disables startup of the major Alfresco subsystems.</description>
       <env-entry-name>properties/startup.enable</env-entry-name>
