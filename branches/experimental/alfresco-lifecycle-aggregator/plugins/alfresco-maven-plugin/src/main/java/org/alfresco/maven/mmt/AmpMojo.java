@@ -112,7 +112,7 @@ public class AmpMojo extends AbstractMojo {
     /**
      * Directory to build the AMP in 
      *
-     * @parameter default-value="${project.build.directory}/amp"
+     * @parameter default-value="${project.build.directory}/${project.artifactId}-${project.version}"
      * @required
      */
     protected File ampBuildDirectory;

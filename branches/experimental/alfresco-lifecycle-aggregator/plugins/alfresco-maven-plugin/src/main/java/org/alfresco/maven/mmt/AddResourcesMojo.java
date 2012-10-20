@@ -71,7 +71,7 @@ public class AddResourcesMojo extends AbstractMojo {
      * copied into target/classes as {@link Resource#setTargetPath(String)} expects a relative path within
      * target/classes.
      *
-     * @parameter default-value="../amp"
+     * @parameter default-value="../${project.artifactId}-${project.version}"
      * @required
      */
     private String ampBuildDirectory;
