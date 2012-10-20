@@ -32,6 +32,7 @@
     <maven.clean.version>2.4.1</maven.clean.version>
     <maven.dependency.version>2.4</maven.dependency.version>
     <maven.resources.version>2.5</maven.resources.version>
+    <maven.surefire.version>2.12.4</maven.surefire.version>
     <maven.install.version>2.3.1</maven.install.version>
     <maven.jar.version>2.4</maven.jar.version>
     <maven.war.version>2.2</maven.war.version>
@@ -158,6 +159,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
           <version>${maven.dependency.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -334,6 +340,17 @@
             <groupId>org.alfresco.maven.plugin</groupId>
             <artifactId>alfresco-maven-plugin</artifactId>
           </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <version>${maven.surefire.version}</version>
+              <configuration>
+                  <additionalClasspathElements>
+                      <!-- Adds the config directory to the test classpath for unit testing purposes -->
+                      <additionalClasspathElement>${project.build.directory}/${project.artifactId}-${project.version}/config</additionalClasspathElement>
+                  </additionalClasspathElements>
+              </configuration>
+            </plugin>
         </plugins>
       </build>
     </profile>
