@@ -9,9 +9,9 @@
     <description>Quickstart Alfresco AMP Module</description>
 
     <parent>
-        <groupId>org.alfresco</groupId>
-        <artifactId>alfresco-platform-parent</artifactId>
-        <version>4.0.d-SNAPSHOT</version>
+        <groupId>org.alfresco.integration</groupId>
+        <artifactId>alfresco-developer-parent</artifactId>
+        <version>1-SNAPSHOT</version>
     </parent>
 
     <!--
@@ -27,15 +27,11 @@
             <groupId>${alfresco.groupId}</groupId>
             <artifactId>alfresco-repository</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-        </dependency>
     </dependencies>
 
   <!--
-  No more repos are needed since they will be inherited by the parent POM
-  No snapshot repo is needed because snapshot is not intended to be used and won't be deployed
+  This repository is only needed to retrieve Alfresco parent POM.
+  NOTE: This can be removed when/if Alfresco will be on Maven Central
   -->
   <repositories>
     <repository>
@@ -44,18 +40,4 @@
     </repository>
   </repositories>
 
-  <profiles>
-        <profile>
-            <id>amp-to-war</id>
-            
-            <properties>
-                <alfresco.db.name>alf_jetty</alfresco.db.name>
-                <alfresco.db.username>alfresco</alfresco.db.username>
-                <alfresco.db.password>alfresco</alfresco.db.password>
-                <alfresco.db.params>MODE=PostgreSQL;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=10000;MVCC=TRUE</alfresco.db.params>
-                <alfresco.db.url>jdbc:h2:./${alfresco.data.location}/h2_data/${alfresco.db.name};${alfresco.db.params}</alfresco.db.url>
-                <alfresco.db.datasource.class>org.h2.jdbcx.JdbcDataSource</alfresco.db.datasource.class>
-            </properties>
-        </profile>
-    </profiles>
 </project>
