@@ -3,11 +3,21 @@
     <id>amp</id>
     <phases>
       <phase>
-        <id>validate</id>
+        <id>initialize</id>
         <executions>
           <execution>
             <goals>
-              <goal>add-resources</goal>
+              <goal>set-version</goal>
+            </goals>
+          </execution>
+        </executions>
+      </phase>
+      <phase>
+        <id>generate-resources</id>
+        <executions>
+          <execution>
+            <goals>
+              <goal>add-amp-resources</goal>
             </goals>
           </execution>
         </executions>
