@@ -80,6 +80,14 @@ public class InstallMojo extends AbstractMojo {
      * @required
      */
     private String outputDirectory;
+    
+    /**
+     * The WAR file or exploded dir to install the AMPs in.  If specified
+     * the default of <code>outputDirectory/finalName</code> will not be used.
+     *
+     * @parameter expression="${warFile}"
+     */
+    private File warFile;
 
     /**
      * The maven project.
@@ -133,13 +141,15 @@ public class InstallMojo extends AbstractMojo {
         /**
          * Locate the WAR file to overlay - the one produced by the current project
          */
-        //String warLocation = this.outputDirectory + '/' + this.finalName + ".war";
-        //String warLocation = this.outputDirectory + "/war/work/org.alfresco/" + this.finalName + "/";
-        String warLocation = this.outputDirectory + '/' + this.finalName + '/';
-        File warFile = new File(warLocation);
+        if (warFile == null) {
+	        //String warLocation = this.outputDirectory + '/' + this.finalName + ".war";
+	        //String warLocation = this.outputDirectory + "/war/work/org.alfresco/" + this.finalName + "/";
+	        String warLocation = this.outputDirectory + '/' + this.finalName + '/';
+	        warFile = new File(warLocation);
+        }
         if (!warFile.exists()) {
             getLog().info(
-              "No WAR file found in " + warLocation + " - skipping overlay.");
+              "No WAR file found in " + warFile.getAbsolutePath() + " - skipping overlay.");
         } else if (this.ampDestinationDir == null ||
           !this.ampDestinationDir.exists()) {
           getLog().info(
