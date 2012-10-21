@@ -1,4 +1,4 @@
-package org.alfresco.maven.mmt;
+package org.alfresco.maven.plugin;
 
 /**
  * Class holding all common well know constants for the AMP packaging/extraction process
