@@ -1,5 +1,9 @@
 package org.alfresco.maven.plugin;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -15,6 +19,8 @@ import org.apache.maven.project.MavenProject;
  * @threadSafe
  */
 public class VersionMojo extends AbstractMojo {
+	
+	private static final DateFormat TIMESTAMP_FORMATTER = new SimpleDateFormat("yyMMddHHmm");
 
     /**
      * The Maven project.
@@ -89,7 +95,7 @@ public class VersionMojo extends AbstractMojo {
             normalizedVersion += "." + this.customVersionSuffix;
             getLog().info("Added custom suffix to version - " + normalizedVersion);
         } else if (this.snapshotToTimestamp) {
-            normalizedVersion += "." + System.currentTimeMillis();
+            normalizedVersion += "." + TIMESTAMP_FORMATTER.format(new Date());
             getLog().info("Added timestamp to version - " + normalizedVersion);
         }
         return normalizedVersion;
