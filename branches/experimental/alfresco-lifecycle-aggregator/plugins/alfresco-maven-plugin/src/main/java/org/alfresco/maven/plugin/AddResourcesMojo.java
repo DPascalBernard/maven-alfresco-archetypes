@@ -1,4 +1,4 @@
-package org.alfresco.maven.mmt;
+package org.alfresco.maven.plugin;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

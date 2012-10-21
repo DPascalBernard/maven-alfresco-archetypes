@@ -37,7 +37,7 @@
     <component>
       <role>org.codehaus.plexus.archiver.Archiver</role>
       <role-hint>amp</role-hint>
-      <implementation>org.alfresco.maven.mmt.archiver.AmpArchiver</implementation>
+      <implementation>org.alfresco.maven.plugin.archiver.AmpArchiver</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
     </component>
   </components>

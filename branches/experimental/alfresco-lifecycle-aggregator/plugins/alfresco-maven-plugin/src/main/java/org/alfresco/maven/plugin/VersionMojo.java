@@ -1,4 +1,4 @@
-package org.alfresco.maven.mmt;
+package org.alfresco.maven.plugin;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;

@@ -1,4 +1,4 @@
-package org.alfresco.maven.mmt;
+package org.alfresco.maven.plugin;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
 
-import org.alfresco.maven.mmt.archiver.AmpArchiver;
+import org.alfresco.maven.plugin.archiver.AmpArchiver;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.archiver.MavenArchiver;
