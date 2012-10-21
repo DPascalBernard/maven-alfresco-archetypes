@@ -24,8 +24,6 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
-import de.schlichtherle.io.File;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,8 +47,8 @@ import java.util.List;
  *
  * @author Maurizio Pillitu
  * @version $Id:$
- * @goal add-resources
- * @phase validate
+ * @goal add-amp-resources
+ * @phase generate-resources
  * @requiresProject
  * @threadSafe
  */

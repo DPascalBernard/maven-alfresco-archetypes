@@ -65,43 +65,6 @@ public class AmpMojo extends AbstractMojo {
     protected String finalName;
 
     /**
-     * Current version of the project
-     *
-     * @parameter expression="${project.version}"
-     * @required
-     */
-    protected String version;
-
-    /**
-     * The snapshotSuffix used to identify and strip the -SNAPSHOT version suffix
-     * See issue https://issues.alfresco.com/jira/browse/ENH-1232
-     *
-     * @parameter expression="${snapshotSuffix}" default-value="-SNAPSHOT"
-     * @required
-     */
-    protected String snapshotSuffix;
-
-    /**
-     * Enable this option in order to replace -SNAPSHOT with the currentTimestamp
-     * of the artifact creation
-     * See issue https://issues.alfresco.com/jira/browse/ENH-1232
-     *
-     * @parameter expression="${snapshotToTimestamp}" default-value="false"
-     * @required
-     */
-    protected boolean snapshotToTimestamp;
-
-    /**
-     * Allows to append a custom (numeric) value to the current artifact's version,
-     * i.e. appending the SCM build number can be accomplished defining
-     * <customVersionSuffix>${buildnumber}</customVersionSuffix> in the plugin
-     * configuration.
-     *
-     * @parameter expression="${customVersionSuffix}"
-     */
-    protected String customVersionSuffix;
-
-    /**
      * Directory containing the classes and resource files that should be packaged into the JAR.
      *
      * @parameter default-value="${project.build.outputDirectory}"
@@ -177,18 +140,6 @@ public class AmpMojo extends AbstractMojo {
     public void execute()
             throws MojoExecutionException {
 
-        String normalizedVersion = getNormalizedVersion();
-        if (normalizedVersion != this.version) {
-        	File moduleFile = new File(this.ampBuildDirectory, "module.properties");
-            File bckModuleFile = new File(this.ampBuildDirectory, "module.properties.bck");
-            replace(
-                    this.version,
-                    normalizedVersion,
-                    moduleFile,
-                    bckModuleFile);
-            getLog().info("module.properties successfully patched; replaced " + this.version + " with " + normalizedVersion);
-        }
-        
         if(includeDependencies)
         	gatherDependencies();
         
@@ -250,31 +201,6 @@ public class AmpMojo extends AbstractMojo {
         	}
         }
         return ampFile;
-    }
-
-    /**
-     * Normalizes the project's version following 2 patterns
-     * - Remove the -SNAPSHOT suffix, if present
-     * - (Optionally) append the timestamp to the version, if -SNAPSHOT is present
-     * - (Optionally) append the build number to the version
-     *
-     * @return the current project's version normalized
-     */
-    protected String getNormalizedVersion() {
-        int separatorIndex = version.indexOf(snapshotSuffix);
-        String normalizedVersion = version;
-        if (separatorIndex > -1) {
-            normalizedVersion = version.substring(0, separatorIndex);
-            getLog().info("Removed -SNAPSHOT suffix from version - " + normalizedVersion);
-        }
-        if (this.customVersionSuffix != null && this.customVersionSuffix.length() > 0) {
-            normalizedVersion += "." + this.customVersionSuffix;
-            getLog().info("Added custom suffix to version - " + normalizedVersion);
-        } else if (this.snapshotToTimestamp) {
-            normalizedVersion += "." + System.currentTimeMillis();
-            getLog().info("Added timestamp to version - " + normalizedVersion);
-        }
-        return normalizedVersion;
     }
 
     /**
