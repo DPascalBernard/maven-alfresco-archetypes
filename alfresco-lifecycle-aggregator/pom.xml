@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.alfresco.maven.integration</groupId>
-	<artifactId>alfresco-lifecycle-aggregator</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<name>Alfresco Integration Lifecycle Aggregator POM</name>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.alfresco.maven.integration</groupId>
+    <artifactId>alfresco-lifecycle-aggregator</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>Alfresco Integration Lifecycle Aggregator POM</name>
     <packaging>pom</packaging>
 
     <modules>
@@ -13,7 +13,7 @@
         <module>plugins/alfresco-maven-plugin</module>
 
         <!-- POM files -->
-        <module>poms</module>
+        <module>poms/alfresco-developer-parent</module>
 
         <!-- Archetypes -->
         <module>archetypes/quickstart-amp-archetype</module>
