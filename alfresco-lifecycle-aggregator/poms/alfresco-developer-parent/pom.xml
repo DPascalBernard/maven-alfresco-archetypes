@@ -112,7 +112,7 @@
            -->
           <dependency>
               <groupId>${alfresco.groupId}</groupId>
-              <artifactId>alfresco-platform</artifactId>
+              <artifactId>alfresco-platform-distribution</artifactId>
               <version>${alfresco.version}</version>
               <type>pom</type>
               <scope>import</scope>
