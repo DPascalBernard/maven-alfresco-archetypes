@@ -4,9 +4,9 @@
     <groupId>com.mycompany</groupId>
     <artifactId>quickstart-amp-archetype</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Quickstart Alfresco AMP Module</name>
+    <name>Alfresco AMP Quickstart project</name>
     <packaging>amp</packaging>
-    <description>Quickstart Alfresco AMP Module</description>
+    <description>This AMP Quickstart project manages the lifecycle of an Alfresco AMP (Alfresco Module Package)</description>
 
     <parent>
         <groupId>org.alfresco.integration</groupId>
@@ -27,11 +27,18 @@
             <groupId>${alfresco.groupId}</groupId>
             <artifactId>alfresco-repository</artifactId>
         </dependency>
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
   <!--
-  This repository is only needed to retrieve Alfresco parent POM.
-  NOTE: This can be removed when/if Alfresco will be on Maven Central
+    This repository is only needed to retrieve Alfresco parent POM.
+    NOTE: This can be removed when/if Alfresco will be on Maven Central
   -->
   <repositories>
     <repository>
