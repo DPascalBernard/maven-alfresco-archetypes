@@ -1,21 +1,21 @@
-* Use Nexus groups on alfresco-developer-parent and alfresco-platform-parent POM files, instead of accessing directly
-alfresco-enterprise-releases repo
+Short term (pre 4.x release):
+-----------------------------
+- Generate archetypes for sample projects
+- Cleanup issues
+- Release
+- Testing against 1 Community and 1 Enterprise version
+- Documentation, documentation, documentation
+    - Maven Site 
+    - https://wiki.alfresco.com/index.php?title=Maven_Alfresco_SDK (from scratch)
+    - http://code.google.com/p/maven-alfresco-archetypes/
 
-* Clean Nexus repositories from older manual deployments
+Mid term (post 4.x release):
+----------------------------
+- More archetypes
 
-* Test against community versions
-
-* Deploy alfresco-developer-parent and alfresco-platform-parent on maven.alfresco.com
-
-* Move alfresco-developer-parent and alfresco-platform-parent code might be moved into an internal Alfresco SCM repo
-
-
-
-
-
-***************************************
-Supported Archetypes (aka Advanced Use)
-***************************************
+**************************************************
+Enterprise Supported Archetypes (aka Advanced Use)
+**************************************************
 
 If you have built integration projects with Alfresco, you're familiar with Maven and you have a case study in mind,
 wondering how to integrate it with your software development around the product, you can start from the Alfresco
