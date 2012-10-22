@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>alfresco-platform</artifactId>
+  <artifactId>alfresco-platform-distribution</artifactId>
   <groupId>org.alfresco</groupId>
   <version>4.2.b-SNAPSHOT</version>
-  <name>Alfresco Platform Parent</name>
-  <description>This POM describes the Alfresco Distribution in terms of artifacts groupId, artifactId, version</description>
+  <name>Alfresco Platform SDK Distribution</name>
+  <description>This POM describes the Alfresco artifacts usable in the Maven SDK, in terms of artifacts groupId, artifactId, version</description>
   <packaging>pom</packaging>
 
   <properties>
