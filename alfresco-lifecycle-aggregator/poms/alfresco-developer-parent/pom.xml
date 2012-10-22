@@ -2,9 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.alfresco.integration</groupId>
-  <artifactId>alfresco-developer-parent</artifactId>
-  <name>Alfresco Developer Parent</name>
+  <groupId>org.alfresco.maven</groupId>
+  <artifactId>alfresco-sdk-parent</artifactId>
+  <name>Alfresco Maven SDK Parent POM</name>
+  <description>
+     The Alfresco Maven SDK Parent POM exposes the developer features of the Maven Alfresco SDK. 
+     Declare this POM as parent for your project and select the Alfresco version/edition by defining
+     the alfresco.groupId and alfresco.version in your POM. 
+  </description>
   <packaging>pom</packaging>
   <version>1-SNAPSHOT</version>
 

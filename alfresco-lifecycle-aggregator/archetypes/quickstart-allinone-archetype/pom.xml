@@ -9,8 +9,8 @@
     <packaging>pom</packaging>
 
     <parent>
-        <groupId>org.alfresco.integration</groupId>
-        <artifactId>alfresco-developer-parent</artifactId>
+        <groupId>org.alfresco.maven</groupId>
+        <artifactId>alfresco-sdk-parent</artifactId>
         <version>1-SNAPSHOT</version>
     </parent>
 
