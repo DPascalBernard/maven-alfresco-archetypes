@@ -144,7 +144,7 @@ public class InstallMojo extends AbstractMojo {
         if (warFile == null) {
 	        //String warLocation = this.outputDirectory + '/' + this.finalName + ".war";
 	        //String warLocation = this.outputDirectory + "/war/work/org.alfresco/" + this.finalName + "/";
-	        String warLocation = this.outputDirectory + '/' + this.finalName + '/';
+	        String warLocation = this.outputDirectory + File.separator + this.finalName + File.separator;
 	        warFile = new File(warLocation);
         }
         if (!warFile.exists()) {
@@ -164,12 +164,17 @@ public class InstallMojo extends AbstractMojo {
              */
             ModuleManagementTool mmt = new ModuleManagementTool();
             mmt.setVerbose(true);
-            mmt.installModules(
-                    this.ampDestinationDir.getAbsolutePath(),
-                    warFile.getAbsolutePath(),
-                    false,  //preview
-                    true,   //force install
-                    false); //backup
+            try {
+                mmt.installModules(
+                        this.ampDestinationDir.getAbsolutePath(),
+                        warFile.getAbsolutePath(),
+                        false,  //preview
+                        true,   //force install
+                        false);
+            } catch (IOException e) {
+                throw new MojoExecutionException("Problems while installing " + 
+            this.ampDestinationDir.getAbsolutePath() + " onto " + warFile.getAbsolutePath(), e);
+            } //backup
         }
     }
 }
