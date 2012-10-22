@@ -392,7 +392,7 @@
         </plugins>
       </build>
       <dependencies>
-          <!-- SDK Test Dependencies -->
+          <!-- SDK AMP Testing Dependencies -->
           <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -404,6 +404,33 @@
             <artifactId>h2-support</artifactId>
             <version>${h2-support.version}</version>
             <scope>test</scope>
+          </dependency>
+          <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>3.0.5.RELEASE</version>
+            <scope>test</scope>
+          </dependency>
+          <!-- Requires this explicit test dependency, for a Spring 3.0.5 bug 
+          |    See https://jira.springsource.org/browse/SPR-8527 
+          -->
+          <dependency>
+              <groupId>org.springframework</groupId>
+              <artifactId>spring-context</artifactId>
+              <version>3.0.6.RELEASE</version>
+              <scope>test</scope>
+          </dependency>
+          <dependency>
+              <groupId>${alfresco.groupId}</groupId>
+              <artifactId>alfresco-repository</artifactId>
+              <classifier>config</classifier>
+              <scope>provided</scope>
+          </dependency>
+          <dependency>
+              <groupId>${alfresco.groupId}</groupId>
+              <artifactId>alfresco-data-model</artifactId>
+              <classifier>config</classifier>
+              <scope>provided</scope>
           </dependency>
       </dependencies>
     </profile>
@@ -496,7 +523,6 @@
                 <webApp>${alfresco.client.war.folder}</webApp>
             </configuration>
             <dependencies>
-                <!-- SDK Test Dependencies -->
                 <dependency>
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
