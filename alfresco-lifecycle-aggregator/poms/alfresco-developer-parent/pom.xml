@@ -131,6 +131,7 @@
           <extensions>true</extensions>
           <configuration>
               <filtering>${app.filtering.enabled}</filtering>
+              <snapshotToTimestamp>true</snapshotToTimestamp>
           </configuration>
         </plugin>
         <plugin>
