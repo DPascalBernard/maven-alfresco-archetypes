@@ -35,8 +35,6 @@ import org.apache.commons.logging.LogFactory;
  */
 public class DemoComponent extends AbstractModuleComponent
 {
-    private static final String COMPANY_HOME = "cm:companyhome";
-
     Log log = LogFactory.getLog(DemoComponent.class);
     
     private NodeService nodeService;
