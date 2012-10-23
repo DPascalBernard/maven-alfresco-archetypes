@@ -73,6 +73,7 @@
         | as it may break SDK functionalities
          -->
     <app.filtering.enabled>true</app.filtering.enabled>
+    <app.testing.jvm.args>-Xms256m -Xmx1524m -XX:MaxPermSize=256m -Duser.language=en</app.testing.jvm.args>
     
     <!-- Maven Plugins Versions used by the SDK -->
     <maven.compiler.version>2.3.2</maven.compiler.version>
@@ -388,7 +389,7 @@
               <artifactId>maven-surefire-plugin</artifactId>
               <version>${maven.surefire.version}</version>
               <configuration>
-                  <argLine>-Xmx1524m -XX:MaxPermSize=256m -Duser.language=en</argLine>
+                  <argLine>${app.testing.jvm.args}</argLine>
                   <additionalClasspathElements>
                       <!-- Adds the config directory to the test classpath for unit testing purposes -->
                       <additionalClasspathElement>${project.build.directory}/${project.artifactId}-${project.version}/config</additionalClasspathElement>
