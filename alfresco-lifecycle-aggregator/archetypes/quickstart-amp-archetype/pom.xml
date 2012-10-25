@@ -35,7 +35,25 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
+  
+    <!-- Here we realize the connection with the Alfresco selected platform (e.g.version and edition) -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- This will import the dependencyManagement for all artifacts in the selected Alfresco plaftorm
+                 (see http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies)
+                 NOTE: You still need to define dependencies in your POM, but you can omit version as it's enforced by this dependencyManagement.
+                 NOTE: It defaults to the latest version this SDK pom has been tested with, but alfresco version can/should be overridden in your project's pom   
+             -->
+            <dependency>
+                <groupId>${alfresco.groupId}</groupId>
+                <artifactId>alfresco-platform-distribution</artifactId>
+                <version>${alfresco.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+           </dependency>
+       </dependencies>
+  </dependencyManagement>
+  
   <!--
     This repository is only needed to retrieve Alfresco parent POM.
     NOTE: This can be removed when/if Alfresco will be on Maven Central

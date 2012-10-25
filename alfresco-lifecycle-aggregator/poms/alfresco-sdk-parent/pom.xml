@@ -108,24 +108,6 @@
       </repository>
   </repositories>
 
-  <!-- Here we realize the connection with the Alfresco selected platform (e.g.version and edition) -->
-  <dependencyManagement>
-     <dependencies>
-          <!-- This will import the dependencyManagement for all artifacts in the selected Alfresco plaftorm
-               (see http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies)
-               NOTE: You still need to define dependencies in your POM, but you can omit version as it's enforced by this dependencyManagement.
-               NOTE: It defaults to the latest version this SDK pom has been tested with, but alfresco version can/should be overridden in your project's pom   
-           -->
-          <dependency>
-              <groupId>${alfresco.groupId}</groupId>
-              <artifactId>alfresco-platform-distribution</artifactId>
-              <version>${alfresco.version}</version>
-              <type>pom</type>
-              <scope>import</scope>
-          </dependency>
-     </dependencies>
-  </dependencyManagement>
-  
   <build>
     <finalName>${webapp.name}</finalName>
     <pluginManagement>
@@ -395,6 +377,30 @@
                       <additionalClasspathElement>${project.build.directory}/${project.artifactId}-${project.version}/config</additionalClasspathElement>
                   </additionalClasspathElements>
               </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-test</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.testOutputDirectory}/alfresco/module/${project.artifactId}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/${project.artifactId}-${project.version}</directory>
+                                    <includes>
+                                        <include>module.properties</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
       </build>
