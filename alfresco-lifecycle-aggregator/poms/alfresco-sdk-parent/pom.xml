@@ -27,7 +27,7 @@
         | NOTE: You can / should override these properties in you POM to select the proper version
         -->
     <alfresco.groupId>org.alfresco</alfresco.groupId>
-    <alfresco.version>4.2.b-SNAPSHOT</alfresco.version>
+    <alfresco.version>4.2.b</alfresco.version>
 
     <!--  Values can be "alfresco" or "share". Default value is 'alfresco' assuming you are developing a repository AMP, change to share for share AMPs 
         | This impact (in AMP projects) the choice of the WAR project for embedded run
@@ -44,10 +44,7 @@
     <alfresco.db.params>MODE=PostgreSQL;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=10000;MVCC=TRUE</alfresco.db.params>
     <alfresco.db.url>jdbc:h2:./${alfresco.data.location}/h2_data/${alfresco.db.name};${alfresco.db.params}</alfresco.db.url>
     <alfresco.db.datasource.class>org.h2.jdbcx.JdbcDataSource</alfresco.db.datasource.class>
-    <!-- Share configuration -->
-    <share.log.level>info</share.log.level>
-    <surf.wiring.mode>development</surf.wiring.mode><!-- "production" is the other allowed value -->
-
+    
     <!-- Context names used by webapps -->
     <webapp.name>${project.artifactId}</webapp.name>
 
@@ -74,6 +71,12 @@
          -->
     <app.filtering.enabled>true</app.filtering.enabled>
     <app.testing.jvm.args>-Xms256m -Xmx1524m -XX:MaxPermSize=256m -Duser.language=en</app.testing.jvm.args>
+    
+    <!--  Logging in project's target folder by default
+        | NOTE: Remember the trailing slash when overriding this. 
+         -->
+    <app.log.dir>${project.build.directory}/</app.log.dir>
+    <app.log.root.level>INFO</app.log.root.level>
     
     <!-- Maven Plugins Versions used by the SDK -->
     <maven.compiler.version>2.3.2</maven.compiler.version>
@@ -198,26 +201,6 @@
       </plugins>
     </pluginManagement>
 
-    <plugins>
-      <!-- Cleaning Alfresco Repository storage/log folders/files -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-clean-plugin</artifactId>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>${project.basedir}/${alfresco.data.location}</directory>
-            </fileset>
-            <fileset>
-              <directory>${project.basedir}</directory>
-              <includes>
-                <include>*.log</include>
-              </includes>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
-    </plugins>
     <resources>
         <resource>
             <directory>src/main/resources</directory>
@@ -500,7 +483,31 @@
                 </configuration>
               </execution>
             </executions>
-          </plugin>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>clean-test-module-properties</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <configuration>
+                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                            <filesets>
+                                <filesets>
+                                    <directory>${project.build.testOutputDirectory}/alfresco/module/${project.artifactId}</directory>
+                                    <includes>
+                                        <include>module.properties</include>
+                                    </includes>
+                                </filesets>
+                            </filesets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
           <!-- The current AMP artifact is installed into the Alfresco
           folder using alfresco-maven-plugin -->
           <plugin>
@@ -550,6 +557,31 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+        <id>purge</id>
+        <build>
+            <plugins>
+                  <!-- Cleaning Alfresco Repository storage/log folders/files -->
+                  <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <configuration>
+                      <filesets>
+                        <fileset>
+                          <directory>${project.basedir}/${alfresco.data.location}</directory>
+                        </fileset>
+                        <fileset>
+                          <directory>${app.log.dir}</directory>
+                          <includes>
+                            <include>*.log</include>
+                          </includes>
+                        </fileset>
+                      </filesets>
+                    </configuration>
+                  </plugin>
+            </plugins>
+        </build>
     </profile>
   </profiles>
 </project>
