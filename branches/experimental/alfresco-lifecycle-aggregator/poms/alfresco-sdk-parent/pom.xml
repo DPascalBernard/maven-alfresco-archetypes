@@ -110,6 +110,18 @@
           </snapshots>
       </repository>
   </repositories>
+  
+  <distributionManagement>
+      <repository>
+          <id>alfresco-releases</id>
+          <url>https://artifacts.alfresco.com/nexus/content/repositories/releases</url>
+      </repository>
+      <snapshotRepository>
+          <name>alfresco snapshots repository</name>
+          <id>alfresco-snapshots</id>
+          <url>https://artifacts.alfresco.com/nexus/content/repositories/snapshots</url>
+      </snapshotRepository>
+  </distributionManagement>
 
   <build>
     <finalName>${webapp.name}</finalName>
