@@ -244,7 +244,7 @@
                     <version>${maven.buildhelper.version}</version>
                     <executions>
                         <execution>
-                            <id>add-resource</id>
+                            <id>add-env-properties</id>
                             <phase>generate-resources</phase>
                             <goals>
                                 <goal>add-resource</goal>
@@ -283,7 +283,7 @@
                     <version>${maven.buildhelper.version}</version>
                     <executions>
                         <execution>
-                            <id>add-resource</id>
+                            <id>add-env-test-properties</id>
                             <phase>generate-resources</phase>
                             <goals>
                                 <goal>add-test-resource</goal>
