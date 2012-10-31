@@ -35,7 +35,7 @@
                             <execution>
                                 <id>run</id>
                                 <goals><goal>run</goal></goals>
-                                <phase>package</phase>
+                                <phase>integration-test</phase>
                                 <configuration>
                                     <!-- Following 3 properties set an empty ROOT context,
                                     which is mandatory to run jetty:run plugin -->
