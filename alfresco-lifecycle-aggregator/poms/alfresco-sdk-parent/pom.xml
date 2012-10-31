@@ -459,12 +459,14 @@
           <dependency>
               <groupId>${alfresco.groupId}</groupId>
               <artifactId>alfresco-repository</artifactId>
+              <version>${alfresco.version}</version>
               <classifier>config</classifier>
               <scope>provided</scope>
           </dependency>
           <dependency>
               <groupId>${alfresco.groupId}</groupId>
               <artifactId>alfresco-data-model</artifactId>
+              <version>${alfresco.version}</version>
               <classifier>config</classifier>
               <scope>provided</scope>
           </dependency>
