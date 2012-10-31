@@ -32,11 +32,6 @@
             </roles>
         </developer>
     </developers>
-    
-    <properties>
-        <!-- Used to deploy the SDK POM -->
-        <altDeploymentRepository>alfresco-artifacts::default::https://artifacts.alfresco.com/nexus/content/repositories/snapshots</altDeploymentRepository>
-    </properties>
 
     <modules>
         <!-- Plugins -->
@@ -73,28 +68,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.7</version>
-                <executions>
-                    <execution>
-                        <id>regex-property</id>
-                        <goals>
-                            <goal>regex-property</goal>
-                        </goals>
-                        <configuration>
-                            <name>parsed.version</name>
-                            <value>$\{project.version}</value>
-                            <regex>-SNAPSHOT</regex>
-                            <replacement></replacement>
-                            <failIfNoMatch>false</failIfNoMatch>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
     
     <repositories>
@@ -111,20 +84,6 @@
         </repository>
     </repositories>
     
-    <profiles>
-        <profile>
-            <id>is-release</id>
-            <activation>
-                <property>
-                    <name>parsed.version</name>
-                    <value>${project.version}</value>
-                </property>
-            </activation>
-            <properties>
-                <altDeploymentRepository>alfresco-artifacts::default::https://artifacts.alfresco.com/nexus/content/repositories/releases</altDeploymentRepository>
-            </properties>
-        </profile>
-    
-    </profiles>
+
 
 </project>
