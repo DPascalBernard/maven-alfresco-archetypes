@@ -46,7 +46,7 @@
         <module>poms/alfresco-sdk-parent</module>
 
         <!-- Archetypes -->
-        <module>archetypes/quickstart-amp-archetype</module>
+        <module>archetypes/alfresco-amp-archetype</module>
         
         <!-- Sample projects (still to be archetypized) -->
         <module>sample-projects/quickstart-allinone-archetype</module>
