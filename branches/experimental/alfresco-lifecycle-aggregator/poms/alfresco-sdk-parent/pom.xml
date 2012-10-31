@@ -11,20 +11,60 @@
      the alfresco.groupId and alfresco.version in your POM. 
   </description>
   <packaging>pom</packaging>
-  <version>1-SNAPSHOT</version>
+  
+  <!-- This defines the version of the SDK in terms of features -->
+  <version>1.0</version>
 
+  <organization>
+    <name>Alfresco Software</name>
+    <url>http://www.alfresco.org/</url>
+  </organization>
+  
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License v3.0 or later</name>
+      <url>http://www.gnu.org/licenses/lgpl-3.0-standalone.html</url>
+    </license>
+  </licenses>
+  
+  <developers>
+      <developer>
+        <id>gabriele.columbro</id>
+        <name>Gabriele Columbro</name>
+        <email>gabriele.columbro@alfresco.com</email>
+        <timezone>GMT+1</timezone>
+        <roles>
+          <role>Founder</role>
+          <role>Architect</role>
+          <role>Developer</role>
+        </roles>
+      </developer>
+      <developer>
+        <id>maurizio.pillitu</id>
+        <name>Maurizio Pillitu</name>
+        <email>maurizio.pillitu@alfresco.com</email>
+        <timezone>GMT+1</timezone>
+        <roles>
+          <role>Architect</role>
+          <role>Developer</role>
+        </roles>
+    </developer>
+  </developers>
+  
   <prerequisites>
     <maven>3.0.3</maven>
   </prerequisites>
 
   <properties>
-    <!-- Default Alfresco version this SDK version has been tested with:  -->
-    <!--
+    <!--  Default Alfresco version this SDK version has been tested with:
+        |
         | alfresco.groupId can be
         | org.alfresco ==> Alfresco community 
         | org.alfresco.enterprise ==> Alfresco Enterprise
         |
         | NOTE: You can / should override these properties in you POM to select the proper version
+        | 
+        | For available versions please search on https://artifacts.alfresco.com/nexus/index.html
         -->
     <alfresco.groupId>org.alfresco</alfresco.groupId>
     <alfresco.version>4.2.b</alfresco.version>
@@ -42,6 +82,7 @@
     <alfresco.db.username>alfresco</alfresco.db.username>
     <alfresco.db.password>alfresco</alfresco.db.password>
     <alfresco.db.params>MODE=PostgreSQL;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=10000;MVCC=TRUE</alfresco.db.params>
+    <!-- By default the H2 embedded database datafile is created under the alfresco.data.location folder -->
     <alfresco.db.url>jdbc:h2:./${alfresco.data.location}/h2_data/${alfresco.db.name};${alfresco.db.params}</alfresco.db.url>
     <alfresco.db.datasource.class>org.h2.jdbcx.JdbcDataSource</alfresco.db.datasource.class>
     
@@ -227,7 +268,9 @@
     </testResources>
   </build>
 
+  <!-- Feature / behavioral profiles -->
   <profiles>
+    <!-- Enable environment properties filtering based on the env property -->
     <profile>
         <id>enable-properties-filtering</id>
         <activation>
@@ -267,6 +310,7 @@
         </build>
     </profile>
     
+    <!-- Enable environment test properties filtering based on the env property -->
     <profile>
         <id>enable-test-properties-filtering</id>
         <activation>
@@ -305,7 +349,7 @@
             </plugins>
         </build>
     </profile>
-
+    <!-- Enable jetty running embedded if the jetty/jetty.xml file exists in the project -->
     <profile>
       <id>enable-jetty</id>
       <activation>
@@ -347,7 +391,8 @@
         </plugins>
       </build>
     </profile>
-
+    
+    <!-- Enable AMP lifecycle if finds a module.properties, including unit testing support -->
     <profile>
       <id>enable-amp</id>
       <activation>
@@ -442,7 +487,8 @@
           </dependency>
       </dependencies>
     </profile>
-
+    
+    <!-- Enable AMP project packing on a WAR and run embedded in Jetty -->
     <profile>
       <id>amp-to-war</id>
       <build>
@@ -570,6 +616,7 @@
         </plugins>
       </build>
     </profile>
+    <!-- Cleans Alfresco data folder, embedded DB and logs -->
     <profile>
         <id>purge</id>
         <build>
