@@ -15,41 +15,12 @@
   <!-- This defines the version of the SDK in terms of features -->
   <version>1.0</version>
 
-  <organization>
-    <name>Alfresco Software</name>
-    <url>http://www.alfresco.org/</url>
-  </organization>
-  
   <licenses>
     <license>
       <name>GNU Lesser General Public License v3.0 or later</name>
       <url>http://www.gnu.org/licenses/lgpl-3.0-standalone.html</url>
     </license>
   </licenses>
-  
-  <developers>
-      <developer>
-        <id>gabriele.columbro</id>
-        <name>Gabriele Columbro</name>
-        <email>gabriele.columbro@alfresco.com</email>
-        <timezone>GMT+1</timezone>
-        <roles>
-          <role>Founder</role>
-          <role>Architect</role>
-          <role>Developer</role>
-        </roles>
-      </developer>
-      <developer>
-        <id>maurizio.pillitu</id>
-        <name>Maurizio Pillitu</name>
-        <email>maurizio.pillitu@alfresco.com</email>
-        <timezone>GMT+1</timezone>
-        <roles>
-          <role>Architect</role>
-          <role>Developer</role>
-        </roles>
-    </developer>
-  </developers>
   
   <prerequisites>
     <maven>3.0.3</maven>
