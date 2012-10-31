@@ -5,7 +5,8 @@
     <groupId>org.alfresco.maven</groupId>
     <artifactId>alfresco-lifecycle-aggregator</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Alfresco SDK Lifecycle Aggregator, builds all modules required for the Maven Alfresco SDK</name>
+    <name>Maven Alfresco SDK Lifecycle Aggregator</name>
+    <description>This aggregator POM builds all modules required for the Maven Alfresco SDK</description>
     <packaging>pom</packaging>
 
     <developers>
@@ -31,6 +32,11 @@
             </roles>
         </developer>
     </developers>
+    
+    <properties>
+        <!-- Used to deploy the SDK POM -->
+        <altDeploymentRepository>alfresco-artifacts::default::https://artifacts.alfresco.com/nexus/content/repositories/snapshots</altDeploymentRepository>
+    </properties>
 
     <modules>
         <!-- Plugins -->
@@ -41,7 +47,9 @@
 
         <!-- Archetypes -->
         <module>archetypes/quickstart-amp-archetype</module>
-        <module>archetypes/quickstart-allinone-archetype</module>
+        
+        <!-- Sample projects (still to be archetypized) -->
+        <module>sample-projects/quickstart-allinone-archetype</module>
     </modules>
 
     <distributionManagement>
@@ -56,10 +64,28 @@
         </snapshotRepository>
     </distributionManagement>
     
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                  <artifactId>maven-archetype-plugin</artifactId>
+                  <version>2.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    
     <repositories>
         <repository>
             <id>alfresco-public</id>
             <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
+        </repository>
+        <repository>
+            <id>alfresco-public-snapshots</id>
+            <url>https://artifacts.alfresco.com/nexus/content/groups/public-snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
