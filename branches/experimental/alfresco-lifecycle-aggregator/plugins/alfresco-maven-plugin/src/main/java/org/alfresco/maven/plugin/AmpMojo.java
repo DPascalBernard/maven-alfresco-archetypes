@@ -258,7 +258,6 @@ public class AmpMojo extends AbstractMojo {
     /**
      * Copies all runtime dependencies to AMP lib. By default transitive runtime dependencies are retrieved.
      * This behavior can be configured via the transitive parameter
-     * @param transitive
      * @throws MojoExecutionException
      */
     protected void gatherDependencies() throws MojoExecutionException
@@ -273,7 +272,8 @@ public class AmpMojo extends AbstractMojo {
             if ( !artifact.isOptional() && filter.include( artifact ) )
             {
                 String type = artifact.getType();
-                if ( "jar".equals( type ) || "ejb".equals( type ) || "ejb-client".equals( type ) || "test-jar".equals( type ) )
+
+                if (AmpModel.EXTENSION_LIST.contains(type))
                 {
                     File targetFile = new File(ampBuildDirectory + File.separator + AmpModel.AMP_FOLDER_LIB + File.separator + artifact.getFile().getName());
                     String targetFilePath = targetFile.getPath();
