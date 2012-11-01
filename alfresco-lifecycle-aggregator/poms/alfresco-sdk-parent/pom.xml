@@ -13,7 +13,7 @@
   <packaging>pom</packaging>
   
   <!-- This defines the version of the SDK in terms of features -->
-  <version>1.0</version>
+  <version>1.0-SNAPSHOT</version>
 
   <licenses>
     <license>
