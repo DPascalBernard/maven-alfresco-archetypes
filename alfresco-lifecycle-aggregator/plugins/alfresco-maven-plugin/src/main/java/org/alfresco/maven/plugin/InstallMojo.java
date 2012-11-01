@@ -170,11 +170,11 @@ public class InstallMojo extends AbstractMojo {
                         warFile.getAbsolutePath(),
                         false,  //preview
                         true,   //force install
-                        false);
+                        false); //backup
             } catch (IOException e) {
                 throw new MojoExecutionException("Problems while installing " + 
             this.ampDestinationDir.getAbsolutePath() + " onto " + warFile.getAbsolutePath(), e);
-            } //backup
+            }
         }
     }
 }
