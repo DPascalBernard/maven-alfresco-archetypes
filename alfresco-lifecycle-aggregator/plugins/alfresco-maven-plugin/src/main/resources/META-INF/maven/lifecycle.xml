@@ -13,16 +13,6 @@
         </executions>
       </phase>
       <phase>
-        <id>generate-resources</id>
-        <executions>
-          <execution>
-            <goals>
-              <goal>add-amp-resources</goal>
-            </goals>
-          </execution>
-        </executions>
-      </phase>
-      <phase>
         <id>package</id>
         <executions>
           <execution>
