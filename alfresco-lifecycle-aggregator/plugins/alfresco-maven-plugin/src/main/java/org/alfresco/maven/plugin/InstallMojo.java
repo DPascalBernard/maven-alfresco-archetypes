@@ -1,24 +1,5 @@
 package org.alfresco.maven.plugin;
 
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
 import org.alfresco.repo.module.tool.ModuleManagementTool;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
@@ -38,7 +19,7 @@ import java.io.IOException;
  * The AMP files overlaid are all AMP runtime dependencies defined in the
  * current project's build.
  * <p/>
- * Optionally you can define the full path of a single AMP file that needs to
+ * Additionally (and optionally) you can define the full path of a single AMP file that needs to
  * be overlaid, using the <simpleAmp> configuration element.
  *
  * @version $Id:$
@@ -59,28 +40,13 @@ public class InstallMojo extends AbstractMojo {
 
     /**
      * One single amp file that, if exists, gets included into the list
-     * of modules to install within the Alfresco WAR
+     * of modules to install within the Alfresco WAR, along with other AMP
+     * defined as (runtime) Maven dependencies
      *
      * @parameter expression="${singleAmp}"
      */
     private File singleAmp;
 
-    /**
-     * Name of the artifact generated into target/ folder.
-     *
-     * @parameter expression="${project.build.finalName}"
-     * @required
-     */
-    private String finalName;
-
-    /**
-     * The target/ directory.
-     *
-     * @parameter expression="${project.build.directory}"
-     * @required
-     */
-    private String outputDirectory;
-    
     /**
      * The WAR file or exploded dir to install the AMPs in.  If specified
      * the default of <code>outputDirectory/finalName</code> will not be used.
@@ -88,6 +54,24 @@ public class InstallMojo extends AbstractMojo {
      * @parameter expression="${warFile}"
      */
     private File warFile;
+
+    /**
+     * [Read Only] pom artifactId; used to locate the war to overlay
+     *
+     * @parameter expression="${project.build.finalName}"
+     * @readonly
+     * @required
+     */
+    private String finalName;
+
+    /**
+     * [Read Only] The target/ directory.
+     *
+     * @parameter expression="${project.build.directory}"
+     * @readonly
+     * @required
+     */
+    private String outputDirectory;
 
     /**
      * The maven project.
@@ -138,12 +122,8 @@ public class InstallMojo extends AbstractMojo {
                             this.ampDestinationDir));
         }
 
-        /**
-         * Locate the WAR file to overlay - the one produced by the current project
-         */
+        // Locate the WAR file to overlay - the one produced by the current project
         if (warFile == null) {
-	        //String warLocation = this.outputDirectory + '/' + this.finalName + ".war";
-	        //String warLocation = this.outputDirectory + "/war/work/org.alfresco/" + this.finalName + "/";
 	        String warLocation = this.outputDirectory + File.separator + this.finalName + File.separator;
 	        warFile = new File(warLocation);
         }
