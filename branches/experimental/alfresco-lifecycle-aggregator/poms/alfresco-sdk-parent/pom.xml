@@ -72,6 +72,7 @@
         | and 
         | This can be overridden your pom
      -->
+    <app.amp.folder>src/main/amp</app.amp.folder>
     <app.properties.folder>src/main/properties/${env}</app.properties.folder>
     <app.properties.test.folder>src/test/properties/${env}</app.properties.test.folder>
     <app.properties.include>**</app.properties.include>
@@ -228,6 +229,11 @@
     <resources>
         <resource>
             <directory>src/main/resources</directory>
+            <filtering>${app.filtering.enabled}</filtering>
+        </resource>
+        <resource>
+            <directory>${app.amp.folder}</directory>
+            <targetPath>../${project.artifactId}-${project.version}</targetPath>
             <filtering>${app.filtering.enabled}</filtering>
         </resource>
     </resources>

@@ -21,7 +21,6 @@
       <configuration>
         <phases>
           <initialize>org.alfresco.maven.plugin:alfresco-maven-plugin:set-version</initialize>
-          <generate-resources>org.alfresco.maven.plugin:alfresco-maven-plugin:add-amp-resources</generate-resources>
           <process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
           <compile>org.apache.maven.plugins:maven-compiler-plugin:compile</compile>
           <process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources</process-test-resources>
