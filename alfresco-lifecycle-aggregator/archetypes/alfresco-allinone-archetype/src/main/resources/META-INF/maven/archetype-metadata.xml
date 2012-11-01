@@ -106,11 +106,17 @@
         <fileSet encoding="UTF-8">
           <directory>src/main/webapp</directory>
           <includes>
-            <include>**/*.xml</include>
+            <include>**/*</include>
           </includes>
         </fileSet>
         <fileSet encoding="UTF-8">
           <directory>src/main/properties</directory>
+          <includes>
+            <include>**/*.properties</include>
+          </includes>
+        </fileSet>
+        <fileSet encoding="UTF-8" filtered="false">
+          <directory>src/main/resources</directory>
           <includes>
             <include>**/*.properties</include>
           </includes>
