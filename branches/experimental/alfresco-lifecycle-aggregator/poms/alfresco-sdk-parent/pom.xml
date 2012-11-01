@@ -89,7 +89,7 @@
         | NOTE: Remember the trailing slash when overriding this. 
          -->
     <app.log.dir>${project.build.directory}/</app.log.dir>
-    <app.log.root.level>INFO</app.log.root.level>
+    <app.log.root.level>WARN</app.log.root.level>
     
     <!-- Maven Plugins Versions used by the SDK -->
     <maven.compiler.version>2.3.2</maven.compiler.version>
