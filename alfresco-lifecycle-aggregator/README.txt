@@ -1,5 +1,9 @@
 This document needs updating...
 
+Archetypes using the SDK can be generated with:
+
+mvn archetype:generate -DarchetypeCatalog=https://artifacts.alfresco.com/nexus/content/groups/public-snapshots/archetype-catalog.xml
+
 **********
 Disclaimer
 **********
