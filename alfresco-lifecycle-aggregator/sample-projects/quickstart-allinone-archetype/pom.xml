@@ -21,6 +21,16 @@
       <module>share</module>
       <module>runner</module>
     </modules>
+    
+    <!-- 
+       | Alfresco version/edition selection has sensible defaults in the SDK parent
+       | but you can override the properties below to use another version. 
+       | For more available properties see the alfresco-sdk-parent POM 
+       -->
+    <properties>
+        <alfresco.groupId>org.alfresco</alfresco.groupId>
+        <alfresco.version>4.2.b</alfresco.version>
+    </properties>
 
    <!-- Here we realize the connection with the Alfresco selected platform (e.g.version and edition) -->
    <dependencyManagement>
