@@ -1,24 +1,5 @@
 package org.alfresco.maven.plugin;
 
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,9 +23,17 @@ import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 
 /**
- * Build a AMP from the current project delegating the File creation to AmpArchiver;
+ * Builds an AMP archive of the current project's contents. By default,
+ * the location of the AMP root contents is ${project.build.directory}/${project.build.finalName}
+ * but it can be customised using <ampBuildDirectory> plugin's configuration.
+ * Java resources (in src/main/java and src/main/resources) are packages in a separate JAR file
+ * that is automatically bundled in the /lib folder of the AMP archive and it treated as build artifact
+ * (i.e. distributed on Maven repositories during deploy).
+ * Optionally you can include Maven dependencies into the /lib folder of the AMP archive
+ * and customise the classifier of both AMP and JAR archives being created
+ *
  * the AMP file name is processed by this Mojo execution, taking in consideration
- * the classifier and the version (skipping -SNAPSHOT suffix, if needed)
+ * the classifier, if specified in the plugin's <configuration>
  *
  * @author Gabriele Columbro, Maurizio Pillitu
  * @version $Id:$
@@ -55,38 +44,24 @@ import org.codehaus.plexus.archiver.jar.JarArchiver;
  * @requiresDependencyResolution runtime
  */
 public class AmpMojo extends AbstractMojo {
-	
-    /**
-     * Name of the generated JAR.
-     *
-     * @parameter alias="ampName" expression="${amp.finalName}" default-value="${project.build.finalName}"
-     * @required
-     */
-    protected String finalName;
 
     /**
-     * Directory containing the classes and resource files that should be packaged into the JAR.
+     * Name of the generated AMP and JAR artifacts
      *
-     * @parameter default-value="${project.build.outputDirectory}"
+     * @parameter expression="${ampFinalName}" default-value="${project.build.finalName}"
      * @required
+     * @readonly
      */
-    protected File classesDirectory;
+    protected String ampFinalName;
 
     /**
-     * Directory to build the AMP in 
+     * Root folder that is packaged into the AMP
      *
-     * @parameter default-value="${project.build.directory}/${project.artifactId}-${project.version}"
+     * @parameter default-value="${project.build.directory}/${project.build.finalName}"
      * @required
+     * @
      */
     protected File ampBuildDirectory;
-
-    /**
-     * ${project.basedir}/target directory
-     *
-     * @parameter default-value="${project.build.directory}"
-     * @required
-     */
-    protected File outputDirectory;
 
     /**
      * Classifier to add to the artifact generated. If given, the artifact will be attached.
@@ -96,7 +71,6 @@ public class AmpMojo extends AbstractMojo {
      * @parameter
      */
     protected String classifier;
-    
 
     /**
      * Whether (runtime scoped) JAR dependencies (including transitive) should be added or not to the generated AMP /lib folder. 
@@ -107,9 +81,26 @@ public class AmpMojo extends AbstractMojo {
      */
     protected boolean includeDependencies;
 
+    /**
+     * ${project.basedir}/target directory
+     *
+     * @parameter default-value="${project.build.directory}"
+     * @required
+     * @readonly
+     */
+    protected File outputDirectory;
 
     /**
-     * The Maven project.
+     * (Read Only) Directory containing the classes and resource files that should be packaged into the JAR.
+     *
+     * @parameter default-value="${project.build.outputDirectory}"
+     * @required
+     * @readonly
+     */
+    protected File classesDirectory;
+
+    /**
+     * (Read Only) The Maven project.
      *
      * @parameter default-value="${project}"
      * @required
@@ -118,6 +109,8 @@ public class AmpMojo extends AbstractMojo {
     protected MavenProject project;
 
     /**
+     * (Read Only) The Maven session
+     *
      * @parameter default-value="${session}"
      * @readonly
      * @required
@@ -140,12 +133,10 @@ public class AmpMojo extends AbstractMojo {
     public void execute()
             throws MojoExecutionException {
 
-        if(includeDependencies)
+        if(includeDependencies) {
         	gatherDependencies();
-        
-        /**
-         * Create the archive
-         */
+        }
+
         File ampFile = createArchive();
         if (this.classifier != null) {
             this.projectHelper.attachArtifact(this.project, "amp", this.classifier, ampFile);
@@ -164,13 +155,13 @@ public class AmpMojo extends AbstractMojo {
             throws MojoExecutionException {
         File jarFile = getFile(
                 new File(this.ampBuildDirectory, AmpModel.AMP_FOLDER_LIB),
-                this.finalName,
+                this.ampFinalName,
                 this.classifier,
                 "jar");
 
         File ampFile = getFile(
                 this.outputDirectory,
-                this.finalName,
+                this.ampFinalName,
                 this.classifier,
                 "amp"
         );
@@ -184,21 +175,21 @@ public class AmpMojo extends AbstractMojo {
         ampArchiver.setOutputFile(ampFile);
 
         if (!this.ampBuildDirectory.exists()) {
-            getLog().warn("outputDirectory does not exist - AMP will be empty");
+            getLog().warn("ampBuildDirectory does not exist - AMP will be empty");
         } else {
-        try {
-            jarArchiver.getArchiver().addDirectory(this.classesDirectory, new String[]{}, new String[]{});
-            jarArchiver.createArchive(this.session, this.project, this.archive);
-        	} catch (Exception e) {
-                throw new MojoExecutionException("Error creating JAR", e);
-        	}
-            try {                        
-            	ampArchiver.getArchiver().addDirectory(this.ampBuildDirectory, new String[]{"**"}, new String[]{});
-            	ampArchiver.createArchive(this.session, this.project, this.archive);
-            }
-            catch (Exception e) {
-                throw new MojoExecutionException("Error creating AMP", e);
-        	}
+            try {
+                jarArchiver.getArchiver().addDirectory(this.classesDirectory, new String[]{}, new String[]{});
+                jarArchiver.createArchive(this.session, this.project, this.archive);
+              } catch (Exception e) {
+                    throw new MojoExecutionException("Error creating JAR", e);
+              }
+              try {
+                ampArchiver.getArchiver().addDirectory(this.ampBuildDirectory, new String[]{"**"}, new String[]{});
+                ampArchiver.createArchive(this.session, this.project, this.archive);
+              }
+              catch (Exception e) {
+                  throw new MojoExecutionException("Error creating AMP", e);
+              }
         }
         return ampFile;
     }
@@ -219,40 +210,6 @@ public class AmpMojo extends AbstractMojo {
             classifier = "-" + classifier;
         }
         return new File(basedir, finalName + classifier + "." + extension);
-    }
-
-    /**
-     * Patches given file <b>in</b>, replacing every occurrency of <b>oldstring</b> with
-     * <b>newstring</b>; the result is stored in File <b>out</b>
-     *
-     * @param oldstring the String to replace
-     * @param newstring the String that replaces every instance of <b>oldstring</b>
-     * @param in        the given input File
-     * @param out       the given output File
-     * @throws MojoExecutionException
-     */
-    protected static void replace(String oldstring, String newstring, File in, File out) throws MojoExecutionException {
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(in));
-            PrintWriter writer = new PrintWriter(new FileWriter(out));
-            String line = null;
-            while ((line = reader.readLine()) != null)
-                writer.println(line.replaceAll(oldstring, newstring));
-
-            // I'm aware of the potential for resource leaks here. Proper resource
-            // handling has been omitted in the interest of brevity
-            reader.close();
-            writer.close();
-
-            //Replace in file with out
-            FileUtils.copyFile(out, in);
-            out.delete();
-        } catch (FileNotFoundException e) {
-            throw new MojoExecutionException("Cannot find file: " + in.getPath());
-        } catch (IOException e) {
-            throw new MojoExecutionException("Error writing to file: " + out.getPath());
-        }
     }
     
     /**

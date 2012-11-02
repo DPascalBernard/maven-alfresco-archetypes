@@ -10,7 +10,11 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
 /**
- * Removes snapshot from the version number, optionally replacing it with a timestamp.
+ * Removes -SNAPSHOT suffix from the version number (if present), optionally replacing it with a timestamp.
+ * The result is provided in the Maven property ${noSnapshotVersion} (name can be changed using
+ * <propertyName>myCustomVersion</>).
+ * This feature is mostly needed to avoid Alfresco failing when installing AMP modules with non-numeric
+ * versions.
  *
  * @version $Id:$
  * @goal set-version
@@ -20,24 +24,7 @@ import org.apache.maven.project.MavenProject;
  */
 public class VersionMojo extends AbstractMojo {
 	
-	private static final DateFormat TIMESTAMP_FORMATTER = new SimpleDateFormat("yyMMddHHmm");
-
-    /**
-     * The Maven project.
-     *
-     * @parameter default-value="${project}"
-     * @required
-     * @readonly
-     */
-    protected MavenProject project;
-
-    /**
-     * Current version of the project
-     *
-     * @parameter expression="${project.version}"
-     * @required
-     */
-    protected String version;
+  	private static final DateFormat TIMESTAMP_FORMATTER = new SimpleDateFormat("yyMMddHHmm");
 
     /**
      * The snapshotSuffix used to identify and strip the -SNAPSHOT version suffix
@@ -68,13 +55,31 @@ public class VersionMojo extends AbstractMojo {
      */
     protected String customVersionSuffix;
     
-	/**
-	 * The Maven project property the stripped version is pushed into
-	 * 
-	 * @parameter expression="${propertyName}" default-value="noSnapshotVersion"
-	 * @required
-	 */
-	private String propertyName;
+    /**
+     * The Maven project property the stripped version is pushed into
+     *
+     * @parameter expression="${propertyName}" default-value="noSnapshotVersion"
+     * @required
+     */
+    private String propertyName;
+
+    /**
+     * [Read Only] The Maven project.
+     *
+     * @parameter default-value="${project}"
+     * @required
+     * @readonly
+     */
+    protected MavenProject project;
+
+    /**
+     * [Read Only] Current version of the project
+     *
+     * @parameter expression="${project.version}"
+     * @required
+     * @readonly
+     */
+    protected String version;
 
     /**
      * Normalizes the project's version following 2 patterns
@@ -105,5 +110,4 @@ public class VersionMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
     	project.getProperties().put(propertyName, getNormalizedVersion());
     }
-
 }
