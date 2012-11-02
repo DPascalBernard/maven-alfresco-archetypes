@@ -113,10 +113,10 @@ public class InstallMojo extends AbstractMojo {
         }
 
         // Locate the WAR file to overlay - the one produced by the current project
-        if (warLocation == null) {
-	        String warLocation = this.outputDirectory + File.separator + this.ampFinalName + "-war" + File.separator;
-	        this.warLocation = new File(warLocation);
-        }
+//        if (warLocation == null) {
+//	        String warLocation = this.outputDirectory + File.separator + this.ampFinalName + "-war" + File.separator;
+//	        this.warLocation = new File(warLocation);
+//        }
         if (!warLocation.exists()) {
             getLog().info(
               "No WAR file found in " + warLocation.getAbsolutePath() + " - skipping overlay.");
