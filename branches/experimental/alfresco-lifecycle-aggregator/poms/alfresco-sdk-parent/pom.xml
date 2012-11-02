@@ -406,30 +406,6 @@
                   </additionalClasspathElements>
               </configuration>
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-resources-plugin</artifactId>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>copy-test</id>-->
-                        <!--<phase>process-test-resources</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>copy-resources</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<outputDirectory>${project.build.testOutputDirectory}/alfresco/module/${project.artifactId}</outputDirectory>-->
-                            <!--<resources>-->
-                                <!--<resource>-->
-                                    <!--<directory>${project.build.directory}/${project.build.finalName}</directory>-->
-                                    <!--<includes>-->
-                                        <!--<include>module.properties</include>-->
-                                    <!--</includes>-->
-                                <!--</resource>-->
-                            <!--</resources>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
         </plugins>
       </build>
       <dependencies>
@@ -532,30 +508,6 @@
               </execution>
             </executions>
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-clean-plugin</artifactId>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>clean-test-module-properties</id>-->
-                        <!--<phase>prepare-package</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>clean</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<excludeDefaultDirectories>true</excludeDefaultDirectories>-->
-                            <!--<filesets>-->
-                                <!--<filesets>-->
-                                    <!--<directory>${project.build.testOutputDirectory}/alfresco/module/${project.artifactId}</directory>-->
-                                    <!--<includes>-->
-                                        <!--<include>module.properties</include>-->
-                                    <!--</includes>-->
-                                <!--</filesets>-->
-                            <!--</filesets>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
           <!-- The current AMP artifact is installed into the Alfresco
           folder using alfresco-maven-plugin -->
           <plugin>
@@ -570,10 +522,6 @@
                 </goals>
               </execution>
             </executions>
-            <!-- This value is now provided as default value by alfresco-maven-plugin -->
-            <!--<configuration>-->
-              <!--<singleAmp>${project.build.directory}/${project.build.finalName}.amp</singleAmp>-->
-            <!--</configuration>-->
           </plugin>
           <!-- If the integration-test phase is called, the integrated WAR + AMP is actually ran in Jetty -->
           <plugin>
