@@ -43,7 +43,7 @@ public class InstallMojo extends AbstractMojo {
      * The WAR file or exploded dir to install the AMPs in.  If specified
      * Defaults to <code>outputDirectory/${ampFinalName}-war</code>
      *
-     * @parameter expression="${warLocation}" default-value="${project.build.outputDirectory}/${project.build.finalName}-war"
+     * @parameter expression="${warLocation}" default-value="${project.build.directory}/${project.build.finalName}-war"
      */
     private File warLocation;
 
@@ -52,7 +52,7 @@ public class InstallMojo extends AbstractMojo {
      * of modules to install within the Alfresco WAR, along with other AMP
      * defined as (runtime) Maven dependencies
      *
-     * @parameter expression="${singleAmp}" default-value="${project.build.outputDirectory}/${project.build.finalName}.amp"
+     * @parameter expression="${singleAmp}" default-value="${project.build.directory}/${project.build.finalName}.amp"
      */
     private File singleAmp;
 
