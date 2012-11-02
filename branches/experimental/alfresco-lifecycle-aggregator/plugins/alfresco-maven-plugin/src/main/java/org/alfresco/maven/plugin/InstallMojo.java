@@ -28,41 +28,33 @@ import java.io.IOException;
  */
 public class InstallMojo extends AbstractMojo {
 
-    private static final String AMP_OVERLAY_FOLDER_NAME = "ampoverlays";
+    private static final String AMP_OVERLAY_FOLDER_NAME = "ampoverlays_temp";
 
     /**
-     * Build directory where the AMP files get copied waiting for being
-     * overlaid on top of the WAR file
+     * Name of the generated AMP and JAR artifacts
      *
-     * @parameter expression="${ampDestinationDir}"
+     * @parameter expression="${ampFinalName}" default-value="${project.build.finalName}"
+     * @required
+     * @readonly
      */
-    private File ampDestinationDir;
+    protected String ampFinalName;
+
+    /**
+     * The WAR file or exploded dir to install the AMPs in.  If specified
+     * Defaults to <code>outputDirectory/${ampFinalName}-war</code>
+     *
+     * @parameter expression="${warLocation}" default-value="${project.build.outputDirectory}/${project.build.finalName}-war"
+     */
+    private File warLocation;
 
     /**
      * One single amp file that, if exists, gets included into the list
      * of modules to install within the Alfresco WAR, along with other AMP
      * defined as (runtime) Maven dependencies
      *
-     * @parameter expression="${singleAmp}"
+     * @parameter expression="${singleAmp}" default-value="${project.build.outputDirectory}/${project.build.finalName}.amp"
      */
     private File singleAmp;
-
-    /**
-     * The WAR file or exploded dir to install the AMPs in.  If specified
-     * the default of <code>outputDirectory/finalName</code> will not be used.
-     *
-     * @parameter expression="${warFile}"
-     */
-    private File warFile;
-
-    /**
-     * [Read Only] pom artifactId; used to locate the war to overlay
-     *
-     * @parameter expression="${project.build.finalName}"
-     * @readonly
-     * @required
-     */
-    private String finalName;
 
     /**
      * [Read Only] The target/ directory.
@@ -87,10 +79,8 @@ public class InstallMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        if (this.ampDestinationDir == null) {
-            this.ampDestinationDir = new File(this.outputDirectory, AMP_OVERLAY_FOLDER_NAME);
-        }
-        getLog().debug("Setting AMP Destination dir to " + this.ampDestinationDir.getAbsolutePath());
+        File overlayTempDir = new File(this.outputDirectory, AMP_OVERLAY_FOLDER_NAME);
+        getLog().debug("Setting AMP Destination dir to " + overlayTempDir.getAbsolutePath());
 
         /**
          * Collect all AMP runtime dependencies and copy all files
@@ -102,39 +92,39 @@ public class InstallMojo extends AbstractMojo {
                     Artifact artifact = (Artifact) artifactObj;
                     if ("amp".equals(artifact.getType())) {
                         File artifactFile = artifact.getFile();
-                        FileUtils.copyFileToDirectory(artifactFile, this.ampDestinationDir);
-                        getLog().debug(String.format("Copied %s into %s", artifactFile, this.ampDestinationDir));
+                        FileUtils.copyFileToDirectory(artifactFile, overlayTempDir);
+                        getLog().debug(String.format("Copied %s into %s", artifactFile, overlayTempDir));
                     }
                 }
             }
             if (this.singleAmp != null && this.singleAmp.exists()) {
-                if (!this.ampDestinationDir.exists()) {
-                    this.ampDestinationDir.mkdirs();
+                if (!overlayTempDir.exists()) {
+                    overlayTempDir.mkdirs();
                 }
 
-                FileUtils.copyFileToDirectory(this.singleAmp, this.ampDestinationDir);
-                getLog().debug(String.format("Copied %s into %s", this.singleAmp, this.ampDestinationDir));
+                FileUtils.copyFileToDirectory(this.singleAmp, overlayTempDir);
+                getLog().debug(String.format("Copied %s into %s", this.singleAmp, overlayTempDir));
             }
         } catch (IOException e) {
             getLog().error(
                     String.format(
                             "Cannot copy AMP module to folder %s",
-                            this.ampDestinationDir));
+                            overlayTempDir));
         }
 
         // Locate the WAR file to overlay - the one produced by the current project
-        if (warFile == null) {
-	        String warLocation = this.outputDirectory + File.separator + this.finalName + File.separator;
-	        warFile = new File(warLocation);
+        if (warLocation == null) {
+	        String warLocation = this.outputDirectory + File.separator + this.ampFinalName + "-war" + File.separator;
+	        this.warLocation = new File(warLocation);
         }
-        if (!warFile.exists()) {
+        if (!warLocation.exists()) {
             getLog().info(
-              "No WAR file found in " + warFile.getAbsolutePath() + " - skipping overlay.");
-        } else if (this.ampDestinationDir == null ||
-          !this.ampDestinationDir.exists()) {
+              "No WAR file found in " + warLocation.getAbsolutePath() + " - skipping overlay.");
+        } else if (overlayTempDir == null ||
+          !overlayTempDir.exists()) {
           getLog().info(
-              "No ampoverlay folder found in " + this.ampDestinationDir + " - skipping overlay.");
-        } else if (this.ampDestinationDir.listFiles().length == 0) {
+              "No ampoverlay folder found in " + overlayTempDir + " - skipping overlay.");
+        } else if (overlayTempDir.listFiles().length == 0) {
             getLog().info(
               "No runtime AMP dependencies found for this build - skipping overlay.");
         } else {
@@ -146,14 +136,14 @@ public class InstallMojo extends AbstractMojo {
             mmt.setVerbose(true);
             try {
                 mmt.installModules(
-                        this.ampDestinationDir.getAbsolutePath(),
-                        warFile.getAbsolutePath(),
+                        overlayTempDir.getAbsolutePath(),
+                        warLocation.getAbsolutePath(),
                         false,  //preview
                         true,   //force install
                         false); //backup
             } catch (IOException e) {
                 throw new MojoExecutionException("Problems while installing " + 
-            this.ampDestinationDir.getAbsolutePath() + " onto " + warFile.getAbsolutePath(), e);
+            overlayTempDir.getAbsolutePath() + " onto " + warLocation.getAbsolutePath(), e);
             }
         }
     }

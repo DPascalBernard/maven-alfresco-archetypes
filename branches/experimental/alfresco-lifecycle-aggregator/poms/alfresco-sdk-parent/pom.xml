@@ -44,7 +44,9 @@
         | This impact (in AMP projects) the choice of the WAR project for embedded run
          -->
     <alfresco.client.war>alfresco</alfresco.client.war>
-    <alfresco.client.war.folder>${project.build.directory}/${project.build.finalName}</alfresco.client.war.folder>
+
+    <!-- IMPORTANT! Override this only if you know what you're doing; it could break amp-to-war overlay -->
+    <alfresco.client.war.folder>${project.build.directory}/${project.build.finalName}-war</alfresco.client.war.folder>
 
     <!-- Alfresco Repo disk storage folder (relative path) -->
     <alfresco.data.location>alf_data_dev</alfresco.data.location>
@@ -57,9 +59,6 @@
     <alfresco.db.url>jdbc:h2:./${alfresco.data.location}/h2_data/${alfresco.db.name};${alfresco.db.params}</alfresco.db.url>
     <alfresco.db.datasource.class>org.h2.jdbcx.JdbcDataSource</alfresco.db.datasource.class>
     
-    <!-- Context names used by webapps -->
-    <webapp.name>${project.artifactId}</webapp.name>
-
     <!-- SDK Properties -->
     <!--
     Built-in multi-environment property placeholding support (also for testing); to enable it on your sub-modules
@@ -136,7 +135,7 @@
   </distributionManagement>
 
   <build>
-    <finalName>${webapp.name}</finalName>
+    <finalName>${project.artifactId}</finalName>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -146,7 +145,6 @@
           <version>1.0-SNAPSHOT</version>
           <extensions>true</extensions>
           <configuration>
-              <filtering>${app.filtering.enabled}</filtering>
               <snapshotToTimestamp>true</snapshotToTimestamp>
           </configuration>
         </plugin>
@@ -233,7 +231,7 @@
         </resource>
         <resource>
             <directory>${app.amp.folder}</directory>
-            <targetPath>../${project.artifactId}-${project.version}</targetPath>
+            <targetPath>../${project.build.finalName}</targetPath>
             <filtering>${app.filtering.enabled}</filtering>
         </resource>
     </resources>
@@ -403,7 +401,7 @@
                   <argLine>${app.testing.jvm.args}</argLine>
                   <additionalClasspathElements>
                       <!-- Adds the config directory to the test classpath for unit testing purposes -->
-                      <additionalClasspathElement>${project.build.directory}/${project.artifactId}-${project.version}/config</additionalClasspathElement>
+                      <additionalClasspathElement>${project.build.directory}/${project.build.finalName}/config</additionalClasspathElement>
                   </additionalClasspathElements>
               </configuration>
             </plugin>
@@ -421,7 +419,7 @@
                             <outputDirectory>${project.build.testOutputDirectory}/alfresco/module/${project.artifactId}</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${project.build.directory}/${project.artifactId}-${project.version}</directory>
+                                    <directory>${project.build.directory}/${project.build.finalName}</directory>
                                     <includes>
                                         <include>module.properties</include>
                                     </includes>
@@ -571,9 +569,10 @@
                 </goals>
               </execution>
             </executions>
-            <configuration>
-              <singleAmp>${project.build.directory}/${project.build.finalName}.amp</singleAmp>
-            </configuration>
+            <!-- This value is now provided as default value by alfresco-maven-plugin -->
+            <!--<configuration>-->
+              <!--<singleAmp>${project.build.directory}/${project.build.finalName}.amp</singleAmp>-->
+            <!--</configuration>-->
           </plugin>
           <!-- If the integration-test phase is called, the integrated WAR + AMP is actually ran in Jetty -->
           <plugin>
