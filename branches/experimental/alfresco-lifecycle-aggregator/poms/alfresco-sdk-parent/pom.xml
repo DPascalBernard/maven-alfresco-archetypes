@@ -402,33 +402,34 @@
                   <additionalClasspathElements>
                       <!-- Adds the config directory to the test classpath for unit testing purposes -->
                       <additionalClasspathElement>${project.build.directory}/${project.build.finalName}/config</additionalClasspathElement>
+                    <additionalClasspathElement>${project.build.directory}/${project.build.finalName}/module.properties</additionalClasspathElement>
                   </additionalClasspathElements>
               </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-test</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.testOutputDirectory}/alfresco/module/${project.artifactId}</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}/${project.build.finalName}</directory>
-                                    <includes>
-                                        <include>module.properties</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-resources-plugin</artifactId>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>copy-test</id>-->
+                        <!--<phase>process-test-resources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>copy-resources</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<outputDirectory>${project.build.testOutputDirectory}/alfresco/module/${project.artifactId}</outputDirectory>-->
+                            <!--<resources>-->
+                                <!--<resource>-->
+                                    <!--<directory>${project.build.directory}/${project.build.finalName}</directory>-->
+                                    <!--<includes>-->
+                                        <!--<include>module.properties</include>-->
+                                    <!--</includes>-->
+                                <!--</resource>-->
+                            <!--</resources>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
       </build>
       <dependencies>
@@ -531,30 +532,30 @@
               </execution>
             </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>clean-test-module-properties</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                        <configuration>
-                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
-                            <filesets>
-                                <filesets>
-                                    <directory>${project.build.testOutputDirectory}/alfresco/module/${project.artifactId}</directory>
-                                    <includes>
-                                        <include>module.properties</include>
-                                    </includes>
-                                </filesets>
-                            </filesets>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-clean-plugin</artifactId>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>clean-test-module-properties</id>-->
+                        <!--<phase>prepare-package</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>clean</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<excludeDefaultDirectories>true</excludeDefaultDirectories>-->
+                            <!--<filesets>-->
+                                <!--<filesets>-->
+                                    <!--<directory>${project.build.testOutputDirectory}/alfresco/module/${project.artifactId}</directory>-->
+                                    <!--<includes>-->
+                                        <!--<include>module.properties</include>-->
+                                    <!--</includes>-->
+                                <!--</filesets>-->
+                            <!--</filesets>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
           <!-- The current AMP artifact is installed into the Alfresco
           folder using alfresco-maven-plugin -->
           <plugin>
