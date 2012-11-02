@@ -1,4 +1,4 @@
-package org.alfresco.demo.demoamp;
+package org.alfresco.demoamp;
 
 /**
  * This class does nothing except dump some output to <i>system.out</i>.
