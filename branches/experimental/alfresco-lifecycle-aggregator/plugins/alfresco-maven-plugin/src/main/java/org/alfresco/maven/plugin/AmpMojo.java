@@ -32,9 +32,6 @@ import org.codehaus.plexus.archiver.jar.JarArchiver;
  * Optionally you can include Maven dependencies into the /lib folder of the AMP archive
  * and customise the classifier of both AMP and JAR archives being created
  *
- * the AMP file name is processed by this Mojo execution, taking in consideration
- * the classifier, if specified in the plugin's <configuration>
- *
  * @author Gabriele Columbro, Maurizio Pillitu
  * @version $Id:$
  * @goal amp
