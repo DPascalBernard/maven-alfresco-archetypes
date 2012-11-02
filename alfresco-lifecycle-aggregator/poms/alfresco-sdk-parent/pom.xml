@@ -94,6 +94,7 @@
     <maven.compiler.version>2.3.2</maven.compiler.version>
     <maven.clean.version>2.4.1</maven.clean.version>
     <maven.dependency.version>2.4</maven.dependency.version>
+    <maven.enforcer.plugin>1.1.1</maven.enforcer.plugin>
     <maven.resources.version>2.5</maven.resources.version>
     <maven.surefire.version>2.12.4</maven.surefire.version>
     <maven.install.version>2.3.1</maven.install.version>
@@ -586,6 +587,52 @@
                       </filesets>
                     </configuration>
                   </plugin>
+            </plugins>
+        </build>
+    </profile>
+    <!-- Enforce SDK rules for clearer fast fail error messaging and safer usage  -->
+    <profile>
+        <id>enforce-sdk-rules</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <build>
+            <plugins>
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven.enforcer.plugin}</version>
+                <executions>
+                  <execution>
+                    <id>enforce-sdk-requirements</id>
+                    <goals>
+                      <goal>enforce</goal>
+                    </goals>
+                    <configuration>
+                      <rules>
+                         <!-- At this time the SDK is supported only for Alfresco 4.2.b and above versions -->
+                         <requireProperty>
+                            <property>alfresco.version</property>
+                            <message>At this time the SDK is supported only for Alfresco 4.2.b and above versions</message>
+                            <regex>^(4\.[2-9]|[5-9]).*</regex>
+                         </requireProperty>
+                         <!-- At this time the SDK is supported only for Alfresco 4.2.b and above versions -->
+                         <requireProperty>
+                            <property>alfresco.groupId</property>
+                            <message>You need to select an Alfresco Edition (Community / Enterprise) by setting alfresco.groupId=org.alfresco|org.alfresco.enterprise</message>
+                            <regex>(org\.alfresco|org\.alfresco\.enterprise)</regex>
+                         </requireProperty>
+                         <!-- Alfresco 4.2+ runs on Java 7  -->
+                         <requireJavaVersion>
+                            <version>[1.7.0,)</version>
+                            <message>As the SDK works only with Alfresco 4.2+, and Alfresco 4.2+ requires Java 7, you need Java 7</message>
+                         </requireJavaVersion>
+                      </rules>
+                      <fail>true</fail>
+                    </configuration>
+                  </execution>
+                </executions>
+              </plugin>
             </plugins>
         </build>
     </profile>
