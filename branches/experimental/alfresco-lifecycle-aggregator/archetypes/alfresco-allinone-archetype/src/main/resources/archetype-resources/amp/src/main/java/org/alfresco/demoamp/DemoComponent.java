@@ -1,4 +1,4 @@
-package org.alfresco.demo.demoamp;
+package org.alfresco.demoamp;
 
 import java.util.logging.Logger;
 
