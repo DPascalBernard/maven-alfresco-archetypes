@@ -36,6 +36,7 @@ parent-project
             |-> alfresco
             |-> share
             |-> solr
+            |-> wcmqs (Alfresco Web Quick Start)
             |-> runner (a Jetty embedded runner / integration test runner)
             
 Useful commands

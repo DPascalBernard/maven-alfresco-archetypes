@@ -123,6 +123,28 @@
         </fileSet>
       </fileSets>
     </module>
+    <module id="wcmqs" dir="wcmqs" name="share" filtered="false">
+      <fileSets>
+        <fileSet encoding="UTF-8">
+          <directory>src/main/webapp</directory>
+          <includes>
+            <include>**/*</include>
+          </includes>
+        </fileSet>
+        <fileSet encoding="UTF-8" filtered="false">
+          <directory>src/main/resources</directory>
+          <includes>
+            <include>**</include>
+          </includes>
+        </fileSet>
+        <fileSet encoding="UTF-8" filtered="false">
+          <directory>src/main/webapp</directory>
+          <includes>
+            <include>**</include>
+          </includes>
+        </fileSet>
+      </fileSets>
+    </module>
     <module id="runner" dir="runner" name="runner" filtered="false">
       <fileSets>
         <fileSet encoding="UTF-8">
