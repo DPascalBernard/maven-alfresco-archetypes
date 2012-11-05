@@ -1,0 +1,69 @@
+  ------
+  Maven Alfresco SDK\x99 
+  ------
+  Gabriele Columbro
+  ------
+  Nov 2012
+  ------
+
+Introduction
+
+  The Maven Alfresco SDK\x99  - formerly {{{https://artifacts.alfresco.com/nexus/content/repositories/alfresco-docs/maven-alfresco-lifecycle/latest/index.html} Maven Alfresco Lifecycle 3.9.1}} -
+  provides a fully fledged Maven support for {{{http://www.alfresco.com}Alfresco ECM}} WAR and {{{https://wiki.alfresco.com/wiki/AMP_Files}AMP}} project development.
+  Being fully integrated with Maven it allows to both leverage the vast number of Maven plugins for your Alfresco project as well as integrated your
+  project easily in Open Source and Enterprise development processes.
+
+  The Maven Alfresco SDK\x99 is fully documented in the single components websites (links above) as well as updated on {{{https://wiki.alfresco.com/wiki/Maven_Alfresco_SDK}the Alfresco Wiki}}.
+  
+* Rationale
+
+  The Alfresco Maven SDK introduces a new way of conceiving software development, deployment and release of Alfresco related projects and artifacts.
+  In contrast to the manual (and error prone) deployment approach based on an installer / Alfresco WAR distribution(s) and the <infamous> <<<${extensionRoot}>>>,
+  the Maven SDK provides a unified access to fine grained Artifacts (jar,war,pom files),] that can be easily integrated
+  in your project by the means of Alfresco-specific Maven components and configurations. The main goal of this SDK is to 
+  enable rapid development and prototyping of Alfresco projects, while enabling agile development practices (i.e. TDD, FDD)
+  and fostering process reuse due to standardization
+  
+Maven Alfresco SDK\x99 components
+
+  The Maven Alfresco SDK relies on a number of components:
+
+  * {{{./poms/alfresco-sdk-parent/index.html}The SDK parent POM}} providing full Alfresco project lifecycle feature, to be added as a <<<<parent>>>> in your projects
+
+  * Archetypes like the {{{./archetypes/alfresco-amp-archetype/index.html}AMP}} or {{{./archetypes/alfresco-allinone-archetype/index.html}All-in-One}} providing sample project to kickstart your Alfresco development and boost it with best practices
+  
+  * The {{{./plugins/alfresco-maven-plugin/index.html} Alfresco Maven Plugin}} to manage AMP packaging and dependencies
+  
+  * {{{https://artifacts.alfresco.com/nexus/content/repositories/alfresco-docs/alfresco-platform-distribution/latest}Alfresco Platform Distribution POM}} can (optionally) be used to provide centralized <<<<dependencyManagement>>>> on a particular Alfresco version / edition (Community / Enterprise)  
+
+  * The {{{https://artifacts.alfresco.com}Alfresco Artifacts Repository}} provides backing for this SDK. Check the {{{http://wiki.alfresco.com/wiki/Alfresco_Artifacts_Repository}Alfresco Wiki}} for Community / Enterprise access information. 
+
+Pre-requisites
+
+* System prerequisites
+
+    No manual Alfresco download, application server or database is required. 
+    See details in the {{{./prerequisites.html} SDK pre-requisites page}}.
+
+* Alfresco Compatibility
+
+  Maven Alfresco SDK\x99 ${project.version} is compatible (for now) with Alfresco Community / Enterprise 4.2(.b)+.
+  The majority of the features might still work when using lower Alfresco versions, but certain artifacts might not be 
+  available in the {{{https://artifacts.alfresco.com}Alfresco Artifacts Repository}}. You can probably fix this with some
+  Maven configuration, but use at your own risk.
+
+Project History
+
+  * Born in 2007 with the name of {{{http://forge.alfresco.com/gf/project/maven4alfresco/}maven4alfresco}}, later committed on google Code as {{{https://code.google.com/p/maven-alfresco-archetypes/}Maven Alfresco Archetypes}}
+
+  * Created in 2008 the {{{https://groups.google.com/forum/?fromgroups#!forum/maven-alfresco}Maven Alfresco Lifecycle Discussion Group}} in order to open roadmap and features with Alfresco Community
+
+  * {{{https://artifacts.alfresco.com/}Alfresco Maven Repository}} is {{{http://mindthegab.com/2009/12/02/dreams-come-true-launching-the-alfresco-community-maven-repository/}launched}} in 2009 for Community and Enterprise Alfresco customers
+
+  * In April 2012 version {{{https://groups.google.com/forum/?fromgroups=#!searchin/maven-alfresco/3.9.1/maven-alfresco/ZSX1t9W-Jcg/MB-YqAdnCAAJ}3.9.1 is released}}, which delivers Maven build support for all 3.x Alfresco versions
+
+  * The {{{https://groups.google.com/forum/?fromgroups#!forum/maven-alfresco}Maven Alfresco Lifecycle Discussion Group}} reaches 100 members in August 2012
+
+  * In October 2012 Alfresco finalises the {{{https://issues.alfresco.com/jira/browse/ALF-14353}aMaven modularisation and dependency categorisation}}, delivering {{{https://artifacts.alfresco.com}artifacts and poms}}
+
+  * The new Alfresco Maven SDK 1.0 is released and presented on Tuesday 7 November at {{{http://devcon.alfresco.com/}Alfresco DevCon}} in Berlin.
