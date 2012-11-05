@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.alfresco.maven.archetype</groupId>
+  <artifactId>alfresco-allinone-archetype</artifactId>
+  <packaging>maven-archetype</packaging>
+  <name>All-in-One Archetype from Maven Alfresco SDK</name>
+  <description>Sample multi-module project for All-in-One development on the Alfresco plaftorm. Includes modules for: Repository, AMP, Share, Solr, Web Quick Start and embedded Jetty run</description>
+  
+  <parent>
+    <groupId>org.alfresco.maven</groupId>
+    <artifactId>alfresco-lifecycle-aggregator</artifactId>
+    <version>1.0</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+</project>
